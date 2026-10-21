@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 37" width="32" height="37" fill="none">
+  <!-- Stack Overflow Tray -->
+  <path d="M26 33v-9h4v13H2V24h4v9h20z" fill="#BCBBBB"/>
+  <!-- Stack Overflow Overflowing Bars in Signature Orange -->
+  <path d="M6.5 28.5h19v-4h-19v4z" fill="#F48024"/>
+  <path d="M7.5 20l18.5 4 .8-3.9-18.5-4-.8 3.9z" fill="#F48024"/>
+  <path d="M10.5 11.8l17 8.5 1.8-3.6-17-8.5-1.8 3.6z" fill="#F48024"/>
+  <path d="M16 3.8l14.5 12.5 2.6-3L18.6.8l-2.6 3z" fill="#F48024"/>
+  <path d="M25 0l-3.3 2.3 11.5 15.2 3.3-2.3L25 0z" fill="#F48024"/>
+</svg>
