@@ -1,0 +1,5797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stack Overflow — Instant Clipboard AI Copilot</title>
+  <meta name="description" content="Stack Overflow style Clipboard Copilot: Automatically reads copied code or questions, solves them with Gemini, and copies the solution back to your clipboard.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzNyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjM3IiBmaWxsPSJub25lIj4KICA8IS0tIFN0YWNrIE92ZXJmbG93IFRyYXkgLS0+CiAgPHBhdGggZD0iTTI2IDMzdi05aDR2MTNIMlYyNGg0djloMjB6IiBmaWxsPSIjQkNCQkJCIi8+CiAgPCEtLSBTdGFjayBPdmVyZmxvdyBPdmVyZmxvd2luZyBCYXJzIGluIFNpZ25hdHVyZSBPcmFuZ2UgLS0+CiAgPHBhdGggZD0iTTYuNSAyOC41aDE5di00aC0xOXY0eiIgZmlsbD0iI0Y0ODAyNCIvPgogIDxwYXRoIGQ9Ik03LjUgMjBsMTguNSA0IC44LTMuOS0xOC41LTQtLjggMy45eiIgZmlsbD0iI0Y0ODAyNCIvPgogIDxwYXRoIGQ9Ik0xMC41IDExLjhsMTcgOC41IDEuOC0zLjYtMTctOC41LTEuOCAzLjZ6IiBmaWxsPSIjRjQ4MDI0Ii8+CiAgPHBhdGggZD0iTTE2IDMuOGwxNC41IDEyLjUgMi42LTNMMTguNi44bC0yLjYgM3oiIGZpbGw9IiNGNDgwMjQiLz4KICA8cGF0aCBkPSJNMjUgMGwtMy4zIDIuMyAxMS41IDE1LjIgMy4zLTIuM0wyNSAweiIgZmlsbD0iI0Y0ODAyNCIvPgo8L3N2Zz4K">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+/* ==========================================================================
+   Stack Overflow Theme & Design System for Clipboard Copilot
+   Classic Authentic LIGHT THEME (#FFFFFF, #F48024, #FDF7E2, #2E7D32)
+   ========================================================================== */
+
+:root {
+  /* Stack Overflow Brand Colors */
+  --so-orange: #f48024;
+  --so-orange-hover: #da680b;
+  --so-orange-light: rgba(244, 128, 36, 0.12);
+  
+  /* Light Theme Surfaces & Backgrounds */
+  --so-bg-page: #ffffff;
+  --so-bg-topbar: #f8f9f9;
+  --so-bg-sidebar: #ffffff;
+  --so-bg-card: #ffffff;
+  --so-bg-input: #ffffff;
+  --so-bg-editor: #f6f6f6;
+  --so-border: #d6d9dc;
+  --so-border-subtle: #e3e6e8;
+  --so-border-focus: #59a4de;
+
+  /* Typography Colors */
+  --so-text-main: #232629;
+  --so-text-secondary: #525960;
+  --so-text-muted: #6a737c;
+  --so-link: #0074cc;
+  --so-link-hover: #0a95ff;
+
+  /* Badges & Accents */
+  --so-green: #2e7d32;
+  --so-green-bg: #e8f5e9;
+  --so-green-border: #a3e9b0;
+  --so-gold: #f1b600;
+  --so-silver: #9a9c9f;
+  --so-bronze: #ab7a4e;
+
+  /* Stack Overflow Classic Tags */
+  --so-tag-bg: #e1ecf4;
+  --so-tag-text: #39739d;
+  --so-tag-hover: #d0e3f1;
+
+  /* The Overflow Yellow Widget Box in Light Mode */
+  --so-widget-yellow-bg: #fdf7e2;
+  --so-widget-yellow-header: #f1e5bc;
+  --so-widget-yellow-border: #e6cf7e;
+  --so-widget-yellow-text: #3b4045;
+
+  /* Fonts */
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", "Vazirmatn", Tahoma, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', "Cascadia Code", Consolas, Menlo, Monaco, monospace;
+
+  --transition-fast: all 0.15s ease-in-out;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body, body.so-theme-light {
+  background-color: var(--so-bg-page);
+  color: var(--so-text-main);
+  font-family: var(--font-main);
+  font-size: 13px;
+  line-height: 1.45;
+  min-height: 100vh;
+  max-width: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Top Navigation Bar (Signature 3px Orange Line)
+   ========================================================================== */
+.so-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--so-bg-topbar);
+  border-top: 3px solid var(--so-orange);
+  border-bottom: 1px solid var(--so-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  height: 52px;
+}
+
+.so-topbar-container {
+  max-width: 1300px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Logo */
+.so-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--so-text-main);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.so-brand-link:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.so-brand-text {
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  font-family: var(--font-main);
+  color: #232629;
+}
+
+.so-bold {
+  font-weight: 700;
+  color: #0c0d0e;
+}
+
+.so-badge-copilot {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--so-orange);
+  color: #fff;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.2rem;
+}
+
+/* Nav links */
+.so-topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+@media (max-width: 900px) {
+  .so-topbar-nav { display: none; }
+}
+
+.so-nav-item {
+  color: var(--so-text-secondary);
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.so-nav-item:hover, .so-nav-item.active {
+  color: #0c0d0e;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Search Box */
+.so-search-container {
+  flex: 1;
+  max-width: 600px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.so-search-svg {
+  position: absolute;
+  left: 0.65rem;
+  color: var(--so-text-muted);
+  pointer-events: none;
+}
+
+.so-search-input {
+  width: 100%;
+  background-color: var(--so-bg-input);
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 0.45rem 3.5rem 0.45rem 2.2rem;
+  color: var(--so-text-main);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  transition: var(--transition-fast);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.so-search-input:focus {
+  border-color: var(--so-orange);
+  box-shadow: 0 0 0 3px var(--so-orange-light);
+}
+
+.so-kbd {
+  position: absolute;
+  right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  background: #f1f2f3;
+  border: 1px solid var(--so-border);
+  border-radius: 3px;
+  padding: 0.1rem 0.35rem;
+  color: var(--so-text-secondary);
+}
+
+/* Topbar Actions */
+.so-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--so-border);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.status-ready .status-dot { background: var(--so-green); box-shadow: 0 0 4px var(--so-green); }
+.status-busy .status-dot { background: var(--so-orange); box-shadow: 0 0 4px var(--so-orange); }
+.status-warn .status-dot { background: #f59e0b; }
+
+.so-user-rep {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: default;
+}
+
+.so-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: var(--so-orange);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.so-avatar.sm { width: 20px; height: 20px; font-size: 0.72rem; }
+.so-avatar.bot { background: #0284c7; }
+
+.so-rep-count { color: var(--so-text-secondary); }
+.badge-dot { font-size: 0.7rem; font-weight: 700; }
+.badge-dot.gold { color: var(--so-gold); }
+.badge-dot.silver { color: var(--so-silver); }
+.badge-dot.bronze { color: var(--so-bronze); }
+
+.so-icon-btn {
+  background: none;
+  border: none;
+  color: var(--so-text-secondary);
+  padding: 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: var(--transition-fast);
+}
+
+.so-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #0c0d0e;
+}
+
+/* ==========================================================================
+   Page Layout (Left Sidebar + Main Column + Right Sidebar)
+   ========================================================================== */
+.so-page-wrap {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  min-height: calc(100vh - 52px);
+  background-color: var(--so-bg-page);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Left Sidebar */
+.so-left-sidebar {
+  width: 170px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--so-border);
+  padding: 1.5rem 0;
+  background-color: var(--so-bg-sidebar);
+}
+
+@media (max-width: 800px) {
+  .so-left-sidebar { display: none; }
+}
+
+.so-side-nav {
+  position: sticky;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+}
+
+.so-side-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  color: var(--so-text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  border-right: 3px solid transparent;
+}
+
+.so-side-link:hover {
+  color: #0c0d0e;
+  background-color: #f1f2f3;
+}
+
+.so-side-link.active {
+  background-color: #f1f2f3;
+  color: #0c0d0e;
+  font-weight: 700;
+  border-right-color: var(--so-orange);
+}
+
+.so-side-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--so-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1.25rem 1rem 0.4rem;
+}
+
+.so-toggle-box {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.4rem;
+}
+
+.so-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--so-text-secondary);
+}
+
+.so-toggle-featured {
+  background: var(--so-bg-topbar);
+  padding: 0.6rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--so-border);
+  margin-bottom: 0.2rem;
+}
+
+.so-toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.so-toggle-title {
+  font-weight: 600;
+  font-size: 0.76rem;
+  color: var(--so-text-main);
+}
+
+.so-toggle-desc {
+  font-size: 0.68rem;
+  color: var(--so-text-muted);
+  font-weight: 500;
+}
+
+/* Sm Switch */
+.switch-sm {
+  position: relative;
+  width: 32px;
+  height: 18px;
+}
+.switch-sm input { opacity: 0; width: 0; height: 0; }
+.slider-sm {
+  position: absolute; cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #babfc4;
+  border-radius: 18px;
+  transition: 0.2s;
+}
+.slider-sm::before {
+  position: absolute; content: "";
+  height: 12px; width: 12px; left: 3px; bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+input:checked + .slider-sm { background-color: var(--so-orange); }
+input:checked + .slider-sm::before { transform: translateX(14px); }
+
+/* Main Column */
+.so-main-column {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem;
+  max-width: 820px;
+  width: 100%;
+  border-right: 1px solid var(--so-border);
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+  .so-main-column { max-width: 100%; border-right: none; }
+}
+
+/* Question Header */
+.so-question-header {
+  border-bottom: 1px solid var(--so-border);
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.so-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.so-question-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--so-text-main);
+  line-height: 1.25;
+}
+
+.so-btn-primary {
+  background-color: var(--so-orange);
+  color: #fff;
+  border: 1px solid transparent;
+  padding: 0.55rem 0.95rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-fast);
+}
+
+.so-btn-primary:hover {
+  background-color: var(--so-orange-hover);
+}
+
+.so-question-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--so-text-muted);
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.so-highlight { color: var(--so-text-secondary); font-weight: 600; }
+.so-highlight-green { color: var(--so-green); font-weight: 600; }
+
+/* Status Notification Banner (Light Mode Warm Notice) */
+.so-notice-banner {
+  background-color: var(--so-widget-yellow-bg);
+  border: 1px solid var(--so-widget-yellow-border);
+  border-left: 4px solid var(--so-orange);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.so-notice-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(244, 128, 36, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.so-notice-text strong {
+  font-size: 0.95rem;
+  color: #0c0d0e;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.so-notice-text p {
+  font-size: 0.82rem;
+  color: #3b4045;
+}
+
+.so-pipeline-steps {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.so-step-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  color: var(--so-text-muted);
+}
+
+.so-step-badge.step-active {
+  background: var(--so-orange);
+  color: #fff;
+  border-color: var(--so-orange);
+}
+
+.so-step-badge.step-done {
+  background: var(--so-green-bg);
+  color: var(--so-green);
+  border-color: var(--so-green-border);
+}
+
+.so-step-arrow { color: var(--so-text-muted); font-size: 0.75rem; }
+
+/* Post Box (Input & Answer) */
+.so-post-box {
+  display: flex;
+  gap: 1.25rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--so-border);
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-accepted-answer {
+  background: #ffffff;
+  border: 1px solid #e3e6e8;
+  border-left: 4px solid var(--so-green);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Voting Column */
+.so-vote-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.so-vote-btn {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6a737c;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.so-vote-btn:hover {
+  background: #f1f2f3;
+  color: var(--so-orange);
+  border-color: var(--so-orange);
+}
+
+.so-vote-count {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #232629;
+}
+
+.so-vote-action {
+  background: none;
+  border: none;
+  color: #838c95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.so-vote-action:hover { color: var(--so-orange); }
+
+/* Stack Overflow Accepted Checkmark */
+.so-accepted-check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--so-green);
+  margin-top: 0.5rem;
+}
+
+.so-accepted-text {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--so-green);
+}
+
+/* Post Body */
+.so-post-body {
+  flex: 1;
+  min-width: 0; /* CRITICAL: Prevents flex child from exceeding container width */
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-sizing: border-box;
+}
+
+.so-post-header-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--so-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.so-label-green { color: var(--so-green); }
+
+.so-tools-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.so-stats-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--so-text-muted);
+  margin-right: 0.35rem;
+}
+
+.so-btn-subtle {
+  background: #f1f2f3;
+  border: 1px solid var(--so-border);
+  color: var(--so-text-secondary);
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.so-btn-subtle:hover {
+  background: #e3e6e8;
+  color: #0c0d0e;
+}
+
+.so-btn-green {
+  background-color: var(--so-green);
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.so-btn-green:hover { background-color: #256629; }
+
+/* Screenshot Preview Box (Light Mode) */
+.so-screenshot-box {
+  width: 100%;
+  background-color: #fff8f2;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid var(--so-orange);
+  border-radius: 4px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.so-screenshot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.so-screenshot-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.so-badge-screenshot {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(244, 128, 36, 0.15);
+  color: var(--so-orange);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid rgba(244, 128, 36, 0.35);
+  letter-spacing: 0.04em;
+}
+
+.so-screenshot-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--so-text-muted);
+}
+
+.so-screenshot-img-wrap {
+  width: 100%;
+  max-height: 280px;
+  overflow: auto;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  border: 1px solid var(--so-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.so-screenshot-img {
+  max-width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Code Editor Textarea */
+.so-editor-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-code-editor {
+  width: 100%;
+  max-width: 100%;
+  min-height: 180px;
+  background-color: var(--so-bg-editor);
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 0.85rem;
+  color: #1e293b;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  unicode-bidi: plaintext;
+  transition: var(--transition-fast);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.so-code-editor:focus {
+  border-color: var(--so-orange);
+  box-shadow: 0 0 0 3px var(--so-orange-light);
+  background-color: #ffffff;
+}
+
+.so-output-editor {
+  background-color: #f8fafc;
+  border-color: #86efac;
+  color: #0f172a;
+}
+
+.so-output-editor:focus {
+  background-color: #ffffff;
+  border-color: var(--so-green);
+}
+
+/* Tags Row (Authentic Stack Overflow Tags) */
+.so-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.so-tag {
+  background-color: var(--so-tag-bg);
+  color: var(--so-tag-text);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.so-tag:hover {
+  background-color: var(--so-tag-hover);
+  color: #2c5777;
+}
+
+/* Post Footer & Signature */
+.so-post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.so-actions-sub {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.so-actions-sub a {
+  color: var(--so-text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.so-actions-sub a:hover { color: var(--so-text-secondary); text-decoration: underline; }
+
+.so-user-card {
+  background: #f8f9fa;
+  border: 1px solid var(--so-border-subtle);
+  border-radius: 4px;
+  padding: 0.45rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 175px;
+}
+
+.so-answered-card {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.so-user-time {
+  font-size: 0.72rem;
+  color: var(--so-text-muted);
+}
+
+.so-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.so-user-name {
+  color: var(--so-link);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.so-user-name:hover { color: var(--so-link-hover); text-decoration: underline; }
+
+.so-user-badges {
+  font-size: 0.7rem;
+  color: var(--so-text-muted);
+}
+
+/* Authentic Stack Overflow Comments / Discussion Thread */
+.so-comments-container {
+  border-top: 1px solid var(--so-border-subtle);
+  margin-top: 1rem;
+  padding-top: 0.25rem;
+}
+
+.so-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #f1f2f3;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #232629;
+}
+
+.so-comment-vote {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 28px;
+  justify-content: flex-end;
+}
+
+.so-comment-score {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6a737c;
+}
+
+.so-comment-up {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #9199a1;
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.so-comment-up:hover {
+  color: var(--so-orange);
+}
+
+.so-comment-text {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.so-comment-text code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: #f6f6f6;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #e3e6e8;
+}
+
+.so-comment-user {
+  color: #0074cc;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+.so-comment-user:hover {
+  color: #0a95ff;
+  text-decoration: underline;
+}
+
+.so-comment-user.so-comment-op {
+  background-color: #e1ecf4;
+  color: #0074cc;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+}
+
+.so-comment-date {
+  color: #9199a1;
+  font-size: 0.75rem;
+  margin-left: 0.35rem;
+}
+
+.so-add-comment-wrap {
+  padding: 0.5rem 0 0.25rem;
+}
+
+.so-add-comment-link {
+  color: #6a737c;
+  font-size: 0.8rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.so-add-comment-link:hover {
+  color: #0074cc;
+}
+
+/* Question Scenario Description */
+.so-question-desc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--so-text-main);
+  margin-bottom: 0.85rem;
+}
+
+.so-question-desc p {
+  margin: 0 0 0.65rem 0;
+}
+
+.so-question-desc code, .so-answer-text code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: #f6f6f6;
+  padding: 2px 5px;
+  border-radius: 3px;
+  border: 1px solid #e3e6e8;
+  color: #c7254e;
+}
+
+/* Additional Community Answers */
+.so-community-answer {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-answer-text {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--so-text-main);
+  margin-bottom: 1rem;
+}
+
+.so-answer-text h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0.25rem 0 0.65rem;
+  color: var(--so-text-main);
+}
+
+.so-answer-text pre {
+  background-color: #f6f6f6;
+  border: 1px solid #e3e6e8;
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #232629;
+  margin: 0.75rem 0;
+}
+
+/* Related Questions Sidebar Widget */
+.so-related-widget {
+  margin-top: 1.5rem;
+}
+
+.so-related-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--so-text-main);
+  margin-bottom: 0.75rem;
+}
+
+.so-related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.so-related-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.so-related-score {
+  background: #f1f2f3;
+  color: #3b4045;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.so-related-score.answered {
+  background: #2e7d32;
+  color: #ffffff;
+}
+
+.so-related-link {
+  color: #0074cc;
+  text-decoration: none;
+}
+
+.so-related-link:hover {
+  color: #0a95ff;
+  text-decoration: underline;
+}
+
+/* Ask Question Primary Button */
+.so-btn-ask {
+  background-color: #0a95ff;
+  color: #ffffff;
+  border: 1px solid transparent;
+  padding: 0.6rem 0.95rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: background-color 0.15s ease;
+}
+
+.so-btn-ask:hover {
+  background-color: #0074cc;
+  color: #ffffff;
+}
+
+/* Modern Answers Section Header & Sort */
+.so-answers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--so-border);
+}
+
+.so-answers-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #232629;
+  margin: 0;
+}
+
+.so-answers-sort-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #525960;
+}
+
+.so-sort-select {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  color: #232629;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.so-sort-select:focus {
+  border-color: #0a95ff;
+  box-shadow: 0 0 0 3px rgba(10, 149, 255, 0.15);
+}
+
+.so-topbar-icon-btn {
+  background: none;
+  border: none;
+  color: #525960;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.so-topbar-icon-btn:hover {
+  background: #e3e6e8;
+  color: #0c0d0e;
+}
+
+.so-unread-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #d0393e;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* History Section */
+.so-history-section {
+  margin-top: 2rem;
+}
+
+.so-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--so-border);
+  margin-bottom: 0.85rem;
+}
+
+.so-history-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.so-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.empty-history {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--so-text-muted);
+  border: 1px dashed var(--so-border);
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.so-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  background-color: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  gap: 0.85rem;
+  transition: var(--transition-fast);
+}
+
+.so-history-item:hover {
+  border-color: var(--so-orange);
+  background-color: #fdfdfd;
+}
+
+.so-history-item-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow: hidden;
+}
+
+.so-history-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--so-text-muted);
+}
+
+.so-tag.sm {
+  font-size: 0.68rem;
+  padding: 0.1rem 0.35rem;
+}
+
+.so-history-snippet {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: var(--so-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.so-btn-green.sm {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.72rem;
+}
+
+/* Right Sidebar (The Overflow Blog & Config) */
+.so-right-sidebar {
+  width: 310px;
+  flex-shrink: 0;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background-color: #ffffff;
+}
+
+@media (max-width: 1100px) {
+  .so-right-sidebar { display: none; }
+}
+
+/* Signature Stack Overflow Yellow/Warm Widget Box in Light Mode */
+.so-widget-box {
+  background-color: var(--so-widget-yellow-bg);
+  border: 1px solid var(--so-widget-yellow-border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.so-widget-header {
+  background-color: var(--so-widget-yellow-header);
+  border-bottom: 1px solid var(--so-widget-yellow-border);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--so-widget-yellow-text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.so-widget-body {
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.so-widget-blue {
+  background-color: #f1f6fb;
+  border-color: #d4e3f0;
+}
+.so-widget-blue .so-widget-header {
+  background-color: #e1ecf4;
+  border-color: #d4e3f0;
+  color: #0074cc;
+}
+
+.so-config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.so-label-sm { font-size: 0.75rem; color: var(--so-text-muted); font-weight: 600; }
+
+.so-status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+}
+.so-status-badge.success { background: var(--so-green-bg); color: var(--so-green); border: 1px solid var(--so-green-border); }
+.so-status-badge.warning { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+.so-status-badge.info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+
+.so-pill-failover {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(46, 125, 50, 0.12);
+  color: var(--so-green);
+  border: 1px solid rgba(46, 125, 50, 0.3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Provider Tabs in Widget */
+.so-provider-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3rem;
+  background: #f1f2f3;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.so-tab-btn {
+  background: none;
+  border: none;
+  color: var(--so-text-secondary);
+  padding: 0.35rem 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.so-tab-btn.active {
+  background: #ffffff;
+  color: var(--so-orange);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Forms in Widget */
+.so-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.so-form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.so-form-label-row a {
+  color: var(--so-link);
+  text-decoration: none;
+}
+.so-form-label-row a:hover { text-decoration: underline; }
+
+.so-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.so-input-wrapper input {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 3px;
+  padding: 0.45rem 4.5rem 0.45rem 0.6rem;
+  color: #0c0d0e;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.so-input-wrapper input:focus {
+  border-color: var(--so-orange);
+  box-shadow: 0 0 0 3px var(--so-orange-light);
+}
+
+.so-btn-icon-inside {
+  position: absolute; right: 2.8rem;
+  background: none; border: none;
+  color: var(--so-text-muted); cursor: pointer;
+}
+
+.so-btn-save-inside {
+  position: absolute; right: 0.3rem;
+  background: var(--so-orange);
+  color: #fff; border: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.so-hint-text { font-size: 0.7rem; color: var(--so-text-muted); }
+
+.so-url-presets {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.so-chip-btn {
+  background-color: #f1f2f3;
+  color: #39739d;
+  border: 1px solid var(--so-border);
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.15rem 0.45rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.so-chip-btn:hover {
+  background-color: var(--so-tag-bg);
+  border-color: #7aa7c7;
+  color: #2c5777;
+}
+
+.so-chip-btn:active {
+  background-color: #d0e3f1;
+}
+
+.so-chip-highlight {
+  background-color: rgba(244, 128, 36, 0.12) !important;
+  color: var(--so-orange) !important;
+  border-color: rgba(244, 128, 36, 0.4) !important;
+  font-weight: 600 !important;
+}
+
+.so-chip-highlight:hover {
+  background-color: var(--so-orange) !important;
+  color: #ffffff !important;
+}
+
+.so-btn-fetch-models {
+  background: none;
+  border: none;
+  color: var(--so-link);
+  font-size: 0.73rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: var(--transition-fast);
+}
+
+.so-btn-fetch-models:hover {
+  color: var(--so-link-hover);
+  text-decoration: underline;
+}
+
+.so-btn-fetch-models:disabled {
+  color: var(--so-text-muted);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.so-select, .so-textarea {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 3px;
+  padding: 0.45rem 0.6rem;
+  color: #0c0d0e;
+  font-family: inherit;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.so-select:focus, .so-textarea:focus {
+  border-color: var(--so-orange);
+  box-shadow: 0 0 0 3px var(--so-orange-light);
+}
+
+.so-btn-text {
+  background: none; border: none;
+  color: var(--so-text-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.so-shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.78rem;
+}
+
+.so-shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--so-text-secondary);
+}
+
+.so-shortcut-item kbd {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 3px;
+  padding: 0.1rem 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #0c0d0e;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Modals */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.so-modal {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.so-modal-header {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--so-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.so-modal-header h2 { font-size: 1.15rem; font-weight: 600; color: #0c0d0e; }
+
+.modal-close {
+  background: none; border: none;
+  color: var(--so-text-muted); font-size: 1.5rem;
+  cursor: pointer;
+}
+.modal-close:hover { color: #0c0d0e; }
+
+.so-modal-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--so-text-secondary);
+}
+
+.so-step-row {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.so-step-digit {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--so-orange);
+  color: #fff; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.so-step-row h4 { color: #0c0d0e; margin-bottom: 0.2rem; }
+
+.so-modal-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--so-border);
+  display: flex; justify-content: flex-end;
+}
+
+.so-code-snippet {
+  background: #f8f9fa;
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--so-orange);
+  margin-top: 0.5rem;
+}
+
+/* Toast Container */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #0c0d0e;
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.toast-success { border-color: var(--so-green); border-left: 4px solid var(--so-green); }
+.toast-error { border-color: #ef4444; border-left: 4px solid #ef4444; }
+.toast-info { border-color: var(--so-orange); border-left: 4px solid var(--so-orange); }
+.toast-warning { border-color: #f59e0b; border-left: 4px solid #f59e0b; }
+
+/* ==========================================================================
+   Camera Action Button & Header Button Group
+   ========================================================================== */
+.so-header-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.so-btn-camera {
+  background-color: #0074cc;
+  color: #ffffff;
+  border: 1px solid #0064b0;
+  border-radius: 3px;
+  padding: 0.55rem 0.95rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.so-btn-camera:hover {
+  background-color: #0064b0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.so-btn-camera:active {
+  background-color: #005291;
+  transform: translateY(1px);
+}
+
+/* Visibility helpers */
+.so-mobile-only {
+  display: none !important;
+}
+
+/* Sticky Mobile Bottom Bar (Hidden on Desktop) */
+.so-mobile-bottom-bar {
+  display: none;
+}
+
+.so-mobile-sidebar-backdrop {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 1050;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.so-mobile-sidebar-backdrop.active {
+  display: block;
+  opacity: 1;
+}
+
+.so-sidebar-mobile-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--so-border);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--so-text-main);
+}
+
+/* ==========================================================================
+   Stack Overflow Authentic MOBILE VIEW (@media max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  body, body.so-theme-light {
+    padding-bottom: 64px; /* Essential space for sticky bottom bar */
+    font-size: 12.5px;
+  }
+
+  .so-mobile-only {
+    display: inline-flex !important;
+  }
+
+  /* Top Navigation Bar: Ultra-Compact Stack Overflow Mobile Web */
+  .so-topbar {
+    height: 48px;
+  }
+
+  .so-topbar-container {
+    padding: 0 0.6rem;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .so-brand-link {
+    gap: 0.4rem;
+  }
+
+  .so-logo-icon svg {
+    width: 22px;
+    height: 25px;
+  }
+
+  .so-brand-text {
+    font-size: 1.05rem;
+  }
+
+  .so-badge-copilot {
+    font-size: 0.6rem;
+    padding: 0.05rem 0.3rem;
+  }
+
+  /* Hide Desktop Search & Nav Items on Mobile */
+  .so-topbar-nav {
+    display: none !important;
+  }
+
+  .so-search-container {
+    display: none !important;
+  }
+
+  .so-topbar-actions {
+    gap: 0.4rem;
+  }
+
+  /* Compact User Profile: hide dots to fit screen */
+  .so-user-rep {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .so-user-rep .badge-dot {
+    display: none;
+  }
+
+  /* Status Pill on Mobile */
+  .status-pill {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  #status-pill-text {
+    display: inline-block;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Main Column & Page Wrap */
+  .so-page-wrap {
+    padding: 0;
+  }
+
+  .so-main-column {
+    padding: 0.75rem 0.65rem;
+    max-width: 100%;
+    border-right: none;
+  }
+
+  /* Question Header on Mobile */
+  .so-question-header {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .so-title-row {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .so-question-title {
+    font-size: 1.22rem;
+    line-height: 1.35;
+  }
+
+  /* Buttons stack side-by-side on mobile */
+  .so-header-btn-group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .so-btn-camera, .so-btn-primary {
+    width: 100%;
+    padding: 0.65rem 0.5rem;
+    font-size: 0.82rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .so-question-meta {
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  /* Notice Banner */
+  .so-notice-banner {
+    padding: 0.75rem;
+    gap: 0.65rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .so-notice-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+
+  .so-pipeline-steps {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .so-step-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.45rem;
+  }
+
+  .so-step-arrow {
+    display: none;
+  }
+
+  /* Post Layout (Question & Answer): Compact Voting */
+  .so-post-box, .so-answer-box {
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .so-vote-col {
+    width: 32px;
+    min-width: 32px;
+    gap: 0.25rem;
+  }
+
+  .so-vote-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+
+  .so-vote-count {
+    font-size: 1.1rem;
+    margin: 0.1rem 0;
+  }
+
+  .so-vote-action {
+    font-size: 1rem;
+    width: 28px;
+    height: 28px;
+  }
+
+  .so-post-body {
+    min-width: 0; /* Prevents overflow in flex child */
+  }
+
+  .so-post-header-tools {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .so-tools-right {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .so-code-editor {
+    min-height: 120px;
+    font-size: 0.8rem;
+    padding: 0.65rem;
+  }
+
+  /* Tags row */
+  .so-tags-row {
+    margin-top: 0.75rem;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+
+  .so-tag {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.45rem;
+  }
+
+  /* Post Footer Signature */
+  .so-post-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+  }
+
+  .so-actions-sub {
+    font-size: 0.78rem;
+  }
+
+  .so-user-card {
+    align-self: flex-end;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  /* Answer Section */
+  .so-answers-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .so-answers-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .so-answers-filter {
+    width: 100%;
+    display: flex;
+  }
+
+  .so-filter-btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  /* Solution View on Mobile */
+  .so-accepted-answer {
+    padding: 0.85rem 0.65rem;
+    margin-top: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .so-solution-render-box {
+    padding: 0.75rem 0.65rem;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .so-paragraph.so-persian-text {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    text-align: right;
+    direction: rtl;
+  }
+
+  .so-paragraph.so-latin-text {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    text-align: left;
+    direction: ltr;
+  }
+
+  .so-code-block-card pre {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.78rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .so-persian-block {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .so-code-wrap pre {
+    padding: 0.75rem;
+    font-size: 0.78rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Sticky Mobile Bottom Bar */
+  .so-mobile-bottom-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #ffffff;
+    border-top: 1px solid var(--so-border);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 0.5rem;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .so-mobile-bar-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--so-text-secondary);
+    font-size: 0.72rem;
+    font-weight: 600;
+    gap: 2px;
+    cursor: pointer;
+    padding: 5px 12px;
+    border-radius: 4px;
+    min-width: 65px;
+    transition: var(--transition-fast);
+  }
+
+  .so-mobile-bar-btn .bar-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .so-mobile-bar-btn:active {
+    background-color: var(--so-border-subtle);
+  }
+
+  .so-mobile-bar-btn.camera {
+    color: #0074cc;
+  }
+
+  .so-mobile-bar-btn.primary {
+    color: var(--so-orange);
+    font-weight: 700;
+  }
+
+  .so-mobile-bar-btn.copy {
+    color: var(--so-green);
+  }
+
+  .so-mobile-bar-btn.settings {
+    color: var(--so-text-muted);
+  }
+
+  /* Toast adjustments on Mobile */
+  .toast-container {
+    bottom: 4.5rem;
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .toast {
+    font-size: 0.8rem;
+    padding: 0.65rem 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   Slide-Out Drawer for Settings on Mobile / Tablets
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .so-right-sidebar {
+    display: none;
+  }
+
+  .so-right-sidebar.mobile-open {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 88vw;
+    max-width: 380px;
+    z-index: 1060;
+    background: #ffffff;
+    box-shadow: -6px 0 30px rgba(0, 0, 0, 0.35);
+    overflow-y: auto;
+    padding: 1.25rem 1rem 5.5rem 1rem;
+    animation: soSlideDrawer 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .so-sidebar-mobile-header {
+    display: flex;
+  }
+}
+
+@keyframes soSlideDrawer {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ==========================================================================
+   Rich Solution Render Box & Code Cards (Stack Overflow Style)
+   ========================================================================== */
+.so-solution-render-box {
+  background-color: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 1.15rem 1.25rem;
+  min-height: 140px;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--so-text-main);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.so-solution-render-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-placeholder-text {
+  color: var(--so-text-muted);
+  font-style: italic;
+  font-size: 0.85rem;
+  width: 100%;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Paragraphs & Sentence Wrapping (Fixes Right-Side Cutoff for Long Persian & Latin Sentences) */
+.so-paragraph {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/* Persian Paragraphs */
+.so-paragraph.so-persian-text {
+  font-family: var(--font-main);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.85;
+  font-size: 0.94rem;
+  color: #1f2328;
+  unicode-bidi: plaintext;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Latin Paragraphs */
+.so-paragraph.so-latin-text {
+  direction: ltr;
+  text-align: left;
+  line-height: 1.6;
+  font-size: 0.92rem;
+  color: #1f2328;
+  unicode-bidi: plaintext;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Inline Code Highlight */
+.so-inline-code {
+  background-color: #f1f2f3;
+  color: #b75501;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  border: 1px solid #e3e6e8;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  display: inline;
+}
+
+/* Java & Syntax Code Block Card */
+.so-code-block-card {
+  margin: 0.85rem 0;
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-code-block-header {
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #d0d7de;
+  padding: 0.35rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #475569;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.so-code-lang-tag {
+  background-color: #e1ecf4;
+  color: #2c5777;
+  padding: 0.12rem 0.45rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.so-code-copy-btn {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  color: var(--so-text-secondary);
+  border-radius: 3px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.so-code-copy-btn:hover {
+  background-color: #f8fafc;
+  border-color: var(--so-orange);
+  color: var(--so-orange);
+}
+
+.so-code-block-card pre {
+  padding: 0.85rem 1rem;
+  margin: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #f8fafc;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #0f172a;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: pre;
+}
+
+.so-code-block-card pre code {
+  font-family: inherit;
+  display: block;
+  min-width: max-content;
+}
+
+/* Mobile Highlight Pulse Animation */
+@keyframes highlightPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.45);
+    border-color: var(--so-green);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(46, 125, 50, 0);
+    border-color: var(--so-green);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0);
+  }
+}
+
+.highlight-pulse {
+  animation: highlightPulse 1.2s ease-out 2;
+  border-color: var(--so-green) !important;
+}
+
+
+
+</style>
+  
+</head>
+<body class="so-theme-light">
+  <!-- Top Navigation Bar -->
+  <header class="so-topbar">
+    <div class="so-topbar-container">
+      <!-- Stack Overflow Authentic Logo -->
+      <a href="#" class="so-brand-link" title="Stack Overflow AI Copilot">
+        <div class="so-logo-icon">
+          <svg viewBox="0 0 32 37" width="28" height="32" fill="none">
+            <path d="M26 33v-9h4v13H2V24h4v9h20z" fill="#BCBBBB"/>
+            <path d="M6.5 28.5h19v-4h-19v4z" fill="#F48024"/>
+            <path d="M7.5 20l18.5 4 .8-3.9-18.5-4-.8 3.9z" fill="#F48024"/>
+            <path d="M10.5 11.8l17 8.5 1.8-3.6-17-8.5-1.8 3.6z" fill="#F48024"/>
+            <path d="M16 3.8l14.5 12.5 2.6-3L18.6.8l-2.6 3z" fill="#F48024"/>
+            <path d="M25 0l-3.3 2.3 11.5 15.2 3.3-2.3L25 0z" fill="#F48024"/>
+          </svg>
+        </div>
+        <div class="so-brand-text">
+          stack<span class="so-bold">overflow</span> <span class="so-badge-copilot">AI</span>
+        </div>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <nav class="so-topbar-nav">
+        <a href="#" class="so-nav-item active">Questions</a>
+        <a href="#" class="so-nav-item">Help</a>
+        <a href="#" class="so-nav-item">Collectives</a>
+      </nav>
+
+      <!-- Search / Command Box -->
+      <div class="so-search-container" id="so-search-trigger">
+        <svg class="so-search-svg" width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+          <path d="M18 16.5l-5.1-5.1c.9-1.3 1.5-2.9 1.5-4.6A6.8 6.8 0 0 0 7.6 0 6.8 6.8 0 0 0 .8 6.8a6.8 6.8 0 0 0 6.8 6.8c1.7 0 3.3-.6 4.6-1.5l5.1 5.1 1.4-1.4zM2.8 6.8a4.8 4.8 0 0 1 4.8-4.8 4.8 4.8 0 0 1 4.8 4.8 4.8 4.8 0 0 1-4.8 4.8 4.8 4.8 0 0 1-4.8-4.8z"/>
+        </svg>
+        <input type="text" class="so-search-input" placeholder="Copy error/code in your IDE, then switch to this tab... (Press Space)" readonly>
+        <kbd class="so-kbd">Space</kbd>
+      </div>
+
+      <!-- Topbar Actions & User Stats -->
+      <div class="so-topbar-actions">
+        <!-- Live Status Pill -->
+        <div id="status-pill" class="status-pill status-ready" title="Monitoring clipboard on tab switch">
+          <span class="status-dot"></span>
+          <span id="status-pill-text">Manual Mode</span>
+        </div>
+
+        <!-- User Reputation Profile -->
+        <div class="so-user-rep" title="Milad — 2,840 reputation">
+          <div class="so-avatar">M</div>
+          <span class="so-rep-count">2,840</span>
+          <span class="badge-dot gold">● 2</span>
+          <span class="badge-dot silver">● 14</span>
+          <span class="badge-dot bronze">● 38</span>
+        </div>
+
+        <!-- Modern Stack Overflow Inbox -->
+        <button class="so-topbar-icon-btn" title="Recent inbox messages (1 new)">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4zm0 2h12v5.5l-2.5 2.5H6.5L4 10.5V5zm3.5 8h5l1.5-1.5H6l1.5 1.5z"/>
+          </svg>
+          <span class="so-unread-dot">1</span>
+        </button>
+
+        <!-- Modern Stack Overflow Achievements -->
+        <button class="so-topbar-icon-btn" title="Recent achievements (+10 rep)">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M15 3h1a2 2 0 0 1 2 2v2c0 2.2-1.8 4-4 4h-.2a6 6 0 0 1-3.8 3.5V16h2a1 1 0 0 1 1 1v1H7v-1a1 1 0 0 1 1-1h2v-1.5A6 6 0 0 1 6.2 11H6a4 4 0 0 1-4-4V5c0-1.1.9-2 2-2h1V1h10v2zm1 2h-1v4h.2c1 0 1.8-.8 1.8-1.8V5zm-12 0H4v2.2C4 8.2 4.8 9 5.8 9H6V5z"/>
+          </svg>
+        </button>
+
+        <button id="btn-mobile-settings" class="so-icon-btn so-mobile-only" title="API Settings & Models">
+          ⚙️
+        </button>
+
+        <button id="btn-guide" class="so-icon-btn" title="How to use Stack Overflow Copilot">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+
+        <button id="btn-deploy-info" class="so-icon-btn" title="Free Cloud Deployment Guide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><polyline points="13 11 12 7 11 11"/><line x1="12" y1="7" x2="12" y2="16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container Layout (Left Nav + Main Content + Right Sidebar) -->
+  <div class="so-page-wrap">
+    <!-- Left Navigation Sidebar -->
+    <aside class="so-left-sidebar">
+      <nav class="so-side-nav">
+        <a href="#" class="so-side-link"><span class="icon">🏠</span> Home</a>
+        <div class="so-side-heading">PUBLIC</div>
+        <a href="#" class="so-side-link active"><span class="icon">💬</span> Questions</a>
+        <a href="#" class="so-side-link"><span class="icon">🏷️</span> Tags</a>
+        <a href="#" class="so-side-link"><span class="icon">👥</span> Users</a>
+        <a href="#" class="so-side-link"><span class="icon">🏢</span> Companies</a>
+
+        <div class="so-side-heading">CLIPBOARD ENGINE</div>
+        <div class="so-toggle-box">
+          <div class="so-toggle-row so-toggle-featured">
+            <div class="so-toggle-info">
+              <span class="so-toggle-title">Auto Read Clipboard</span>
+              <span class="so-toggle-desc" id="autosync-status-label">Disabled (Default)</span>
+            </div>
+            <label class="switch-sm" title="Toggle Auto Read Clipboard">
+              <input type="checkbox" id="toggle-autosync">
+              <span class="slider-sm"></span>
+            </label>
+          </div>
+          <div class="so-toggle-row">
+            <span>Audio Chime</span>
+            <label class="switch-sm">
+              <input type="checkbox" id="toggle-sound" checked>
+              <span class="slider-sm"></span>
+            </label>
+          </div>
+          <div class="so-toggle-row">
+            <span>Loop Shield</span>
+            <label class="switch-sm">
+              <input type="checkbox" id="toggle-dedup" checked>
+              <span class="slider-sm"></span>
+            </label>
+          </div>
+          <div class="so-toggle-row">
+            <span>Desktop Alerts</span>
+            <label class="switch-sm">
+              <input type="checkbox" id="toggle-notification">
+              <span class="slider-sm"></span>
+            </label>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area: Question + Answer Feed -->
+    <main class="so-main-column">
+      <!-- Question Title Header -->
+      <div class="so-question-header">
+        <div class="so-title-row">
+          <h1 class="so-question-title" id="live-state-title">Spring Boot / Java: How to solve the copied error / code with Gemini Copilot?</h1>
+          <div class="so-header-btn-group">
+            <a href="#text-input" class="so-btn-ask" id="btn-ask-question" title="Ask a new question on Stack Overflow">Ask Question</a>
+            <button id="btn-camera" class="so-btn-camera" title="Take a photo with your phone's camera">
+              📷 Take Photo
+            </button>
+            <button id="btn-manual-process" class="so-btn-primary">
+              ⚡ Process Clipboard
+            </button>
+          </div>
+          <!-- Hidden Native Mobile Camera Input -->
+          <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+        </div>
+        <div class="so-question-meta">
+          <span>Asked <time id="meta-time">today</time></span>
+          <span>Modified <span class="so-highlight">today</span></span>
+          <span>Viewed <span class="so-highlight">3,420 times</span></span>
+          <span>Mode: <span id="meta-sync-mode" class="so-highlight">Manual Mode (Click / Paste to Solve)</span></span>
+        </div>
+      </div>
+
+      <!-- Live Radar Processing Pipeline Notification -->
+      <div class="so-notice-banner status-visualizer-card">
+        <div class="so-notice-icon" id="radar-core">
+          <span id="radar-icon">⚡</span>
+        </div>
+        <div class="so-notice-text">
+          <strong id="live-state-subtitle">Manual Mode Ready</strong>
+          <p id="live-state-desc">Auto-read clipboard is disabled by default. Paste your code or screenshot (Ctrl+V) or click "Process Clipboard" to solve!</p>
+          <div class="so-pipeline-steps">
+            <span class="so-step-badge" id="step-read">1. Read Clipboard (Text / Screenshot)</span>
+            <span class="so-step-arrow">&rarr;</span>
+            <span class="so-step-badge" id="step-ai">2. Gemini Multimodal Solve</span>
+            <span class="so-step-arrow">&rarr;</span>
+            <span class="so-step-badge" id="step-write">3. Auto-Copy to Clipboard</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Post Box (Input) -->
+      <article class="so-post-box">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This question shows research effort; it is useful and clear">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">42</span>
+          <button class="so-vote-btn" title="This question does not show any research effort; it is unclear or not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this question">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-post-header-tools">
+            <span class="so-label">COPIED CODE / SCREENSHOT (INPUT)</span>
+            <div class="so-tools-right">
+              <span id="input-stats" class="so-stats-tag">0 chars</span>
+              <button id="btn-camera-inline" class="so-btn-subtle" title="Take a photo with camera">📷 Photo</button>
+              <button id="btn-upload-file" class="so-btn-subtle" title="Upload screenshot / image file">🖼️ Upload</button>
+              <button id="btn-paste-manual" class="so-btn-subtle" title="Paste text or screenshot">📋 Paste</button>
+              <button id="btn-clear-input" class="so-btn-subtle">Clear</button>
+              <input type="file" id="file-image-picker" accept="image/*" style="display: none;">
+            </div>
+          </div>
+
+          <!-- Spring Boot Question Scenario Description -->
+          <div class="so-question-desc">
+            <p>I am building a high-throughput backend service using <strong>Spring Boot 3.3.x</strong> and <strong>Java 21</strong>. In my <code>@Service</code> classes, when handling concurrent requests that fetch entities from Spring Data JPA and convert them into DTOs, I occasionally encounter <code>NullPointerException</code> or <code>LazyInitializationException</code> when navigating relationships.</p>
+            <p>Here is my current code and stack trace snippet from IntelliJ / terminal below:</p>
+          </div>
+
+          <!-- Screenshot Preview Container -->
+          <div id="screenshot-preview-container" class="so-screenshot-box" style="display: none;">
+            <div class="so-screenshot-header">
+              <div class="so-screenshot-title">
+                <span class="so-badge-screenshot" id="screenshot-badge">📸 PHOTO / SCREENSHOT</span>
+                <span id="screenshot-info" class="so-screenshot-meta">image/png</span>
+              </div>
+              <button id="btn-remove-screenshot" class="so-btn-subtle" title="Remove screenshot">&times; Remove Image</button>
+            </div>
+            <div class="so-screenshot-img-wrap">
+              <img id="screenshot-preview-img" class="so-screenshot-img" alt="Clipboard Screenshot Preview" />
+            </div>
+          </div>
+
+          <div class="so-editor-container">
+            <textarea id="text-input" class="so-code-editor" wrap="soft" placeholder="// متن یا سوال خود را اینجا بنویسید یا اسکرین‌شات را با کلیدهای Ctrl+V مستقیماً هر جای صفحه پیست کنید..."></textarea>
+          </div>
+
+          <!-- Tags row -->
+          <div class="so-tags-row">
+            <span class="so-tag">java</span>
+            <span class="so-tag">spring-boot</span>
+            <span class="so-tag">spring-data-jpa</span>
+            <span class="so-tag">nullpointerexception</span>
+            <span class="so-tag">java-21</span>
+            <span class="so-tag">hibernate</span>
+          </div>
+
+          <!-- Post Signature -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this question</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">asked Oct 21, 2026 at 19:42</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">M</div>
+                <div>
+                  <a href="#" class="so-user-name">Milad</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 2</span> <span class="badge-dot silver">● 14</span> <span class="badge-dot bronze">● 38</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question Comments Thread (Authentic Stack Overflow Community Discussion) -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">3</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Could you check if you have circular dependency or if the Spring context fails during component scan? Also sharing the Java stacktrace would help.
+                – <a href="#" class="so-comment-user">Boris the Spider</a>
+                <span class="so-comment-date">yesterday at 19:42</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">5</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                If you're using Spring Boot 3+ with Java 17+, remember that <code>jakarta.persistence</code> is used instead of <code>javax.persistence</code>.
+                – <a href="#" class="so-comment-user">M. Deinum</a>
+                <span class="so-comment-date">Oct 21 at 12:05</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote"></div>
+              <div class="so-comment-text">
+                Thanks! I've pasted the code and error screenshot above for analysis.
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">just now</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#text-input" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Answer Section Header -->
+      <div class="so-answers-header">
+        <h2 class="so-answers-title">3 Answers</h2>
+        <div class="so-answers-sort-row">
+          <span>Sorted by:</span>
+          <select class="so-sort-select" title="Sort answers">
+            <option>Highest score (default)</option>
+            <option>Trending (recent votes count more)</option>
+            <option>Date modified (newest first)</option>
+            <option>Date created (oldest first)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Answer Post Box (Output / Solved) -->
+      <article class="so-post-box so-accepted-answer" id="accepted-answer-box">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">158</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          
+          <!-- Stack Overflow Big Green Accepted Checkmark -->
+          <div class="so-accepted-check" title="Accepted Solution">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="#2e7d32">
+              <path d="M6 14l8 8L30 6v6L14 28l-8-8z"/>
+            </svg>
+            <span class="so-accepted-text" id="accepted-check-text">ACCEPTED</span>
+          </div>
+
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-post-header-tools">
+            <span class="so-label so-label-green" id="accepted-label">ACCEPTED ANSWER &bull; READY</span>
+            <div class="so-tools-right">
+              <span id="output-stats" class="so-stats-tag">0 chars</span>
+              <button id="btn-toggle-raw" class="so-btn-subtle" title="Toggle between formatted card and raw text">Raw Code</button>
+              <button id="btn-copy-output" class="so-btn-green" title="Copy answer to clipboard">
+                📋 Copy
+              </button>
+            </div>
+          </div>
+
+          <div class="so-editor-container">
+            <!-- Formatted Solution Card (Persian Explanation + Java Code) -->
+            <div id="solution-render-box" class="so-solution-render-box">
+              <div id="solution-render-content" class="so-solution-render-content">
+                <p class="so-placeholder-text">Stack Overflow Copilot will display the solved Java code and Persian explanation in this box...</p>
+              </div>
+            </div>
+
+            <!-- Raw Textarea (hidden by default, toggleable) -->
+            <textarea id="text-output" class="so-code-editor so-output-editor" wrap="soft" style="display: none;" readonly placeholder="Stack Overflow Copilot will place the resolved code and explanation here..."></textarea>
+          </div>
+
+          <!-- Answer Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card so-answered-card">
+              <span class="so-user-time">answered just now</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm bot">🤖</div>
+                <div>
+                  <a href="#" class="so-user-name">GapGPT (GPT-5 Nano)</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 100k</span> Verified Solution</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Comments Thread (Authentic Stack Overflow Community Discussion) -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">14</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                This completely resolved the issue, especially handling null safety and boundary checks in Java. Clean and concise. +1
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">5 mins ago</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">6</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Confirmed working flawlessly on JDK 17 &amp; 21. Great job on the time complexity explanation as well.
+                – <a href="#" class="so-comment-user">AlexR</a>
+                <span class="so-comment-date">2 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#text-output" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Community Answer 2: Constructor Injection & Transaction Management -->
+      <article class="so-post-box so-community-answer">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">64</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-answer-text">
+            <h3>Approach 2: Use Constructor Injection with <code>@RequiredArgsConstructor</code> and <code>@Transactional(readOnly = true)</code></h3>
+            <p>Field injection via <code>@Autowired</code> is an anti-pattern in modern Spring Boot apps because it breaks immutability, hides dependencies, and complicates unit testing with Mockito. Switching to constructor injection ensures all dependencies are fully initialized before any service method is executed.</p>
+            <p>Additionally, marking read-only service queries with <code>@Transactional(readOnly = true)</code> keeps the Hibernate persistence session open throughout DTO mapping and enables Hibernate to optimize flush modes:</p>
+            <pre><code>@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+    private final UserMapper userMapper;
+
+    @Override
+    public OrderDTO getOrderDetails(Long orderId) {
+        Order order = orderRepository.findByIdWithItems(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
+
+        return userMapper.toDto(order);
+    }
+}</code></pre>
+            <p>Notice that <code>final</code> fields guarantee non-null bean references, preventing arbitrary <code>NullPointerException</code> at runtime if a dependency fails to autowire.</p>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">answered Oct 21, 2026 at 20:15</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">S</div>
+                <div>
+                  <a href="#" class="so-user-name">Sander Verhagen</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 9</span> <span class="badge-dot silver">● 64</span> <span class="badge-dot bronze">● 98</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments on Answer 2 -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">4</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Constructor injection makes unit testing so much cleaner because we can simply pass mocks into <code>new OrderServiceImpl(repo, mapper)</code> without reflection. +1
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">1 hour ago</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">7</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Also note that <code>@Transactional(readOnly = true)</code> informs Hibernate not to take dirty-checking snapshots, improving heap memory and latency.
+                – <a href="#" class="so-comment-user">vlad_mihalcea</a>
+                <span class="so-comment-date">45 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Community Answer 3: Spring Data JPA EntityGraph & Record Projections -->
+      <article class="so-post-box so-community-answer">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">28</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-answer-text">
+            <h3>Approach 3: Prevent N+1 issues using Spring Data JPA <code>@EntityGraph</code> or Java 21 Record DTO Projections</h3>
+            <p>If your <code>LazyInitializationException</code> occurs when mapping collection relations (like <code>Order.items</code> or <code>Order.customer</code>), using <code>@EntityGraph</code> instructs Spring Data JPA to perform an immediate SQL <code>LEFT OUTER JOIN</code>, preventing detached proxy errors.</p>
+            <p>In modern Spring Boot 3, using <strong>Java 21 Records</strong> for constructor query projection is even faster because it completely bypasses the Hibernate first-level cache:</p>
+            <pre><code>public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
+
+    // Solution A: Fetch graph for eager loading specific relations in one single query
+    @EntityGraph(attributePaths = {"orderItems", "customer"})
+    Optional&lt;Order&gt; findWithItemsById(Long id);
+
+    // Solution B: Java 21 Record Projection (skips Hibernate persistence context)
+    @Query("""
+        SELECT new com.example.dto.OrderSummaryDTO(o.id, o.status, c.email, COUNT(i.id))
+        FROM Order o
+        JOIN o.customer c
+        LEFT JOIN o.orderItems i
+        WHERE o.id = :id
+        GROUP BY o.id, o.status, c.email
+    """)
+    Optional&lt;OrderSummaryDTO&gt; findSummaryById(@Param("id") Long id);
+}</code></pre>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">answered Oct 21, 2026 at 21:04</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">S</div>
+                <div>
+                  <a href="#" class="so-user-name">Stéphane Nicoll</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 28</span> <span class="badge-dot silver">● 194</span> <span class="badge-dot bronze">● 320</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments on Answer 3 -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">5</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                DTO projections via Java Record are blazing fast and save substantial heap allocation during peak traffic. Excellent advice.
+                – <a href="#" class="so-comment-user">john_c</a>
+                <span class="so-comment-date">30 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Bottom History Section -->
+      <div class="so-history-section">
+        <div class="so-history-header">
+          <h3>🕒 Clipboard Solutions History</h3>
+          <button id="btn-clear-history" class="so-btn-subtle">Clear History</button>
+        </div>
+        <div class="so-history-list" id="history-list">
+          <div class="empty-history" id="empty-history-placeholder">
+            <p>No processed items yet. Copy some code or an error, then switch back to this tab!</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar (The Overflow Blog & AI Settings) -->
+    <aside class="so-right-sidebar">
+      <!-- Mobile Drawer Close Header -->
+      <div class="so-sidebar-mobile-header so-mobile-only">
+        <span>⚙️ Copilot Config &amp; Keys</span>
+        <button id="btn-close-sidebar" class="modal-close" title="Close settings">&times;</button>
+      </div>
+
+      <!-- "The Overflow Config" Box -->
+      <div class="so-widget-box">
+        <div class="so-widget-header">
+          <span class="icon">✏️</span> The Overflow Settings
+        </div>
+        <div class="so-widget-body">
+          <!-- Key Status Badge -->
+          <div class="so-config-row">
+            <span class="so-label-sm">API Status:</span>
+            <span id="key-status-badge" class="so-status-badge success">Key Active &amp; Ready</span>
+          </div>
+
+          <!-- Provider Tabs -->
+          <div class="so-provider-tabs">
+            <button class="so-tab-btn active" data-provider="custom_openai">3rd Party (GapGPT)</button>
+            <button class="so-tab-btn" data-provider="gemini">Gemini</button>
+            <button class="so-tab-btn" data-provider="openai">OpenAI</button>
+          </div>
+
+          <!-- 3rd Party API Base URL Input -->
+          <div class="so-form-group" id="api-url-group">
+            <div class="so-form-label-row">
+              <label for="api-url-input">API Base URL (3rd Party)</label>
+              <span class="so-pill-failover">OpenAI Compatible</span>
+            </div>
+            <div class="so-input-wrapper">
+              <input type="text" id="api-url-input" value="https://api.gapgpt.app/v1" placeholder="https://api.gapgpt.app/v1">
+              <button id="btn-save-url" class="so-btn-save-inside">Save</button>
+            </div>
+            <div class="so-url-presets">
+              <span class="so-hint-text">Quick:</span>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="gpt-5-nano">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.deepseek.com/v1" data-preset-model="deepseek-chat">DeepSeek</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.groq.com/openai/v1" data-preset-model="llama-3.3-70b-versatile">Groq</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://openrouter.ai/api/v1" data-preset-model="deepseek/deepseek-chat">OpenRouter</button>
+              <button type="button" class="so-chip-btn" data-preset-url="http://localhost:11434/v1" data-preset-model="llama3.2">Ollama</button>
+              <button type="button" id="btn-fetch-models-quick" class="so-chip-btn so-chip-highlight" title="Fetch available models from this API endpoint">⚡ Load API Models</button>
+            </div>
+          </div>
+
+          <!-- Primary API Key (Key 1) -->
+          <div class="so-form-group">
+            <div class="so-form-label-row">
+              <label for="api-key-input">API Key</label>
+              <a id="get-key-link" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get Key &rarr;</a>
+            </div>
+            <div class="so-input-wrapper">
+              <input type="password" id="api-key-input" value="sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX" placeholder="Primary API key...">
+              <button id="btn-toggle-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
+              <button id="btn-save-key" class="so-btn-save-inside">Save</button>
+            </div>
+            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.</p>
+          </div>
+
+          <!-- Backup API Key (Key 2) for Rate Limit Failover -->
+          <div class="so-form-group" id="backup-key-group" style="display: none;">
+            <div class="so-form-label-row">
+              <label for="api-key-backup-input">Key #2 (Backup / Limit Failover)</label>
+              <span class="so-pill-failover">Auto-Fallback</span>
+            </div>
+            <div class="so-input-wrapper">
+              <input type="password" id="api-key-backup-input" value="AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Geg" placeholder="Paste 2nd Gemini key for quota backup...">
+              <button id="btn-toggle-backup-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
+              <button id="btn-save-backup-key" class="so-btn-save-inside">Save</button>
+            </div>
+            <p class="so-hint-text">If Key #1 hits rate limits (429/quota), Key #2 will be used instantly!</p>
+          </div>
+
+          <!-- Model Selection -->
+          <div class="so-form-group">
+            <div class="so-form-label-row">
+              <label for="model-select">AI Model</label>
+              <button type="button" id="btn-fetch-models" class="so-btn-fetch-models" style="display: none;" title="Fetch all available models directly from this API endpoint">
+                🔄 Load Models from API
+              </button>
+            </div>
+            <select id="model-select" class="so-select">
+              <option value="gpt-5-nano" selected>gpt-5-nano (GapGPT / 3rd Party)</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
+              <option value="deepseek-chat">deepseek-chat</option>
+              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
+            </select>
+          </div>
+
+          <!-- Custom Model Name Input -->
+          <div class="so-form-group" id="custom-model-group" style="display: none;">
+            <label for="custom-model-input">Custom Model Name</label>
+            <div class="so-input-wrapper">
+              <input type="text" id="custom-model-input" placeholder="e.g. deepseek/deepseek-chat or llama-3.3-70b-versatile">
+              <button id="btn-save-custom-model" class="so-btn-save-inside">Save</button>
+            </div>
+          </div>
+
+          <!-- Preset Selection -->
+          <div class="so-form-group">
+            <label for="preset-select">Prompt Preset</label>
+            <select id="preset-select" class="so-select">
+              <option value="exam-answer" selected>🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
+              <option value="so-solve">👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
+              <option value="so-vision">📸 Screenshot Solver (Persian + Java Code)</option>
+              <option value="code-debug">🐞 Debug Code &amp; Fix in Java (فارسی)</option>
+              <option value="direct">🚀 پاسخ مستقیم و سریع (فارسی + جاوا)</option>
+              <option value="summarize">📝 خلاصه نکات کلیدی به فارسی</option>
+              <option value="translate-en">🌐 Translate to English</option>
+              <option value="translate-fa">🌐 ترجمه به فارسی روان</option>
+              <option value="custom">⚙️ Custom System Prompt...</option>
+            </select>
+          </div>
+
+          <!-- Custom Prompt Textarea -->
+          <div class="so-form-group" id="custom-prompt-container">
+            <div class="so-form-label-row">
+              <label for="system-prompt">System Prompt</label>
+              <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
+            </div>
+            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه و مسلط در جلسه امتحان هستید. خروجی باید ۱۰۰٪ آماده برای کپی‌پیست مستقیم در برگه یا سیستم آزمون باشد و به هیچ وجه نباید کوچک‌ترین نشانه‌ای از هوش مصنوعی داشته باشد (کاملاً طبیعی، انسانی، بدون الگوها و کلمات رباتیک).
+
+قوانین بسیار حیاتی (Strict Copy-Paste & Human Tone):
+۱. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ مقدمه، نتیجه‌گیری، سلام، یا جملاتی مثل «در ادامه پاسخ‌ها آمده است» یا «امیدوارم موفق باشید» ننویس. فوراً و مستقیماً با پاسخ «سوال ۱» شروع کن تا کاربر بتواند بلافاصله کپی‌پیست کند.
+
+۲. لحن و نگارش کاملاً انسانی (غیرقابل تشخیص از AI):
+- متن را طوری بنویس که انگار یک دانشجوی مسلط خودش مستقیماً تایپ کرده است.
+- از کلمات کلیشه‌ای و لو‌دهنده هوش مصنوعی (مانند «شایان ذکر است»، «در واقع می‌توان گفت»، «به عنوان جمع‌بندی»، «به طور کلی»، «لازم به یادآوری است») اکیداً خودداری کن.
+- جملات صریح، طبیعی، تمیز و استاندارد دانشگاهی باشند.
+
+۳. تفکیک دقیق و ذکر نکات نمره‌آور تک‌تک سوالات:
+اگر در تصویر یا متن ورودی چند سوال وجود دارد، به تک‌تک سوالات به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+• سوال ۲: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+• سوال ۳: ...
+هیچ سوالی را جا نینداز و سوالات را با هم ادغام نکن.
+
+۴. نحوه پاسخ به انواع سوالات:
+- سوالات تشریحی و مفهومی: نکات کلیدی و نمره‌آور تخصصی (Keywords) را در ۲ تا ۴ سطر کاملاً دقیق و شفاف بنویس تا مصحح حداکثر نمره را بدهد.
+- سوالات تستی و چهارگزینه‌ای: فوراً گزینه صحیح را مشخص کن (مثلاً: گزینه ۳) و در صورت لزوم حداکثر در یک خط کوتاه دلیل فنی و نمره‌آور آن را بنویس.
+- سوالات برنامه‌نویسی و کد: فقط خود کد تمیز و استاندارد Java را بدون توضیحات طولانی و غیرضروری بنویس.
+
+۵. زبان و فرمت:
+تمام پاسخ‌های متنی به زبان فارسی طبیعی و تمام کدها به زبان Java باشد.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hot Network Questions Box -->
+      <div class="so-widget-box so-widget-blue">
+        <div class="so-widget-header">
+          <span class="icon">🔥</span> Quick Shortcuts
+        </div>
+        <div class="so-widget-body so-shortcuts-list">
+          <div class="so-shortcut-item">
+            <kbd>Space</kbd> <span>Process clipboard immediately</span>
+          </div>
+          <div class="so-shortcut-item">
+            <kbd>Ctrl+Enter</kbd> <span>Run AI on current text</span>
+          </div>
+          <div class="so-shortcut-item">
+            <kbd>Alt+Tab</kbd> <span>Switch to tab (triggers auto-sync)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Questions Widget -->
+      <div class="so-related-widget">
+        <h4 class="so-related-heading">Related</h4>
+        <div class="so-related-list">
+          <div class="so-related-item">
+            <span class="so-related-score answered">1280</span>
+            <a href="#related-1" class="so-related-link">How does Spring @Autowired work under the hood in Spring Boot 3?</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">2150</span>
+            <a href="#related-2" class="so-related-link">LazyInitializationException: could not initialize proxy - no Session in Spring Boot</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">890</span>
+            <a href="#related-3" class="so-related-link">BeanCreationException: Error creating bean with name 'userRepository' defined in @EnableJpaRepositories</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">4320</span>
+            <a href="#related-4" class="so-related-link">What is the difference between @Component, @Repository &amp; @Service in Spring?</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">540</span>
+            <a href="#related-5" class="so-related-link">Spring Boot 3 migration: java.lang.ClassNotFoundException: jakarta.servlet.Filter vs javax</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score">315</span>
+            <a href="#related-6" class="so-related-link">How to resolve circular dependency between two @Service beans in Spring Boot 3.3?</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Modals -->
+  <!-- Guide Modal -->
+  <div class="modal-backdrop" id="modal-guide">
+    <div class="so-modal">
+      <div class="so-modal-header">
+        <h2>🚀 How to Use Stack Overflow Copilot</h2>
+        <button class="modal-close" data-close="modal-guide">&times;</button>
+      </div>
+      <div class="so-modal-body">
+        <div class="so-step-row">
+          <div class="so-step-digit">1</div>
+          <div>
+            <h4>Preloaded Gemini 3.8 Flash Key</h4>
+            <p>Your default Google Gemini API key is already configured and verified for <strong>Gemini 3.8 Flash</strong> and <strong>Gemini Pro</strong>.</p>
+          </div>
+        </div>
+        <div class="so-step-row">
+          <div class="so-step-digit">2</div>
+          <div>
+            <h4>Copy Code or Errors Anywhere</h4>
+            <p>Copy (<kbd>Ctrl+C</kbd>) any bug, error trace, or coding question in your editor or terminal.</p>
+          </div>
+        </div>
+        <div class="so-step-row">
+          <div class="so-step-digit">3</div>
+          <div>
+            <h4>Switch to this Tab</h4>
+            <p>Switch back to this browser tab. Stack Overflow Copilot automatically reads your clipboard, runs Gemini, and writes the solved answer directly back to your clipboard!</p>
+          </div>
+        </div>
+        <div class="so-step-row">
+          <div class="so-step-digit">4</div>
+          <div>
+            <h4>Paste in your IDE</h4>
+            <p>Switch back to your project and press <kbd>Ctrl+V</kbd>. The solution is already there!</p>
+          </div>
+        </div>
+      </div>
+      <div class="so-modal-footer">
+        <button class="so-btn-primary" data-close="modal-guide">Got it, Let's Go!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Free Cloud Deployment Modal -->
+  <div class="modal-backdrop" id="modal-deploy">
+    <div class="so-modal">
+      <div class="so-modal-header">
+        <h2>☁️ Deploy Stack Overflow Copilot for Free</h2>
+        <button class="modal-close" data-close="modal-deploy">&times;</button>
+      </div>
+      <div class="so-modal-body">
+        <p>Deploy for <strong>100% free forever</strong> on Google Cloud Run (Always Free Tier gives 2 million requests/month):</p>
+        <div class="so-code-snippet">
+          <code>gcloud run deploy stackoverflow --source . --region us-central1 --allow-unauthenticated</code>
+        </div>
+      </div>
+      <div class="so-modal-footer">
+        <button class="so-btn-primary" data-close="modal-deploy">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backdrop for Mobile Settings Drawer -->
+  <div id="mobile-sidebar-backdrop" class="so-mobile-sidebar-backdrop"></div>
+
+  <!-- Mobile Sticky Bottom Action Bar -->
+  <nav class="so-mobile-bottom-bar" id="so-mobile-bottom-bar">
+    <button id="btn-mobile-camera-bar" class="so-mobile-bar-btn camera" title="Take a photo with your phone's camera">
+      <span class="bar-icon">📷</span> Photo
+    </button>
+    <button id="btn-mobile-process-bar" class="so-mobile-bar-btn primary" title="Read clipboard & solve">
+      <span class="bar-icon">⚡</span> Solve
+    </button>
+    <button id="btn-mobile-copy-bar" class="so-mobile-bar-btn copy" title="Copy solution to clipboard">
+      <span class="bar-icon">📋</span> Copy
+    </button>
+    <button id="btn-mobile-settings-bar" class="so-mobile-bar-btn settings" title="Keys & Settings">
+      <span class="bar-icon">⚙️</span> Config
+    </button>
+  </nav>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script>
+
+// ==========================================
+// 1. SOUND FX ENGINE
+// ==========================================
+// Web Audio API synthesizer for instant zero-dependency audio feedback
+class SoundFX {
+  constructor() {
+    this.ctx = null;
+    this.enabled = true;
+  }
+
+  init() {
+    if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AudioCtx();
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  playSuccess() {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      
+      const now = this.ctx.currentTime;
+      // Dual gentle chime: chord notes C6 and G6
+      const freqs = [1046.50, 1567.98];
+      
+      freqs.forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + (idx * 0.08));
+        
+        gain.gain.setValueAtTime(0, now + (idx * 0.08));
+        gain.gain.linearRampToValueAtTime(0.12, now + (idx * 0.08) + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.08) + 0.35);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        
+        osc.start(now + (idx * 0.08));
+        osc.stop(now + (idx * 0.08) + 0.36);
+      });
+    } catch (e) {
+      console.warn('Audio feedback failed:', e);
+    }
+  }
+
+  playStart() {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+      
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      
+      osc.start(now);
+      osc.stop(now + 0.16);
+    } catch (e) {
+      console.warn('Audio feedback failed:', e);
+    }
+  }
+
+  playError() {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.setValueAtTime(160, now + 0.1);
+      
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      
+      osc.start(now);
+      osc.stop(now + 0.26);
+    } catch (e) {
+      console.warn('Audio feedback failed:', e);
+    }
+  }
+}
+
+const sound = new SoundFX();
+
+
+// ==========================================
+// 2. CLIPBOARD MANAGER
+// ==========================================
+// System Clipboard API Interface with Multimodal Screenshot & Text Support
+
+class ClipboardManager {
+  constructor() {
+    this.lastInput = '';
+    this.lastOutput = '';
+    this.lastImageHash = '';
+    this.isProcessing = false;
+    this.dedupEnabled = true;
+  }
+
+  // Check if text is new and not an echo loop
+  shouldProcessText(text) {
+    if (!text || !text.trim()) return false;
+    const clean = text.trim();
+
+    if (!this.dedupEnabled) return true;
+
+    // Echo protection: Don't process if the clipboard text is what we just copied as output
+    if (clean === this.lastOutput.trim()) {
+      return false;
+    }
+
+    // Deduplication: Don't process if it's identical to the previous input
+    if (clean === this.lastInput.trim()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // Check if screenshot image is new
+  shouldProcessImage(imageHash) {
+    if (!imageHash) return false;
+    if (!this.dedupEnabled) return true;
+    if (imageHash === this.lastImageHash) {
+      return false;
+    }
+    return true;
+  }
+
+  // Read full clipboard content: checks for screenshot images first, then text
+  async readClipboard() {
+    // 1. Try reading rich clipboard items (images & text) via navigator.clipboard.read()
+    if (navigator.clipboard && navigator.clipboard.read) {
+      try {
+        const items = await navigator.clipboard.read();
+        for (const item of items) {
+          // Check for image types (screenshots are typically image/png or image/jpeg)
+          const imageType = item.types.find(t => t.startsWith('image/'));
+          if (imageType) {
+            const blob = await item.getType(imageType);
+            const { base64, dataUrl } = await this.blobToBase64(blob);
+            const hash = `${blob.size}_${base64.slice(0, 100)}`;
+            return {
+              type: 'image',
+              mimeType: imageType,
+              base64: base64,
+              dataUrl: dataUrl,
+              hash: hash,
+              size: blob.size
+            };
+          }
+
+          // Check for text/plain
+          if (item.types.includes('text/plain')) {
+            const blob = await item.getType('text/plain');
+            const text = await blob.text();
+            if (text && text.trim()) {
+              return { type: 'text', text: text.trim() };
+            }
+          }
+        }
+      } catch (err) {
+        // Fallback to readText if .read() permission is restricted or only text is supported
+        if (navigator.clipboard.readText) {
+          try {
+            const text = await navigator.clipboard.readText();
+            if (text && text.trim()) {
+              return { type: 'text', text: text.trim() };
+            }
+          } catch (textErr) {
+            console.warn('readText fallback error:', textErr);
+          }
+        }
+        console.warn('Clipboard read permission not available or denied:', err);
+        return { type: 'denied', reason: 'permission_restricted', error: err.name || 'NotAllowedError' };
+      }
+    }
+
+    // 2. Standard text fallback
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+          return { type: 'text', text: text.trim() };
+        }
+      } catch (err) {
+        console.warn('Clipboard readText error:', err);
+        return { type: 'denied', reason: 'permission_restricted', error: err.name || 'NotAllowedError' };
+      }
+    }
+
+    return { type: 'empty' };
+  }
+
+  // Convert Blob to pure Base64 and data URL
+  blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result;
+        // Strip the "data:image/xxx;base64," prefix for API payloads
+        const base64 = dataUrl.split(',')[1];
+        resolve({ base64, dataUrl });
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  // Write text back to system clipboard safely (returns true on success, false on failure)
+  async writeText(text) {
+    if (!text) return false;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        this.lastOutput = text.trim();
+        return true;
+      } catch (err) {
+        console.warn('navigator.clipboard.writeText failed, trying fallback:', err);
+      }
+    }
+
+    return this.fallbackCopy(text);
+  }
+
+  // Fallback for older browsers or restricted contexts
+  fallbackCopy(text) {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      textarea.style.top = '-9999px';
+      textarea.setAttribute('readonly', '');
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const success = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (success) {
+        this.lastOutput = text.trim();
+        return true;
+      }
+      console.warn('document.execCommand(copy) was unsuccessful');
+      return false;
+    } catch (err) {
+      console.warn('Fallback clipboard copy failed:', err);
+      return false;
+    }
+  }
+
+  // Query browser clipboard permission state
+  async checkPermission() {
+    if (!navigator.permissions || !navigator.permissions.query) {
+      return 'unknown';
+    }
+    try {
+      const result = await navigator.permissions.query({ name: 'clipboard-read' });
+      return result.state;
+    } catch (e) {
+      return 'unknown';
+    }
+  }
+}
+
+const clipboard = new ClipboardManager();
+
+
+// ==========================================
+// 3. AI PROVIDERS & INFERENCE ENGINE
+// ==========================================
+// Multi-Provider AI Inference Engine with Multimodal Vision & Dual-Key Failover
+
+const PROVIDERS = {
+  gemini: {
+    id: 'gemini',
+    name: 'Google Gemini',
+    keyHelpUrl: 'https://aistudio.google.com/app/apikey',
+    placeholder: 'AQ.Ab8RN...',
+    models: [
+      { id: 'gemini-3.8-flash', name: '⚡ Gemini 3.8 Flash (Vision & Code — Default)' },
+      { id: 'gemini-2.5-flash', name: '⚡ Gemini 2.5 Flash (Ultra Fast Multimodal)' },
+      { id: 'gemini-3.1-pro-preview', name: '🧠 Gemini 3.1 Pro Preview (Deep Vision & Reasoning)' },
+      { id: 'gemini-pro-latest', name: '🧠 Gemini Pro Latest (Multimodal Reasoning)' }
+    ],
+    defaultModel: 'gemini-3.8-flash'
+  },
+  openai: {
+    id: 'openai',
+    name: 'OpenAI ChatGPT',
+    keyHelpUrl: 'https://platform.openai.com/api-keys',
+    placeholder: 'sk-proj-...',
+    models: [
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast Multimodal)' },
+      { id: 'gpt-4o', name: 'GPT-4o (Omni Flagship Vision)' },
+      { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo (Text Only)' }
+    ],
+    defaultModel: 'gpt-4o-mini',
+    defaultUrl: 'https://api.openai.com/v1'
+  },
+  custom_openai: {
+    id: 'custom_openai',
+    name: '3rd Party (GapGPT / OpenAI)',
+    keyHelpUrl: 'https://gapgpt.app',
+    placeholder: 'sk-F4T2AxOQ...',
+    defaultUrl: 'https://api.gapgpt.app/v1',
+    models: [
+      { id: 'gpt-5-nano', name: '⚡ GPT-5 Nano (Ultra Fast & Accurate — Default)' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Reliable)' },
+      { id: 'gpt-5-mini', name: 'GPT-5 Mini' },
+      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1 Reasoning)' },
+      { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
+      { id: 'gpt-4o', name: 'GPT-4o (Vision & Code Flagship)' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'gpt-5-nano'
+  }
+};
+
+async function callAI({ provider, apiKey, backupApiKey = null, baseUrl = null, model, systemPrompt, text = '', image = null, onKeySwitch = null }) {
+  // Key check: Allow empty key for local Ollama/LM Studio endpoints
+  const isLocal = baseUrl && (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1') || baseUrl.includes(':11434'));
+  if (!isLocal && (!apiKey || !apiKey.trim())) {
+    throw new Error(`API key for ${PROVIDERS[provider]?.name || provider} is missing. Please enter and save your key.`);
+  }
+
+  const hasText = Boolean(text && text.trim());
+  const hasImage = Boolean(image && image.base64);
+
+  if (!hasText && !hasImage) {
+    throw new Error('Clipboard input is empty (neither text nor screenshot found).');
+  }
+
+  const effectivePrompt = systemPrompt || `You are an experienced human senior developer answering a coding question. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
+CRITICAL RULES:
+1. Explanations in Persian: ALL explanations, descriptions, or notes MUST be in natural, fluent Persian (فارسی روان و تخصصی).
+2. Code in Java: ALL code, solutions, and implementations MUST be written in Java.
+3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague in a chat or Stack Overflow.`;
+
+  switch (provider) {
+    case 'gemini':
+      return await callGeminiWithFailover({
+        primaryKey: apiKey.trim(),
+        backupKey: backupApiKey ? backupApiKey.trim() : null,
+        model,
+        systemPrompt: effectivePrompt,
+        text,
+        image,
+        onKeySwitch
+      });
+    case 'openai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.openai.com/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'gpt-4o-mini',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'custom_openai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.gapgpt.app/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'gpt-5-nano',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    default:
+      throw new Error(`Unknown provider: ${provider}`);
+  }
+}
+
+// Google Gemini Dual-Key Failover Wrapper
+async function callGeminiWithFailover({ primaryKey, backupKey, model, systemPrompt, text, image, onKeySwitch }) {
+  try {
+    return await callGemini(primaryKey, model, systemPrompt, text, image);
+  } catch (err) {
+    const isQuotaOrLimit = err.message.includes('429') ||
+                           err.message.includes('RESOURCE_EXHAUSTED') ||
+                           err.message.includes('quota') ||
+                           err.message.includes('limit');
+
+    // If Key #1 hits rate limits and user provided a Backup Key #2, switch automatically!
+    if (isQuotaOrLimit && backupKey) {
+      console.warn('Gemini Key #1 hit quota/rate limit (429). Automatically switching to Backup Key #2...');
+      if (onKeySwitch) onKeySwitch(1, 2);
+      try {
+        return await callGemini(backupKey, model, systemPrompt, text, image);
+      } catch (backupErr) {
+        throw new Error(`Both Key #1 and Backup Key #2 failed. Backup Error: ${backupErr.message}`);
+      }
+    }
+
+    // If quota exceeded but no backup key was provided, give helpful guidance
+    if (isQuotaOrLimit && !backupKey) {
+      throw new Error(`Gemini Key #1 reached account rate limits (429). Add a Backup Gemini Key (Key #2) in the right sidebar to avoid limits!`);
+    }
+
+    throw err;
+  }
+}
+
+// Google Gemini Single-Call Multimodal API Handler
+async function callGemini(apiKey, model, systemPrompt, text, image) {
+  const targetModel = model || 'gemini-3.8-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
+
+  const parts = [];
+
+  // 1. Add Screenshot Image if present
+  if (image && image.base64) {
+    parts.push({
+      inline_data: {
+        mime_type: image.mimeType || 'image/png',
+        data: image.base64
+      }
+    });
+  }
+
+  // 2. Add Prompt and Text Instruction
+  let promptText = '';
+  if (image && text) {
+    promptText = `${systemPrompt}\n\nHere is the screenshot and additional context/question:\n${text}`;
+  } else if (image) {
+    promptText = `${systemPrompt}\n\nAnalyze this screenshot. If there are multiple questions or problems shown in the image, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short, and effective answers.`;
+  } else {
+    promptText = text;
+  }
+
+  parts.push({ text: promptText });
+
+  const payload = {
+    system_instruction: {
+      parts: [{ text: systemPrompt }]
+    },
+    contents: [
+      {
+        role: 'user',
+        parts: parts
+      }
+    ],
+    generationConfig: {
+      temperature: 0.2
+    }
+  };
+
+  let response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (netErr) {
+    throw new Error(`Network error contacting Gemini API: ${netErr.message}`);
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    // If targetModel fails with 404, fallback to gemini-2.5-flash
+    if (response.status === 404 && targetModel !== 'gemini-2.5-flash') {
+      console.warn(`Model ${targetModel} not found, falling back to gemini-2.5-flash`);
+      return await callGemini(apiKey, 'gemini-2.5-flash', systemPrompt, text, image);
+    }
+    const errMessage = data?.error?.message || `Gemini API Error (${response.status}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  const candidate = data.candidates?.[0];
+  if (!candidate || !candidate.content?.parts?.length) {
+    if (candidate?.finishReason === 'SAFETY') {
+      throw new Error('Gemini response was blocked by safety filters.');
+    }
+    throw new Error('Gemini returned an empty response.');
+  }
+
+  return candidate.content.parts.map(p => p.text).join('').trim();
+}
+
+// Universal OpenAI-Compatible API Handler (OpenAI, OpenRouter, DeepSeek, Groq, Ollama, LM Studio, etc.)
+// Supports Multimodal Screenshot Analysis with vision-capable models
+async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text, image }) {
+  let cleanUrl = (baseUrl || 'https://api.openai.com/v1').trim().replace(/\/+$/, '');
+  if (!cleanUrl.endsWith('/chat/completions')) {
+    cleanUrl = `${cleanUrl}/chat/completions`;
+  }
+
+  const userContent = [];
+  if (text) {
+    userContent.push({ type: 'text', text: text });
+  } else if (image) {
+    userContent.push({ type: 'text', text: 'Analyze all questions, code, or problems shown in this screenshot. If there are multiple questions, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short and effective answers.' });
+  }
+
+  if (image && image.base64) {
+    userContent.push({
+      type: 'image_url',
+      image_url: {
+        url: `data:${image.mimeType || 'image/png'};base64,${image.base64}`
+      }
+    });
+  }
+
+  // Format payload
+  const formattedUserContent = (image && image.base64)
+    ? userContent
+    : (text || 'Solve the code problem.');
+
+  const payload = {
+    model: model || 'gpt-4o-mini',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: formattedUserContent }
+    ],
+    temperature: 0.3
+  };
+
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+
+  if (apiKey && apiKey.trim()) {
+    headers['Authorization'] = `Bearer ${apiKey.trim()}`;
+  }
+
+  // Helpful headers for OpenRouter
+  if (cleanUrl.includes('openrouter.ai')) {
+    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:2080';
+    headers['X-Title'] = 'Stack Overflow Copilot';
+  }
+
+  const response = await fetch(cleanUrl, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errMessage = data?.error?.message ||
+                       data?.message ||
+                       `API Error (${response.status} from ${cleanUrl}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  const answer = data?.choices?.[0]?.message?.content;
+  if (!answer) {
+    throw new Error(`API returned an empty response from ${cleanUrl}.`);
+  }
+
+  return answer.trim();
+}
+
+// Fetch list of available models from any OpenAI-compatible endpoint (GET /models)
+async function fetchOpenAIModels({ baseUrl, apiKey }) {
+  let cleanUrl = (baseUrl || 'https://api.gapgpt.app/v1').trim().replace(/\/+$/, '');
+  if (cleanUrl.endsWith('/chat/completions')) {
+    cleanUrl = cleanUrl.replace(/\/chat\/completions$/, '');
+  }
+  if (!cleanUrl.endsWith('/models')) {
+    cleanUrl = `${cleanUrl}/models`;
+  }
+
+  const headers = {};
+  if (apiKey && apiKey.trim()) {
+    headers['Authorization'] = `Bearer ${apiKey.trim()}`;
+  }
+  if (cleanUrl.includes('openrouter.ai')) {
+    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:2080';
+    headers['X-Title'] = 'Stack Overflow Copilot';
+  }
+
+  const response = await fetch(cleanUrl, {
+    method: 'GET',
+    headers: headers
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errMessage = data?.error?.message ||
+                       data?.message ||
+                       `Failed to fetch models (${response.status} from ${cleanUrl}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  let rawList = [];
+  if (Array.isArray(data)) {
+    rawList = data;
+  } else if (Array.isArray(data?.data)) {
+    rawList = data.data;
+  } else if (Array.isArray(data?.models)) {
+    rawList = data.models;
+  }
+
+  if (!rawList.length) {
+    throw new Error(`No models found in the API response from ${cleanUrl}.`);
+  }
+
+  // Map to clean format: { id: string, name: string }
+  const models = rawList.map(item => {
+    const id = typeof item === 'string' ? item : (item.id || item.name);
+    const name = typeof item === 'object' && item.name && item.name !== id
+      ? `${item.name} (${id})`
+      : id;
+    return { id, name };
+  }).filter(m => Boolean(m.id));
+
+  // Sort models alphabetically
+  models.sort((a, b) => a.id.localeCompare(b.id));
+
+  return models;
+}
+
+// Fetch list of available models from Google Gemini API (GET /v1beta/models)
+export async function fetchGeminiModels({ apiKey }) {
+  if (!apiKey || !apiKey.trim()) {
+    throw new Error('Please enter and save your Gemini API key first.');
+  }
+
+  const cleanKey = apiKey.trim();
+  const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${cleanKey}`;
+
+  const response = await fetch(url, {
+    method: 'GET'
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errMessage = data?.error?.message ||
+                       data?.message ||
+                       `Failed to fetch Gemini models (${response.status}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  const rawList = data?.models || [];
+  if (!rawList.length) {
+    throw new Error('No models found in the Gemini API response.');
+  }
+
+  // Filter for models supporting content generation
+  const validModels = rawList.filter(m => {
+    const methods = m.supportedGenerationMethods || [];
+    return methods.includes('generateContent');
+  });
+
+  const listToUse = validModels.length ? validModels : rawList;
+
+  // Map to clean format: { id: string, name: string }
+  const models = listToUse.map(item => {
+    const rawId = item.name || '';
+    const cleanId = rawId.replace(/^models\//, '');
+    const displayName = item.displayName || cleanId;
+    const name = displayName !== cleanId ? `⚡ ${displayName} (${cleanId})` : cleanId;
+    return { id: cleanId, name };
+  }).filter(m => Boolean(m.id));
+
+  // Sort: prioritize flash models, then alphabetical
+  models.sort((a, b) => {
+    const aIsFlash = a.id.includes('flash');
+    const bIsFlash = b.id.includes('flash');
+    if (aIsFlash && !bIsFlash) return -1;
+    if (!aIsFlash && bIsFlash) return 1;
+    return a.id.localeCompare(b.id);
+  });
+
+  return models;
+}
+
+
+// ==========================================
+// 4. UI CONTROLLER
+// ==========================================
+// User Interface Controller & Visual Feedback Engine for Stack Overflow Copilot
+
+class UIController {
+  constructor() {
+    // Elements
+    this.statusPill = document.getElementById('status-pill');
+    this.statusPillText = document.getElementById('status-pill-text');
+    this.radarCore = document.getElementById('radar-core');
+    this.radarIcon = document.getElementById('radar-icon');
+    this.noticeBanner = document.querySelector('.so-notice-banner');
+    this.liveTitle = document.getElementById('live-state-title');
+    this.liveSubtitle = document.getElementById('live-state-subtitle');
+    this.liveDesc = document.getElementById('live-state-desc');
+
+    this.stepRead = document.getElementById('step-read');
+    this.stepAi = document.getElementById('step-ai');
+    this.stepWrite = document.getElementById('step-write');
+
+    this.textInput = document.getElementById('text-input');
+    this.textOutput = document.getElementById('text-output');
+    this.solutionRenderBox = document.getElementById('solution-render-box');
+    this.solutionRenderContent = document.getElementById('solution-render-content');
+    this.acceptedCheckText = document.getElementById('accepted-check-text');
+    this.acceptedLabel = document.getElementById('accepted-label');
+    this.btnToggleRaw = document.getElementById('btn-toggle-raw');
+    this.acceptedAnswerBox = document.getElementById('accepted-answer-box');
+    this.inputStats = document.getElementById('input-stats');
+    this.outputStats = document.getElementById('output-stats');
+
+    this.toastContainer = document.getElementById('toast-container');
+    this.historyList = document.getElementById('history-list');
+    this.emptyHistory = document.getElementById('empty-history-placeholder');
+
+    this.initViewToggles();
+  }
+
+  initViewToggles() {
+    if (this.btnToggleRaw) {
+      this.btnToggleRaw.addEventListener('click', () => {
+        const isRawVisible = this.textOutput && this.textOutput.style.display !== 'none';
+        if (isRawVisible) {
+          if (this.textOutput) this.textOutput.style.display = 'none';
+          if (this.solutionRenderBox) this.solutionRenderBox.style.display = 'block';
+          this.btnToggleRaw.textContent = 'Raw Code';
+        } else {
+          if (this.textOutput) this.textOutput.style.display = 'block';
+          if (this.solutionRenderBox) this.solutionRenderBox.style.display = 'none';
+          this.btnToggleRaw.textContent = 'Formatted';
+        }
+      });
+    }
+  }
+
+  // Set Visual State to Ready / Listening
+  setReady(hasKey = true, autoSync = false) {
+    this.resetSteps();
+    if (this.statusPill) {
+      if (!hasKey) {
+        this.statusPill.className = 'status-pill status-warn';
+        this.statusPillText.textContent = 'API Key Required';
+      } else if (autoSync) {
+        this.statusPill.className = 'status-pill status-ready';
+        this.statusPillText.textContent = 'Auto-Sync Active';
+      } else {
+        this.statusPill.className = 'status-pill status-ready';
+        this.statusPillText.textContent = 'Manual Mode';
+      }
+    }
+    if (this.radarIcon) this.radarIcon.textContent = autoSync ? '📋' : '⚡';
+    if (this.liveSubtitle) {
+      if (!hasKey) {
+        this.liveSubtitle.textContent = 'API Key Setup Needed';
+      } else if (autoSync) {
+        this.liveSubtitle.textContent = 'Clipboard Monitoring Active';
+      } else {
+        this.liveSubtitle.textContent = 'Manual Mode Ready';
+      }
+    }
+    if (this.liveDesc) {
+      if (!hasKey) {
+        this.liveDesc.textContent = 'Please enter and save your API key in the settings.';
+      } else if (autoSync) {
+        this.liveDesc.textContent = 'Copy any code or error in your IDE/terminal, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back!';
+      } else {
+        this.liveDesc.textContent = 'Auto-read clipboard is disabled. Paste your question/screenshot (Ctrl+V) or click "Process Clipboard" to solve!';
+      }
+    }
+  }
+
+  // Set Visual State to Processing
+  setProcessing(stepName = 'Reading clipboard...') {
+    if (this.statusPill) {
+      this.statusPill.className = 'status-pill status-busy';
+      this.statusPillText.textContent = 'Processing...';
+    }
+    if (this.radarIcon) this.radarIcon.textContent = '⚡';
+    if (this.liveSubtitle) this.liveSubtitle.textContent = 'Analyzing Code & Generating Solution...';
+    if (this.liveDesc) this.liveDesc.textContent = stepName;
+  }
+
+  // Set Pipeline Step (1, 2, or 3)
+  setActiveStep(stepIndex) {
+    this.resetSteps();
+    if (stepIndex >= 1 && this.stepRead) this.stepRead.classList.add('step-active');
+    if (stepIndex >= 2 && this.stepAi) {
+      this.stepRead?.classList.remove('step-active');
+      this.stepRead?.classList.add('step-done');
+      this.stepAi.classList.add('step-active');
+    }
+    if (stepIndex >= 3 && this.stepWrite) {
+      this.stepAi?.classList.remove('step-active');
+      this.stepAi?.classList.add('step-done');
+      this.stepWrite.classList.add('step-active');
+    }
+  }
+
+  // Set Visual State to Success
+  setSuccess(message = 'Copied back to clipboard!', { isMobileScreenshot = false } = {}) {
+    if (this.statusPill) {
+      this.statusPill.className = 'status-pill status-ready';
+      this.statusPillText.textContent = isMobileScreenshot ? 'Answer Ready (In Box)' : 'Copied to Clipboard!';
+    }
+    if (this.stepWrite) {
+      this.stepWrite.classList.remove('step-active');
+      this.stepWrite.classList.add('step-done');
+    }
+    if (this.radarIcon) this.radarIcon.textContent = '✨';
+    if (this.liveSubtitle) {
+      this.liveSubtitle.textContent = isMobileScreenshot
+        ? 'Solution Displayed in Box Below'
+        : 'Solution Accepted & Copied to Clipboard!';
+    }
+    if (this.liveDesc) this.liveDesc.textContent = message;
+
+    // Reset back to ready after 5 seconds
+    setTimeout(() => {
+      this.setReady(true);
+    }, 5000);
+  }
+
+  // Set Visual State to Error
+  setError(errMessage) {
+    this.resetSteps();
+    if (this.statusPill) {
+      this.statusPill.className = 'status-pill status-warn';
+      this.statusPillText.textContent = 'Error Occurred';
+    }
+    if (this.radarIcon) this.radarIcon.textContent = '⚠️';
+    if (this.liveSubtitle) this.liveSubtitle.textContent = 'Failed to Process Clipboard';
+    if (this.liveDesc) this.liveDesc.textContent = errMessage;
+    this.showToast(errMessage, 'error');
+
+    setTimeout(() => {
+      this.setReady(true);
+    }, 5000);
+  }
+
+  resetSteps() {
+    [this.stepRead, this.stepAi, this.stepWrite].forEach(step => {
+      if (step) {
+        step.classList.remove('step-active', 'step-done');
+      }
+    });
+  }
+
+  // Screenshot Preview Controls
+  setScreenshotPreview({ dataUrl, mimeType, size }) {
+    const container = document.getElementById('screenshot-preview-container');
+    const img = document.getElementById('screenshot-preview-img');
+    const info = document.getElementById('screenshot-info');
+
+    if (container && img) {
+      img.src = dataUrl;
+      const sizeKb = Math.round(size / 1024);
+      if (info) info.textContent = `${mimeType || 'image/jpeg'} \u2022 ${sizeKb} KB`;
+      container.style.display = 'flex';
+      if (this.inputStats) this.inputStats.textContent = `Photo / Screenshot (${sizeKb} KB)`;
+    }
+  }
+
+  clearScreenshotPreview() {
+    const container = document.getElementById('screenshot-preview-container');
+    const img = document.getElementById('screenshot-preview-img');
+    if (container) container.style.display = 'none';
+    if (img) img.src = '';
+  }
+
+  // Update Input & Output Text boxes
+  setInputText(text) {
+    if (this.textInput) {
+      this.textInput.value = text;
+      if (this.inputStats && text) this.inputStats.textContent = `${text.length} chars`;
+    }
+  }
+
+  setOutputText(text, { isMobileScreenshot = false } = {}) {
+    if (this.textOutput) {
+      this.textOutput.value = text;
+      if (this.outputStats && text) this.outputStats.textContent = `${text.length} chars`;
+    }
+
+    if (this.solutionRenderContent) {
+      this.solutionRenderContent.innerHTML = this.renderSolutionHTML(text);
+
+      // Attach copy listeners to individual code snippets inside the formatted card
+      this.solutionRenderContent.querySelectorAll('.so-code-copy-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const code = btn.getAttribute('data-code');
+          if (code) {
+            try {
+              await navigator.clipboard.writeText(code);
+              btn.textContent = '✓ Copied';
+              this.showToast('Copied Java code snippet to clipboard!', 'success');
+              setTimeout(() => { btn.textContent = '📋 Copy Code'; }, 1800);
+            } catch (err) {
+              this.showToast('Failed to copy code: ' + err.message, 'error');
+            }
+          }
+        });
+      });
+    }
+
+    if (isMobileScreenshot) {
+      if (this.acceptedCheckText) this.acceptedCheckText.textContent = 'SOLVED';
+      if (this.acceptedLabel) this.acceptedLabel.textContent = 'ACCEPTED ANSWER • SHOWN IN BOX';
+
+      // Auto-scroll down smoothly to the answer box on mobile so user sees the solution immediately
+      if (this.acceptedAnswerBox) {
+        this.acceptedAnswerBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.acceptedAnswerBox.classList.add('highlight-pulse');
+        setTimeout(() => this.acceptedAnswerBox?.classList.remove('highlight-pulse'), 2500);
+      }
+    } else {
+      if (this.acceptedCheckText) this.acceptedCheckText.textContent = 'COPIED';
+      if (this.acceptedLabel) this.acceptedLabel.textContent = 'ACCEPTED ANSWER • IN YOUR CLIPBOARD';
+    }
+  }
+
+  // Show Toast Notification
+  showToast(message, type = 'info') {
+    if (!this.toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    
+    this.toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      toast.style.transition = 'all 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  // History Management
+  renderHistory(items, onCopyItem) {
+    if (!this.historyList) return;
+    this.historyList.innerHTML = '';
+
+    if (!items || items.length === 0) {
+      if (this.emptyHistory) {
+        this.historyList.appendChild(this.emptyHistory);
+      }
+      return;
+    }
+
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'so-history-item';
+      
+      const timeStr = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const durationStr = item.durationMs ? `${(item.durationMs / 1000).toFixed(1)}s` : '';
+
+      el.innerHTML = `
+        <div class="so-history-item-left">
+          <div class="so-history-meta">
+            <span class="so-tag sm">${item.model || 'Gemini'}</span>
+            <span>&bull;</span>
+            <span class="so-highlight">${timeStr}</span>
+            ${durationStr ? `<span>&bull; ${durationStr}</span>` : ''}
+          </div>
+          <div class="so-history-snippet" title="${this.escapeHtml(item.input)}">
+            Q: ${this.escapeHtml(item.input.slice(0, 80))}${item.input.length > 80 ? '...' : ''}
+          </div>
+        </div>
+        <div class="so-history-item-actions">
+          <button class="so-btn-green sm btn-history-copy" title="Copy answer to clipboard">
+            Copy
+          </button>
+        </div>
+      `;
+
+      const btnCopy = el.querySelector('.btn-history-copy');
+      btnCopy.addEventListener('click', () => {
+        onCopyItem(item.output);
+        btnCopy.textContent = 'Copied!';
+        setTimeout(() => { btnCopy.textContent = 'Copy'; }, 1500);
+      });
+
+      this.historyList.appendChild(el);
+    });
+  }
+
+  escapeHtml(str) {
+    return (str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  renderSolutionHTML(rawText) {
+    if (!rawText || !rawText.trim()) {
+      return '<p class="so-placeholder-text">Stack Overflow Copilot will display the solved Java code and Persian explanation in this box...</p>';
+    }
+
+    const codeRegex = /```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g;
+    let lastIndex = 0;
+    let match;
+    let html = '';
+
+    while ((match = codeRegex.exec(rawText)) !== null) {
+      const textBefore = rawText.slice(lastIndex, match.index).trim();
+      if (textBefore) {
+        html += this.formatTextSection(textBefore);
+      }
+
+      const lang = (match[1] || 'java').toLowerCase();
+      const code = match[2].trim();
+      const escapedCode = this.escapeHtml(code);
+      const escapedCodeAttr = this.escapeHtml(code).replace(/'/g, '&#39;');
+
+      html += `
+        <div class="so-code-block-card">
+          <div class="so-code-block-header">
+            <span class="so-code-lang-tag">${this.escapeHtml(lang.toUpperCase())}</span>
+            <button class="so-code-copy-btn" data-code="${escapedCodeAttr}" title="Copy code snippet">
+              📋 Copy Code
+            </button>
+          </div>
+          <pre><code class="language-${this.escapeHtml(lang)}">${escapedCode}</code></pre>
+        </div>
+      `;
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    const remainingText = rawText.slice(lastIndex).trim();
+    if (remainingText) {
+      html += this.formatTextSection(remainingText);
+    }
+
+    return html;
+  }
+
+  formatTextSection(text) {
+    const paragraphs = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+    let html = '';
+    for (const p of paragraphs) {
+      const isPersian = /[\u0600-\u06FF]/.test(p);
+      const dir = isPersian ? 'rtl' : 'ltr';
+      const alignClass = isPersian ? 'so-persian-text' : 'so-latin-text';
+
+      let formatted = this.escapeHtml(p)
+        .replace(/`([^`]+)`/g, '<code class="so-inline-code">$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+
+      html += `<div class="so-paragraph ${alignClass}" dir="${dir}">${formatted}</div>`;
+    }
+    return html;
+  }
+}
+
+
+// ==========================================
+// 5. MAIN APPLICATION
+// ==========================================
+// Main Application Controller & Orchestration Engine for Stack Overflow Copilot
+// Supports Multimodal Screenshot Analysis, Dual Gemini Keys (Rate Limit Failover), and Clipboard Sync
+
+
+
+import { PROVIDERS, callAI, fetchOpenAIModels, fetchGeminiModels } from './providers.js';
+
+
+// Default Gemini API key provided by user
+const DEFAULT_GEMINI_KEY = 'AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Geg';
+
+// Default 3rd Party (GapGPT) API URL & Key provided by user
+const DEFAULT_GAPGPT_URL = 'https://api.gapgpt.app/v1';
+const DEFAULT_GAPGPT_KEY = 'sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX';
+
+// Prompt Presets tailored for developer productivity: Persian explanations + Java code + Human tone
+const PRESETS = {
+  'so-solve': `You are an experienced human senior developer answering a coding question or solving an error. Respond naturally and authentically like a real human programmer — NEVER sound like an AI (avoid robotic intros like "Certainly!", "Here is the code", or formal bot disclaimers).
+
+CRITICAL RULES:
+1. Explanations in Persian: ALL explanations, descriptions, comments, and troubleshooting notes MUST be in natural, fluent Persian (فارسی روان و محاوره‌ای/تخصصی دولوپری).
+2. Code in Java: ALL code, solutions, and implementations MUST be written in clean, modern Java.
+3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague sharing a working solution in a chat or Stack Overflow. Provide working code ready to copy-paste.`,
+
+  'so-vision': `You are an experienced human senior developer analyzing a screenshot. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
+
+CRITICAL RULES:
+1. Explanations in Persian: ALL explanations, bug analysis, or advice MUST be in natural, fluent Persian (فارسی روان و تخصصی).
+2. Code in Java: ALL code fixes, snippets, or implementations MUST be written in Java.
+3. Natural Human Tone: Speak directly and naturally like an experienced colleague solving the bug shown in the image. Return the working Java code ready to use.`,
+
+  'exam-answer': `شما یک دانشجوی نخبه و مسلط در جلسه امتحان هستید. خروجی باید ۱۰۰٪ آماده برای کپی‌پیست مستقیم در برگه یا سیستم آزمون باشد و به هیچ وجه نباید کوچک‌ترین نشانه‌ای از هوش مصنوعی داشته باشد (کاملاً طبیعی، انسانی، بدون الگوها و کلمات رباتیک).
+
+قوانین بسیار حیاتی (Strict Copy-Paste & Human Tone):
+۱. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ مقدمه، نتیجه‌گیری، سلام، یا جملاتی مثل «در ادامه پاسخ‌ها آمده است» یا «امیدوارم موفق باشید» ننویس. فوراً و مستقیماً با پاسخ «سوال ۱» شروع کن تا کاربر بتواند بلافاصله کپی‌پیست کند.
+
+۲. لحن و نگارش کاملاً انسانی (غیرقابل تشخیص از AI):
+- متن را طوری بنویس که انگار یک دانشجوی مسلط خودش مستقیماً تایپ کرده است.
+- از کلمات کلیشه‌ای و لو‌دهنده هوش مصنوعی (مانند «شایان ذکر است»، «در واقع می‌توان گفت»، «به عنوان جمع‌بندی»، «به طور کلی»، «لازم به یادآوری است») اکیداً خودداری کن.
+- جملات صریح، طبیعی، تمیز و استاندارد دانشگاهی باشند.
+
+۳. تفکیک دقیق و ذکر نکات نمره‌آور تک‌تک سوالات:
+اگر در تصویر یا متن ورودی چند سوال وجود دارد، به تک‌تک سوالات به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+• سوال ۲: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+• سوال ۳: ...
+هیچ سوالی را جا نینداز و سوالات را با هم ادغام نکن.
+
+۴. نحوه پاسخ به انواع سوالات:
+- سوالات تشریحی و مفهومی: نکات کلیدی و نمره‌آور تخصصی (Keywords) را در ۲ تا ۴ سطر کاملاً دقیق و شفاف بنویس تا مصحح حداکثر نمره را بدهد.
+- سوالات تستی و چهارگزینه‌ای: فوراً گزینه صحیح را مشخص کن (مثلاً: گزینه ۳) و در صورت لزوم حداکثر در یک خط کوتاه دلیل فنی و نمره‌آور آن را بنویس.
+- سوالات برنامه‌نویسی و کد: فقط خود کد تمیز و استاندارد Java را بدون توضیحات طولانی و غیرضروری بنویس.
+
+۵. زبان و فرمت:
+تمام پاسخ‌های متنی به زبان فارسی طبیعی و تمام کدها به زبان Java باشد.`,
+
+  'code-debug': `بررسی و دیباگ کد:
+1. تمام توضیحات، علت خطا و نکات باید به زبان فارسی روان و کاملاً انسانی (غیررباتیک) بیان شود.
+2. تمام کد اصلاح‌شده باید به زبان Java باشد.
+3. کد اصلاح‌شده نهایی و آماده برای استفاده ارائه شود.`,
+
+  direct: 'پاسخ مستقیم و کوتاه بدون هیچ‌گونه مقدمه‌چینی رباتیک. تمام توضیحات به زبان فارسی و تمام کدها به زبان Java باشد.',
+  grammar: 'Proofread and polish the provided text for clarity, conciseness, natural flow, and professional tone. Return only the corrected, improved text.',
+  summarize: 'خلاصه نکات کلیدی متن به صورت بولت‌های تمیز و مرتب به زبان فارسی روان.',
+  'translate-en': 'Translate the following text into natural, fluent English. Return only the translation.',
+  'translate-fa': 'متن زیر را به فارسی کاملاً روان، طبیعی و سلیس ترجمه کن. فقط ترجمه را بدون متن اضافی برگردان.',
+  'reply-email': 'یک پاسخ ایمیل حرفه‌ای، محترمانه و کوتاه بنویس.',
+  custom: ''
+};
+
+class App {
+  constructor() {
+    this.ui = new UIController();
+
+    // App State
+    this.currentProvider = 'custom_openai';
+    this.apiKeys = {
+      gemini: DEFAULT_GEMINI_KEY,
+      geminiBackup: '',
+      openai: '',
+      custom_openai: DEFAULT_GAPGPT_KEY
+    };
+    this.apiUrls = {
+      openai: 'https://api.openai.com/v1',
+      custom_openai: DEFAULT_GAPGPT_URL
+    };
+    this.selectedModels = {
+      gemini: PROVIDERS.gemini.defaultModel,
+      openai: PROVIDERS.openai.defaultModel,
+      custom_openai: 'gpt-5-nano'
+    };
+    this.customModels = {
+      custom_openai: 'gpt-5-nano'
+    };
+    this.fetchedModels = {};
+    this.autoSync = false; // Default: Inactive (do not auto-read clipboard)
+    this.soundEnabled = true;
+    this.notificationEnabled = false;
+    this.dedupEnabled = true;
+    this.currentPreset = 'so-solve';
+    this.systemPrompt = PRESETS['so-solve'];
+    this.history = [];
+    this.stagedScreenshot = null; // { mimeType, base64, dataUrl, hash, size }
+
+    this.init();
+  }
+
+  init() {
+    this.loadStateFromStorage();
+    this.setupUI();
+    this.setupEventListeners();
+    this.checkInitialPermissions();
+    this.updateProviderView();
+    this.ui.renderHistory(this.history, (text) => this.copyTextDirect(text));
+    this.ui.setReady(this.hasActiveKey(), this.autoSync);
+  }
+
+  // Load persistence
+  loadStateFromStorage() {
+    try {
+      const storedKeys = localStorage.getItem('cbai_api_keys');
+      if (storedKeys) {
+        this.apiKeys = { ...this.apiKeys, ...JSON.parse(storedKeys) };
+      }
+
+      // Always guarantee default Gemini key if none is present
+      if (!this.apiKeys.gemini || !this.apiKeys.gemini.trim()) {
+        this.apiKeys.gemini = DEFAULT_GEMINI_KEY;
+      }
+
+      // Preload GapGPT 3rd-party key if none is present
+      if (!this.apiKeys.custom_openai || !this.apiKeys.custom_openai.trim()) {
+        this.apiKeys.custom_openai = DEFAULT_GAPGPT_KEY;
+      }
+
+      const storedProvider = localStorage.getItem('cbai_provider');
+      if (storedProvider && PROVIDERS[storedProvider]) {
+        this.currentProvider = storedProvider;
+      } else {
+        this.currentProvider = 'custom_openai';
+      }
+
+      const storedUrls = localStorage.getItem('cbai_api_urls');
+      if (storedUrls) {
+        this.apiUrls = { ...this.apiUrls, ...JSON.parse(storedUrls) };
+      }
+
+      // Preload GapGPT URL if none is present or if previously pointed to openrouter
+      if (!this.apiUrls.custom_openai || this.apiUrls.custom_openai.includes('openrouter.ai')) {
+        this.apiUrls.custom_openai = DEFAULT_GAPGPT_URL;
+      }
+
+      this.saveKeys();
+
+      const storedCustomModels = localStorage.getItem('cbai_custom_models');
+      if (storedCustomModels) {
+        this.customModels = { ...this.customModels, ...JSON.parse(storedCustomModels) };
+      }
+
+      const storedModels = localStorage.getItem('cbai_models');
+      if (storedModels) this.selectedModels = { ...this.selectedModels, ...JSON.parse(storedModels) };
+
+      // Ensure custom_openai defaults to gpt-5-nano
+      if (!this.selectedModels.custom_openai || 
+          this.selectedModels.custom_openai === 'deepseek/deepseek-chat' || 
+          this.selectedModels.custom_openai === 'gpt-4o-mini') {
+        this.selectedModels.custom_openai = 'gpt-5-nano';
+      }
+
+      // Default to 3rd Party provider (GapGPT) and gpt-5-nano model
+      const providerDefaultMigrated = localStorage.getItem('cbai_default_gapgpt_v3');
+      if (!providerDefaultMigrated) {
+        this.currentProvider = 'custom_openai';
+        this.selectedModels.custom_openai = 'gpt-5-nano';
+        localStorage.setItem('cbai_provider', 'custom_openai');
+        localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+        localStorage.setItem('cbai_default_gapgpt_v3', 'true');
+      }
+
+      const storedFetchedModels = localStorage.getItem('cbai_fetched_models');
+      if (storedFetchedModels) {
+        try {
+          this.fetchedModels = JSON.parse(storedFetchedModels);
+        } catch (e) {
+          console.warn('Could not parse cached models:', e);
+        }
+      }
+
+      const storedAutoSync = localStorage.getItem('cbai_autosync_v2');
+      if (storedAutoSync !== null) {
+        this.autoSync = storedAutoSync === 'true';
+      } else {
+        this.autoSync = false; // Default: Inactive
+      }
+
+      const storedSound = localStorage.getItem('cbai_sound');
+      if (storedSound !== null) this.soundEnabled = storedSound === 'true';
+
+      const storedDedup = localStorage.getItem('cbai_dedup');
+      if (storedDedup !== null) this.dedupEnabled = storedDedup === 'true';
+
+      const storedPreset = localStorage.getItem('cbai_preset');
+      if (storedPreset && PRESETS[storedPreset] !== undefined) {
+        this.currentPreset = storedPreset;
+      }
+
+      const storedPrompt = localStorage.getItem('cbai_prompt');
+      const examPromptHumanUpdated = localStorage.getItem('cbai_exam_human_v3');
+      if (!examPromptHumanUpdated && this.currentPreset === 'exam-answer') {
+        this.systemPrompt = PRESETS['exam-answer'];
+        localStorage.setItem('cbai_prompt', this.systemPrompt);
+        localStorage.setItem('cbai_exam_human_v3', 'true');
+      } else if (!storedPrompt || storedPrompt.includes('Stack Overflow Copilot. The user has copied') || storedPrompt.includes('Fulfill the user input concisely')) {
+        this.systemPrompt = PRESETS[this.currentPreset] || PRESETS['so-solve'];
+        localStorage.setItem('cbai_prompt', this.systemPrompt);
+      } else {
+        this.systemPrompt = storedPrompt;
+      }
+
+      const storedHistory = localStorage.getItem('cbai_history');
+      if (storedHistory) this.history = JSON.parse(storedHistory);
+    } catch (e) {
+      console.warn('Failed to load local storage state:', e);
+    }
+
+    sound.enabled = this.soundEnabled;
+    clipboard.dedupEnabled = this.dedupEnabled;
+  }
+
+  saveKeys() {
+    try {
+      localStorage.setItem('cbai_api_keys', JSON.stringify(this.apiKeys));
+      localStorage.setItem('cbai_api_urls', JSON.stringify(this.apiUrls));
+      localStorage.setItem('cbai_custom_models', JSON.stringify(this.customModels));
+    } catch (e) {
+      console.warn('Could not persist keys to localStorage (e.g. file:// security restriction):', e);
+    }
+    this.updateKeyBadge();
+  }
+
+  saveHistory() {
+    try {
+      localStorage.setItem('cbai_history', JSON.stringify(this.history.slice(0, 30)));
+    } catch (e) {
+      console.warn('Could not persist history to localStorage:', e);
+    }
+    this.ui.renderHistory(this.history, (text) => this.copyTextDirect(text));
+  }
+
+  hasActiveKey() {
+    if (this.currentProvider === 'custom_openai') {
+      const url = this.apiUrls.custom_openai || '';
+      // For local Ollama or local LM Studio endpoints, API key is optional
+      if (url.includes('localhost') || url.includes('127.0.0.1') || url.includes(':11434')) {
+        return true;
+      }
+    }
+    return Boolean(this.apiKeys[this.currentProvider]?.trim());
+  }
+
+  setupUI() {
+    // Toggles
+    const toggleAutoSync = document.getElementById('toggle-autosync');
+    if (toggleAutoSync) toggleAutoSync.checked = this.autoSync;
+    this.updateAutoSyncStatusLabel();
+
+    const toggleSound = document.getElementById('toggle-sound');
+    if (toggleSound) toggleSound.checked = this.soundEnabled;
+
+    const toggleDedup = document.getElementById('toggle-dedup');
+    if (toggleDedup) toggleDedup.checked = this.dedupEnabled;
+
+    // Presets
+    const presetSelect = document.getElementById('preset-select');
+    if (presetSelect) presetSelect.value = this.currentPreset;
+
+    const promptTextarea = document.getElementById('system-prompt');
+    if (promptTextarea) promptTextarea.value = this.systemPrompt;
+  }
+
+  updateAutoSyncStatusLabel() {
+    const lbl = document.getElementById('autosync-status-label');
+    if (lbl) {
+      lbl.textContent = this.autoSync ? 'Active (Auto)' : 'Disabled (Default)';
+      lbl.style.color = this.autoSync ? '#2e7d32' : 'var(--so-text-muted)';
+    }
+    const metaMode = document.getElementById('meta-sync-mode');
+    if (metaMode) {
+      metaMode.textContent = this.autoSync ? 'Tab Focus Auto-Sync Active' : 'Manual Mode (Click / Paste to Solve)';
+      metaMode.className = this.autoSync ? 'so-highlight-green' : 'so-highlight';
+    }
+  }
+
+  setupEventListeners() {
+    // --- Window Focus & Tab Visibility for Auto-Trigger (Text & Screenshots) ---
+    window.addEventListener('focus', () => {
+      if (this.autoSync) {
+        this.runPipeline({ isAuto: true });
+      }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && this.autoSync) {
+        this.runPipeline({ isAuto: true });
+      }
+    });
+
+    // --- Global Paste Listener (Captures pasted screenshots anywhere on the page) ---
+    window.addEventListener('paste', async (e) => {
+      if (!e.clipboardData || !e.clipboardData.items) return;
+
+      for (const item of e.clipboardData.items) {
+        if (item.type.startsWith('image/')) {
+          e.preventDefault();
+          const file = item.getAsFile();
+          if (file) {
+            const { base64, dataUrl } = await clipboard.blobToBase64(file);
+            this.stagedScreenshot = {
+              mimeType: file.type || 'image/png',
+              base64: base64,
+              dataUrl: dataUrl,
+              hash: `${file.size}_${base64.slice(0, 100)}`,
+              size: file.size
+            };
+            this.ui.setScreenshotPreview(this.stagedScreenshot);
+            const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+            this.ui.showToast(`تصویر پیست شد! در حال شروع حل با ${provName}...`, 'info');
+            this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
+            return;
+          }
+        }
+      }
+    });
+
+    // --- Drag & Drop Screenshot Images into the Browser ---
+    window.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    window.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        if (file.type.startsWith('image/')) {
+          const { base64, dataUrl } = await clipboard.blobToBase64(file);
+          this.stagedScreenshot = {
+            mimeType: file.type || 'image/png',
+            base64: base64,
+            dataUrl: dataUrl,
+            hash: `${file.size}_${base64.slice(0, 100)}`,
+            size: file.size
+          };
+          this.ui.setScreenshotPreview(this.stagedScreenshot);
+          const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+          this.ui.showToast(`تصویر دریافت شد! در حال تحلیل با ${provName}...`, 'info');
+          this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
+        }
+      }
+    });
+
+    // --- File Upload Input for Screenshots / Images ---
+    const filePicker = document.getElementById('file-image-picker');
+    document.getElementById('btn-upload-file')?.addEventListener('click', () => {
+      filePicker?.click();
+    });
+    filePicker?.addEventListener('change', async (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const { base64, dataUrl } = await clipboard.blobToBase64(file);
+        this.stagedScreenshot = {
+          mimeType: file.type || 'image/png',
+          base64: base64,
+          dataUrl: dataUrl,
+          hash: `${file.size}_${base64.slice(0, 100)}`,
+          size: file.size
+        };
+        this.ui.setScreenshotPreview(this.stagedScreenshot);
+        const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+        this.ui.showToast(`تصویر بارگذاری شد! در حال تحلیل با ${provName}...`, 'info');
+        this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
+        e.target.value = '';
+      }
+    });
+
+    // Remove screenshot button
+    document.getElementById('btn-remove-screenshot')?.addEventListener('click', () => {
+      this.stagedScreenshot = null;
+      this.ui.clearScreenshotPreview();
+      this.ui.showToast('Screenshot removed', 'info');
+    });
+
+    // --- Mobile Camera Capture Integration ---
+    const cameraInput = document.getElementById('camera-input');
+    const triggerCamera = () => {
+      cameraInput?.click();
+    };
+
+    document.getElementById('btn-camera')?.addEventListener('click', triggerCamera);
+    document.getElementById('btn-camera-inline')?.addEventListener('click', triggerCamera);
+    document.getElementById('btn-mobile-camera-bar')?.addEventListener('click', triggerCamera);
+
+    cameraInput?.addEventListener('change', async (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+          try {
+            const { base64, dataUrl } = await clipboard.blobToBase64(file);
+            this.stagedScreenshot = {
+              mimeType: file.type || 'image/jpeg',
+              base64: base64,
+              dataUrl: dataUrl,
+              hash: `${file.size}_${base64.slice(0, 100)}`,
+              size: file.size
+            };
+            this.ui.setScreenshotPreview(this.stagedScreenshot);
+            this.ui.showToast('Photo captured! Solving with Gemini...', 'info');
+            this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
+          } catch (err) {
+            this.ui.showToast('Failed to process photo: ' + err.message, 'error');
+          } finally {
+            e.target.value = '';
+          }
+        }
+      }
+    });
+
+    // --- Mobile Sticky Bottom Bar Actions ---
+    document.getElementById('btn-mobile-process-bar')?.addEventListener('click', () => {
+      this.runPipeline({ isAuto: false });
+    });
+
+    document.getElementById('btn-mobile-copy-bar')?.addEventListener('click', async () => {
+      const outText = document.getElementById('text-output')?.value;
+      if (outText && outText.trim()) {
+        await this.copyTextDirect(outText);
+        this.ui.showToast('Copied answer to clipboard!', 'success');
+      } else {
+        this.ui.showToast('No solution to copy yet', 'info');
+      }
+    });
+
+    // --- Mobile Sidebar Drawer Toggle ---
+    const toggleMobileSidebar = (open) => {
+      const sidebar = document.querySelector('.so-right-sidebar');
+      const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      if (!sidebar) return;
+      const isOpen = open !== undefined ? open : !sidebar.classList.contains('mobile-open');
+      sidebar.classList.toggle('mobile-open', isOpen);
+      backdrop?.classList.toggle('active', isOpen);
+    };
+
+    document.getElementById('btn-mobile-settings')?.addEventListener('click', () => toggleMobileSidebar(true));
+    document.getElementById('btn-mobile-settings-bar')?.addEventListener('click', () => toggleMobileSidebar(true));
+    document.getElementById('btn-close-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
+    document.getElementById('mobile-sidebar-backdrop')?.addEventListener('click', () => toggleMobileSidebar(false));
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      const isInput = activeTag === 'input' || activeTag === 'textarea';
+
+      // Space trigger if not typing in input
+      if (e.code === 'Space' && !isInput) {
+        e.preventDefault();
+        this.runPipeline({ isAuto: false });
+      }
+
+      // Ctrl+Enter or Cmd+Enter anytime
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        this.runPipeline({ isAuto: false });
+      }
+
+      // Escape closes modals
+      if (e.key === 'Escape') {
+        this.closeAllModals();
+      }
+    });
+
+    // Manual Action Button
+    document.getElementById('btn-manual-process')?.addEventListener('click', () => {
+      this.runPipeline({ isAuto: false });
+    });
+
+    // Auto-sync toggle
+    document.getElementById('toggle-autosync')?.addEventListener('change', (e) => {
+      this.autoSync = e.target.checked;
+      localStorage.setItem('cbai_autosync_v2', String(this.autoSync));
+      this.updateAutoSyncStatusLabel();
+      this.ui.showToast(this.autoSync ? 'خواندن خودکار کلیپ‌بورد فعال شد' : 'خواندن خودکار کلیپ‌بورد غیرفعال شد (حالت دستی)', 'info');
+      this.ui.setReady(this.hasActiveKey(), this.autoSync);
+    });
+
+    // Sound toggle
+    document.getElementById('toggle-sound')?.addEventListener('change', (e) => {
+      this.soundEnabled = e.target.checked;
+      sound.enabled = this.soundEnabled;
+      localStorage.setItem('cbai_sound', String(this.soundEnabled));
+      if (this.soundEnabled) sound.playSuccess();
+    });
+
+    // Dedup toggle
+    document.getElementById('toggle-dedup')?.addEventListener('change', (e) => {
+      this.dedupEnabled = e.target.checked;
+      clipboard.dedupEnabled = this.dedupEnabled;
+      localStorage.setItem('cbai_dedup', String(this.dedupEnabled));
+    });
+
+    // Notification toggle
+    document.getElementById('toggle-notification')?.addEventListener('change', async (e) => {
+      if (e.target.checked) {
+        if ('Notification' in window) {
+          const perm = await Notification.requestPermission();
+          if (perm === 'granted') {
+            this.notificationEnabled = true;
+            this.ui.showToast('Desktop alerts enabled', 'success');
+          } else {
+            e.target.checked = false;
+            this.notificationEnabled = false;
+            this.ui.showToast('Desktop alert permission denied', 'error');
+          }
+        }
+      } else {
+        this.notificationEnabled = false;
+      }
+    });
+
+    // Provider Tabs
+    document.querySelectorAll('.so-tab-btn, .provider-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const provider = tab.getAttribute('data-provider');
+        if (provider && PROVIDERS[provider]) {
+          this.currentProvider = provider;
+          localStorage.setItem('cbai_provider', provider);
+          this.updateProviderView();
+        }
+      });
+    });
+
+    // Primary API Key input & buttons
+    const keyInput = document.getElementById('api-key-input');
+    const btnToggleKey = document.getElementById('btn-toggle-key');
+    const btnSaveKey = document.getElementById('btn-save-key');
+
+    btnToggleKey?.addEventListener('click', () => {
+      if (keyInput) {
+        keyInput.type = keyInput.type === 'password' ? 'text' : 'password';
+        btnToggleKey.textContent = keyInput.type === 'password' ? '👁️' : '🙈';
+      }
+    });
+
+    btnSaveKey?.addEventListener('click', () => {
+      if (keyInput) {
+        const val = keyInput.value.trim();
+        this.apiKeys[this.currentProvider] = val;
+        this.saveKeys();
+        this.ui.showToast(`${PROVIDERS[this.currentProvider].name} Key #1 saved locally!`, 'success');
+        this.ui.setReady(this.hasActiveKey(), this.autoSync);
+      }
+    });
+
+    keyInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        btnSaveKey?.click();
+      }
+    });
+
+    // Backup API Key (Key 2) input & buttons for Gemini Failover
+    const backupKeyInput = document.getElementById('api-key-backup-input');
+    const btnToggleBackupKey = document.getElementById('btn-toggle-backup-key');
+    const btnSaveBackupKey = document.getElementById('btn-save-backup-key');
+
+    btnToggleBackupKey?.addEventListener('click', () => {
+      if (backupKeyInput) {
+        backupKeyInput.type = backupKeyInput.type === 'password' ? 'text' : 'password';
+        btnToggleBackupKey.textContent = backupKeyInput.type === 'password' ? '👁️' : '🙈';
+      }
+    });
+
+    btnSaveBackupKey?.addEventListener('click', () => {
+      if (backupKeyInput) {
+        const val = backupKeyInput.value.trim();
+        this.apiKeys.geminiBackup = val;
+        this.saveKeys();
+        this.ui.showToast('Gemini Backup Key #2 saved! Auto-failover ready.', 'success');
+        this.updateKeyBadge();
+      }
+    });
+
+    backupKeyInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        btnSaveBackupKey?.click();
+      }
+    });
+
+    // 3rd Party API Base URL input & save
+    const urlInput = document.getElementById('api-url-input');
+    const btnSaveUrl = document.getElementById('btn-save-url');
+
+    btnSaveUrl?.addEventListener('click', () => {
+      if (urlInput) {
+        const val = urlInput.value.trim();
+        if (val) {
+          this.apiUrls[this.currentProvider] = val;
+          this.saveKeys();
+          this.ui.showToast('API Base URL saved!', 'success');
+          this.ui.setReady(this.hasActiveKey(), this.autoSync);
+        }
+      }
+    });
+
+    urlInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        btnSaveUrl?.click();
+      }
+    });
+
+    // Quick preset buttons for 3rd party providers
+    document.querySelectorAll('.so-chip-btn').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const presetUrl = chip.getAttribute('data-preset-url');
+        const presetModel = chip.getAttribute('data-preset-model');
+        if (urlInput && presetUrl) {
+          urlInput.value = presetUrl;
+          this.apiUrls[this.currentProvider] = presetUrl;
+
+          if (presetModel) {
+            this.selectedModels[this.currentProvider] = presetModel;
+            const modelSelect = document.getElementById('model-select');
+            if (modelSelect) {
+              let opt = Array.from(modelSelect.options).find(o => o.value === presetModel);
+              if (!opt) {
+                opt = document.createElement('option');
+                opt.value = presetModel;
+                opt.textContent = presetModel;
+                modelSelect.insertBefore(opt, modelSelect.firstChild);
+              }
+              modelSelect.value = presetModel;
+            }
+          }
+
+          this.saveKeys();
+          this.ui.showToast(`Loaded ${chip.textContent.trim()} preset!`, 'info');
+          this.ui.setReady(this.hasActiveKey(), this.autoSync);
+        }
+      });
+    });
+
+    // Model selection
+    document.getElementById('model-select')?.addEventListener('change', (e) => {
+      this.selectedModels[this.currentProvider] = e.target.value;
+      const customModelGroup = document.getElementById('custom-model-group');
+      if (customModelGroup) {
+        customModelGroup.style.display = e.target.value === 'custom' ? 'flex' : 'none';
+      }
+      localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+    });
+
+    // Fetch models directly from API endpoint (GET /models)
+    document.getElementById('btn-fetch-models')?.addEventListener('click', () => {
+      this.loadModelsFromAPI();
+    });
+
+    document.getElementById('btn-fetch-models-quick')?.addEventListener('click', () => {
+      this.loadModelsFromAPI();
+    });
+
+    // Custom model input & save
+    const customModelInput = document.getElementById('custom-model-input');
+    const btnSaveCustomModel = document.getElementById('btn-save-custom-model');
+
+    btnSaveCustomModel?.addEventListener('click', () => {
+      if (customModelInput) {
+        const val = customModelInput.value.trim();
+        if (val) {
+          this.customModels[this.currentProvider] = val;
+          this.saveKeys();
+          this.ui.showToast(`Custom model saved: ${val}`, 'success');
+        }
+      }
+    });
+
+    customModelInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        btnSaveCustomModel?.click();
+      }
+    });
+
+    // Preset selection
+    document.getElementById('preset-select')?.addEventListener('change', (e) => {
+      this.currentPreset = e.target.value;
+      localStorage.setItem('cbai_preset', this.currentPreset);
+
+      if (this.currentPreset !== 'custom') {
+        this.systemPrompt = PRESETS[this.currentPreset];
+        const promptArea = document.getElementById('system-prompt');
+        if (promptArea) promptArea.value = this.systemPrompt;
+        localStorage.setItem('cbai_prompt', this.systemPrompt);
+      }
+    });
+
+    // Custom system prompt textarea
+    document.getElementById('system-prompt')?.addEventListener('input', (e) => {
+      this.systemPrompt = e.target.value;
+      localStorage.setItem('cbai_prompt', this.systemPrompt);
+    });
+
+    document.getElementById('btn-reset-prompt')?.addEventListener('click', () => {
+      this.currentPreset = 'so-solve';
+      document.getElementById('preset-select').value = 'so-solve';
+      this.systemPrompt = PRESETS['so-solve'];
+      document.getElementById('system-prompt').value = this.systemPrompt;
+      localStorage.setItem('cbai_preset', 'so-solve');
+      localStorage.setItem('cbai_prompt', this.systemPrompt);
+      this.ui.showToast('Reset prompt to Stack Overflow Copilot', 'info');
+    });
+
+    // Manual Paste button
+    document.getElementById('btn-paste-manual')?.addEventListener('click', async () => {
+      try {
+        const content = await clipboard.readClipboard();
+        if (content.type === 'image') {
+          this.stagedScreenshot = content;
+          this.ui.setScreenshotPreview(content);
+          const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+          this.ui.showToast(`تصویر دریافت شد! در حال شروع حل با ${provName}...`, 'success');
+          this.runPipeline({ isAuto: false, forcedImage: content });
+        } else if (content.type === 'text') {
+          this.ui.setInputText(content.text);
+          this.ui.showToast('متن از کلیپ‌بورد درج شد', 'info');
+        } else if (content.type === 'denied') {
+          const textInput = document.getElementById('text-input');
+          if (textInput) textInput.focus();
+          this.ui.showToast('دسترسی مستقیم کلیپ‌بورد در این مرورگر مسدود است. لطفاً با کلیدهای Ctrl+V تصویر را مستقیماً پیست کنید.', 'info');
+        } else {
+          const manualText = document.getElementById('text-input')?.value?.trim();
+          if (manualText || this.stagedScreenshot) {
+            this.runPipeline({ isAuto: false });
+          } else {
+            this.ui.showToast('کلیپ‌بورد خالی است. تصویر را با Ctrl+V پیست کنید یا فایل آن را انتخاب نمایید.', 'info');
+          }
+        }
+      } catch (err) {
+        console.warn('Manual paste click error:', err);
+        this.ui.showToast('لطفاً تصویر یا متن را مستقیماً با Ctrl+V پیست کنید.', 'info');
+      }
+    });
+
+    // Clear input
+    document.getElementById('btn-clear-input')?.addEventListener('click', () => {
+      this.ui.setInputText('');
+      this.stagedScreenshot = null;
+      this.ui.clearScreenshotPreview();
+    });
+
+    // Copy Output button
+    document.getElementById('btn-copy-output')?.addEventListener('click', async () => {
+      const outText = document.getElementById('text-output')?.value;
+      if (outText) {
+        await this.copyTextDirect(outText);
+        this.ui.showToast('Copied answer to clipboard!', 'success');
+      }
+    });
+
+    // Clear History
+    document.getElementById('btn-clear-history')?.addEventListener('click', () => {
+      this.history = [];
+      this.saveHistory();
+      this.ui.showToast('History cleared', 'info');
+    });
+
+    // Guide & Deploy Modals
+    document.getElementById('btn-guide')?.addEventListener('click', () => {
+      this.openModal('modal-guide');
+    });
+
+    document.getElementById('btn-deploy-info')?.addEventListener('click', () => {
+      this.openModal('modal-deploy');
+    });
+
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modalId = btn.getAttribute('data-close');
+        this.closeModal(modalId);
+      });
+    });
+
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('open');
+        }
+      });
+    });
+  }
+
+  // Update UI for active provider
+  updateProviderView() {
+    const prov = PROVIDERS[this.currentProvider];
+    if (!prov) return;
+
+    // Tabs
+    document.querySelectorAll('.so-tab-btn, .provider-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.getAttribute('data-provider') === this.currentProvider);
+    });
+
+    // Label & Help link
+    const label = document.getElementById('active-provider-label');
+    if (label) label.textContent = prov.name;
+
+    const link = document.getElementById('get-key-link');
+    if (link) {
+      link.href = prov.keyHelpUrl;
+      if (this.currentProvider === 'gemini') {
+        link.textContent = 'Get Key (AI Studio) \u2192';
+      } else if (this.currentProvider === 'custom_openai') {
+        link.textContent = 'Get Key (GapGPT) \u2192';
+      } else {
+        link.textContent = 'Get Key \u2192';
+      }
+    }
+
+    // 3rd Party API Base URL group toggle visibility
+    const urlGroup = document.getElementById('api-url-group');
+    const urlInput = document.getElementById('api-url-input');
+    if (urlGroup) {
+      if (this.currentProvider === 'custom_openai') {
+        urlGroup.style.display = 'flex';
+        if (urlInput) urlInput.value = this.apiUrls.custom_openai || prov.defaultUrl || '';
+      } else {
+        urlGroup.style.display = 'none';
+      }
+    }
+
+    // Key #1 Input value
+    const keyInput = document.getElementById('api-key-input');
+    if (keyInput) {
+      keyInput.value = this.apiKeys[this.currentProvider] || '';
+      keyInput.placeholder = `Paste ${prov.name} API key (${prov.placeholder})...`;
+    }
+
+    // Key Hint
+    const keyHint = document.getElementById('key-hint');
+    if (keyHint) {
+      if (this.currentProvider === 'gemini') {
+        keyHint.textContent = 'Default Gemini API key preloaded.';
+      } else if (this.currentProvider === 'custom_openai') {
+        keyHint.textContent = 'GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.';
+      } else {
+        keyHint.textContent = 'Saved securely in your browser localStorage.';
+      }
+    }
+
+    // Key #2 (Backup Gemini Key) toggle visibility
+    const backupKeyGroup = document.getElementById('backup-key-group');
+    const backupKeyInput = document.getElementById('api-key-backup-input');
+    if (backupKeyGroup) {
+      if (this.currentProvider === 'gemini') {
+        backupKeyGroup.style.display = 'flex';
+        if (backupKeyInput) backupKeyInput.value = this.apiKeys.geminiBackup || '';
+      } else {
+        backupKeyGroup.style.display = 'none';
+      }
+    }
+
+    // Show Load Models from API button for all providers
+    const btnFetchModels = document.getElementById('btn-fetch-models');
+    if (btnFetchModels) {
+      btnFetchModels.style.display = 'inline-flex';
+    }
+
+    // Populate Models dropdown
+    this.populateModelDropdown();
+
+    this.updateKeyBadge();
+  }
+
+  // Populate model dropdown options (from cached API fetch or static provider defaults)
+  populateModelDropdown() {
+    const prov = PROVIDERS[this.currentProvider];
+    if (!prov) return;
+
+    const modelSelect = document.getElementById('model-select');
+    if (!modelSelect) return;
+
+    modelSelect.innerHTML = '';
+
+    const currentSelected = this.selectedModels[this.currentProvider];
+    const fetchedList = this.fetchedModels[this.currentProvider] || [];
+
+    // If we have models fetched directly from the API, display them
+    if (fetchedList.length > 0) {
+      const groupFetched = document.createElement('optgroup');
+      groupFetched.label = `API Models (${fetchedList.length} loaded from endpoint)`;
+      fetchedList.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.id;
+        opt.textContent = m.name || m.id;
+        if (m.id === currentSelected) {
+          opt.selected = true;
+        }
+        groupFetched.appendChild(opt);
+      });
+      modelSelect.appendChild(groupFetched);
+
+      // Also add provider defaults as quick presets group
+      if (prov.models && prov.models.length > 0) {
+        const groupDefaults = document.createElement('optgroup');
+        groupDefaults.label = 'Default Presets';
+        prov.models.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m.id;
+          opt.textContent = m.name;
+          if (m.id === currentSelected && !modelSelect.value) {
+            opt.selected = true;
+          }
+          groupDefaults.appendChild(opt);
+        });
+        modelSelect.appendChild(groupDefaults);
+      }
+    } else {
+      // Standard static models
+      (prov.models || []).forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.id;
+        opt.textContent = m.name;
+        if (m.id === currentSelected) {
+          opt.selected = true;
+        }
+        modelSelect.appendChild(opt);
+      });
+    }
+
+    // Always ensure "custom" option is present for 3rd party providers
+    if (this.currentProvider === 'custom_openai') {
+      const hasCustom = Array.from(modelSelect.options).some(o => o.value === 'custom');
+      if (!hasCustom) {
+        const customOpt = document.createElement('option');
+        customOpt.value = 'custom';
+        customOpt.textContent = '✍️ Custom Model Name (type your own)...';
+        if (currentSelected === 'custom') {
+          customOpt.selected = true;
+        }
+        modelSelect.appendChild(customOpt);
+      }
+    }
+
+    // If currently selected model is not in the dropdown list (e.g. from preset chips or saved custom string)
+    const hasMatch = Array.from(modelSelect.options).some(o => o.value === currentSelected);
+    if (!hasMatch && currentSelected && currentSelected !== 'custom') {
+      const dynamicOpt = document.createElement('option');
+      dynamicOpt.value = currentSelected;
+      dynamicOpt.textContent = `⚡ ${currentSelected}`;
+      dynamicOpt.selected = true;
+      modelSelect.insertBefore(dynamicOpt, modelSelect.firstChild);
+    } else if (hasMatch) {
+      modelSelect.value = currentSelected;
+    }
+
+    // Toggle custom model input group
+    const customModelGroup = document.getElementById('custom-model-group');
+    const customModelInput = document.getElementById('custom-model-input');
+    if (customModelGroup) {
+      const isCustomSelected = modelSelect.value === 'custom';
+      customModelGroup.style.display = isCustomSelected ? 'flex' : 'none';
+      if (customModelInput) {
+        customModelInput.value = this.customModels[this.currentProvider] || '';
+      }
+    }
+  }
+
+  // Fetch list of models from API and update dropdown (Supports Gemini, GapGPT, OpenAI)
+  async loadModelsFromAPI() {
+    const provider = this.currentProvider;
+    const apiKey = this.apiKeys[provider] || '';
+
+    const isLocal = provider === 'custom_openai' && 
+      (this.apiUrls.custom_openai?.includes('localhost') || 
+       this.apiUrls.custom_openai?.includes('127.0.0.1') || 
+       this.apiUrls.custom_openai?.includes(':11434'));
+
+    if (!isLocal && (!apiKey || !apiKey.trim())) {
+      this.ui.showToast(`Please enter and save your ${PROVIDERS[provider]?.name || provider} API Key first.`, 'warning');
+      return;
+    }
+
+    const btnFetch = document.getElementById('btn-fetch-models');
+    const btnQuick = document.getElementById('btn-fetch-models-quick');
+    const origText = btnFetch ? btnFetch.textContent : '';
+
+    if (btnFetch) {
+      btnFetch.disabled = true;
+      btnFetch.textContent = '⏳ Loading Models...';
+    }
+    if (btnQuick) {
+      btnQuick.disabled = true;
+      btnQuick.textContent = '⏳ Loading...';
+    }
+
+    try {
+      let models = [];
+      if (provider === 'gemini') {
+        this.ui.showToast('Connecting to Google Gemini API (AI Studio)...', 'info');
+        models = await fetchGeminiModels({ apiKey });
+      } else {
+        const baseUrl = provider === 'custom_openai' 
+          ? (this.apiUrls.custom_openai || 'https://api.gapgpt.app/v1') 
+          : (this.apiUrls.openai || 'https://api.openai.com/v1');
+        this.ui.showToast(`Connecting to ${baseUrl}/models ...`, 'info');
+        models = await fetchOpenAIModels({ baseUrl, apiKey });
+      }
+
+      this.fetchedModels[provider] = models;
+      localStorage.setItem('cbai_fetched_models', JSON.stringify(this.fetchedModels));
+
+      // Auto-select first fetched model if none selected or set to 'custom' without value
+      if (!this.selectedModels[provider] || this.selectedModels[provider] === 'custom') {
+        if (models[0]?.id) {
+          this.selectedModels[provider] = models[0].id;
+          localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+        }
+      }
+
+      this.populateModelDropdown();
+      sound.playSuccess();
+      const providerName = PROVIDERS[provider]?.name || provider;
+      this.ui.showToast(`🎉 Loaded ${models.length} models for ${providerName}!`, 'success');
+    } catch (err) {
+      console.error('Failed to load models:', err);
+      sound.playError();
+      this.ui.showToast(`Failed to load models: ${err.message}`, 'error');
+    } finally {
+      if (btnFetch) {
+        btnFetch.disabled = false;
+        btnFetch.textContent = origText || '🔄 Load Models from API';
+      }
+      if (btnQuick) {
+        btnQuick.disabled = false;
+        btnQuick.textContent = '⚡ Load API Models';
+      }
+    }
+  }
+
+  updateKeyBadge() {
+    const badge = document.getElementById('key-status-badge');
+    if (!badge) return;
+
+    if (this.currentProvider === 'gemini') {
+      const hasKey1 = Boolean(this.apiKeys.gemini?.trim());
+      const hasKey2 = Boolean(this.apiKeys.geminiBackup?.trim());
+
+      if (hasKey1 && hasKey2) {
+        badge.className = 'so-status-badge success';
+        badge.textContent = '2 Keys Ready (Auto-Failover ON)';
+      } else if (hasKey1) {
+        badge.className = 'so-status-badge info';
+        badge.textContent = 'Key 1 Ready (No Backup)';
+      } else {
+        badge.className = 'so-status-badge warning';
+        badge.textContent = 'Key Required';
+      }
+    } else {
+      const isLocal = this.currentProvider === 'custom_openai' &&
+                      (this.apiUrls.custom_openai?.includes('localhost') || 
+                       this.apiUrls.custom_openai?.includes('127.0.0.1') || 
+                       this.apiUrls.custom_openai?.includes(':11434'));
+
+      const hasKey = this.hasActiveKey();
+      if (hasKey) {
+        badge.className = 'so-status-badge success';
+        badge.textContent = isLocal ? 'Local Endpoint Ready' : 'Key Active & Ready';
+      } else {
+        badge.className = 'so-status-badge warning';
+        badge.textContent = 'Key Required';
+      }
+    }
+  }
+
+  async checkInitialPermissions() {
+    try {
+      const perm = await clipboard.checkPermission();
+      if (perm === 'denied') {
+        console.log('Clipboard permission is restricted. Manual paste (Ctrl+V) and file upload are enabled.');
+      }
+    } catch (e) {
+      console.warn('Permission query not supported:', e);
+    }
+  }
+
+  // Core Pipeline Execution (Supports Text, Screenshot Images, and Dual Gemini Keys)
+  async runPipeline({ isAuto = false, forcedImage = null } = {}) {
+    if (clipboard.isProcessing) return;
+
+    // Verify API Key
+    const apiKey = this.apiKeys[this.currentProvider];
+    const isLocal = this.currentProvider === 'custom_openai' && 
+                    (this.apiUrls.custom_openai?.includes('localhost') || 
+                     this.apiUrls.custom_openai?.includes('127.0.0.1') || 
+                     this.apiUrls.custom_openai?.includes(':11434'));
+
+    if (!isLocal && (!apiKey || !apiKey.trim())) {
+      if (!isAuto) {
+        this.ui.setError(`Please enter your ${PROVIDERS[this.currentProvider].name} API key first.`);
+        this.ui.showToast(`Enter your ${PROVIDERS[this.currentProvider].name} API key in the settings.`, 'error');
+      }
+      return;
+    }
+
+    let textToProcess = '';
+    let imageToProcess = forcedImage || this.stagedScreenshot;
+
+    try {
+      if (!imageToProcess) {
+        // Step 1: Read Clipboard Content safely without halting if restricted
+        try {
+          const clipContent = await clipboard.readClipboard();
+
+          if (clipContent && clipContent.type === 'image') {
+            // Screenshot captured!
+            if (isAuto && !clipboard.shouldProcessImage(clipContent.hash)) {
+              return; // Already processed this screenshot
+            }
+            imageToProcess = clipContent;
+            this.stagedScreenshot = clipContent;
+            this.ui.setScreenshotPreview(clipContent);
+          } else if (clipContent && clipContent.type === 'text') {
+            // Text captured!
+            if (isAuto && !clipboard.shouldProcessText(clipContent.text)) {
+              return; // Already processed this text
+            }
+            textToProcess = clipContent.text;
+          }
+        } catch (clipErr) {
+          console.warn('Silent clipboard read skipped:', clipErr);
+        }
+      }
+
+      // Check manual text if not set
+      if (!textToProcess) {
+        const manualText = document.getElementById('text-input')?.value?.trim();
+        if (manualText) {
+          textToProcess = manualText;
+        }
+      }
+
+      // Check staged screenshot if not yet assigned
+      if (!imageToProcess && this.stagedScreenshot) {
+        imageToProcess = this.stagedScreenshot;
+      }
+
+      const hasText = Boolean(textToProcess && textToProcess.trim());
+      const hasImage = Boolean(imageToProcess && imageToProcess.base64);
+
+      if (!hasText && !hasImage) {
+        if (!isAuto) {
+          this.ui.showToast('متن یا تصویری پیدا نشد. تصویر را با کلیدهای Ctrl+V پیست کنید یا فایل آن را آپلود نمایید.', 'info');
+        }
+        return;
+      }
+
+      clipboard.isProcessing = true;
+      const startTime = performance.now();
+
+      // UI Stage 1: Reading
+      const modeLabel = hasImage ? 'Analyzing captured photo / screenshot...' : 'Reading clipboard input...';
+      this.ui.setProcessing(modeLabel);
+      this.ui.setActiveStep(1);
+      if (hasText) this.ui.setInputText(textToProcess);
+      sound.playStart();
+
+      // UI Stage 2: AI Inference
+      let effectiveModel = this.selectedModels[this.currentProvider] || PROVIDERS[this.currentProvider].defaultModel;
+      if (effectiveModel === 'custom' && this.customModels[this.currentProvider]) {
+        effectiveModel = this.customModels[this.currentProvider];
+      }
+
+      this.ui.setActiveStep(2);
+      this.ui.setProcessing(`Querying ${PROVIDERS[this.currentProvider].name} (${effectiveModel})...`);
+
+      let usedKeyIndex = 1;
+      const backupKey = this.currentProvider === 'gemini' ? this.apiKeys.geminiBackup : null;
+      const baseUrl = this.apiUrls[this.currentProvider] || null;
+
+      const output = await callAI({
+        provider: this.currentProvider,
+        apiKey: apiKey,
+        backupApiKey: backupKey,
+        baseUrl: baseUrl,
+        model: effectiveModel,
+        systemPrompt: this.systemPrompt,
+        text: textToProcess,
+        image: imageToProcess,
+        onKeySwitch: (fromKey, toKey) => {
+          usedKeyIndex = toKey;
+          this.ui.showToast(`⚠️ Gemini Key #${fromKey} reached quota limit! Auto-switched to Backup Key #${toKey}.`, 'warning');
+        }
+      });
+
+      const durationMs = Math.round(performance.now() - startTime);
+
+      // Check if mobile device taking screenshot/photo
+      const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      const isMobileScreenshot = isMobile && Boolean(hasImage);
+
+      // UI Stage 3: Display or Copy Solution
+      this.ui.setActiveStep(3);
+
+      if (isMobileScreenshot) {
+        // ON MOBILE SCREENSHOT/PHOTO: Do NOT auto-copy to clipboard. Show answer directly in the box!
+        this.ui.setProcessing('Displaying solution in answer box...');
+        this.ui.setOutputText(output, { isMobileScreenshot: true });
+        sound.playSuccess();
+
+        const successMsg = usedKeyIndex === 2
+          ? 'Solution ready in the box below! (Used Backup Key #2). Tap Copy anytime.'
+          : 'Solution ready! Displayed in the answer box below. (Not copied to clipboard on mobile)';
+        this.ui.setSuccess(successMsg, { isMobileScreenshot: true });
+        this.ui.showToast('Answer displayed in the box below!', 'success');
+      } else {
+        // ON DESKTOP (or non-screenshot):
+        // 1. ALWAYS display output in answer box FIRST so it is never lost!
+        this.ui.setOutputText(output, { isMobileScreenshot: false });
+
+        // 2. Safely attempt to write solution back to System Clipboard
+        this.ui.setProcessing('Writing solution back to system clipboard...');
+        let copied = false;
+        try {
+          copied = await clipboard.writeText(output);
+        } catch (copyErr) {
+          console.warn('Auto clipboard write failed:', copyErr);
+          copied = false;
+        }
+
+        sound.playSuccess();
+
+        if (copied) {
+          const successMsg = usedKeyIndex === 2
+            ? 'Solution ready! (Used Backup Key #2). Copied to clipboard!'
+            : 'Solution copied to clipboard! Switch back to your IDE & paste (Ctrl+V).';
+          this.ui.setSuccess(successMsg, { isMobileScreenshot: false });
+          this.ui.showToast('پاسخ در کلیپ‌بورد کپی شد!', 'success');
+        } else {
+          // If browser restricts background/insecure clipboard write, do NOT fail the app
+          const fallbackMsg = usedKeyIndex === 2
+            ? 'Solution ready in the answer box below! (Used Backup Key #2). Click Copy button to copy.'
+            : 'Solution ready in the answer box below! (Auto-copy restricted by browser; click Copy button to copy).';
+          this.ui.setSuccess(fallbackMsg, { isMobileScreenshot: false });
+          this.ui.showToast('پاسخ در کادر پاسخ قرار گرفت! (دکمه Copy را بزنید)', 'info');
+        }
+      }
+
+      if (hasText) clipboard.lastInput = textToProcess;
+      if (hasImage) clipboard.lastImageHash = imageToProcess.hash;
+      clipboard.lastOutput = output;
+
+      // Desktop notification
+      if (this.notificationEnabled && document.hidden) {
+        new Notification('Stack Overflow Copilot Solution Ready!', {
+          body: output.slice(0, 120),
+          icon: 'favicon.svg'
+        });
+      }
+
+      // Record in history
+      const historyInputDesc = hasImage 
+        ? (hasText ? `[Photo/Image + Text] ${textToProcess.slice(0, 60)}` : `[Photo/Image] ${imageToProcess.mimeType} (${Math.round(imageToProcess.size/1024)} KB)`)
+        : textToProcess;
+
+      const keyTag = this.currentProvider === 'gemini' ? ` (Key ${usedKeyIndex})` : '';
+
+      this.history.unshift({
+        id: Date.now(),
+        timestamp: Date.now(),
+        provider: `${PROVIDERS[this.currentProvider].name}${keyTag}`,
+        model: effectiveModel,
+        input: historyInputDesc,
+        output: output,
+        durationMs: durationMs
+      });
+      this.saveHistory();
+
+    } catch (err) {
+      console.error('Pipeline error:', err);
+      sound.playError();
+      this.ui.setError(err.message || 'Failed to process clipboard');
+    } finally {
+      clipboard.isProcessing = false;
+    }
+  }
+
+  async copyTextDirect(text) {
+    try {
+      const ok = await clipboard.writeText(text);
+      if (ok) {
+        sound.playSuccess();
+        this.ui.showToast('Copied to clipboard!', 'success');
+      } else {
+        this.ui.showToast('Unable to auto-copy. Please select and copy manually (Ctrl+C).', 'warning');
+      }
+    } catch (e) {
+      this.ui.showToast('Please copy manually (Ctrl+C).', 'warning');
+    }
+  }
+
+  openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.add('open');
+  }
+
+  closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove('open');
+  }
+
+  closeAllModals() {
+    document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+    document.querySelector('.so-right-sidebar')?.classList.remove('mobile-open');
+    document.getElementById('mobile-sidebar-backdrop')?.classList.remove('active');
+  }
+}
+
+// Bootstrap
+window.addEventListener('DOMContentLoaded', () => {
+  new App();
+});
+
+
+</script>
+</body>
+</html>
