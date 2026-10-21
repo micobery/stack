@@ -29,21 +29,37 @@ export const PROVIDERS = {
   },
   custom_openai: {
     id: 'custom_openai',
-    name: '3rd Party (GapGPT / OpenAI)',
+    name: '3rd Party 1 (GapGPT)',
     keyHelpUrl: 'https://gapgpt.app',
     placeholder: 'sk-F4T2AxOQ...',
     defaultUrl: 'https://api.gapgpt.app/v1',
     models: [
-      { id: 'gpt-5-nano', name: '⚡ GPT-5 Nano (Ultra Fast & Accurate — Default)' },
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'gpt-5-nano', name: 'GPT-5 Nano' },
       { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Reliable)' },
-      { id: 'gpt-5-mini', name: 'GPT-5 Mini' },
       { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
-      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1 Reasoning)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
       { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
-      { id: 'gpt-4o', name: 'GPT-4o (Vision & Code Flagship)' },
+      { id: 'gpt-4o', name: 'GPT-4o' },
       { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
     ],
-    defaultModel: 'gpt-5-nano'
+    defaultModel: 'deepseek-v4.1-flash'
+  },
+  avalai: {
+    id: 'avalai',
+    name: '3rd Party 2 (AvalAI)',
+    keyHelpUrl: 'https://avalai.ir',
+    placeholder: 'aa-d7tPVrnv...',
+    defaultUrl: 'https://api.avalai.ir/v1',
+    models: [
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
+      { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'deepseek-v4.1-flash'
   }
 };
 
@@ -91,7 +107,16 @@ CRITICAL RULES:
       return await callOpenAICompatible({
         baseUrl: baseUrl || 'https://api.gapgpt.app/v1',
         apiKey: apiKey ? apiKey.trim() : '',
-        model: model || 'gpt-5-nano',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'avalai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.avalai.ir/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'deepseek-v4.1-flash',
         systemPrompt: effectivePrompt,
         text,
         image

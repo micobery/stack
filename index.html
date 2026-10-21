@@ -626,9 +626,12 @@ public class OrderServiceImpl implements OrderService {
     <!-- Right Sidebar (The Overflow Blog & AI Settings) -->
     <aside class="so-right-sidebar">
       <!-- Mobile Drawer Close Header -->
-      <div class="so-sidebar-mobile-header so-mobile-only">
-        <span>⚙️ Copilot Config &amp; Keys</span>
-        <button id="btn-close-sidebar" class="modal-close" title="Close settings">&times;</button>
+      <div class="so-sidebar-mobile-header">
+        <div class="so-sidebar-mobile-title">
+          <span class="icon">⚙️</span>
+          <span>تنظیمات و کلیدهای هوش مصنوعی</span>
+        </div>
+        <button id="btn-close-sidebar" class="modal-close" title="Close settings" aria-label="Close">&times;</button>
       </div>
 
       <!-- "The Overflow Config" Box -->
@@ -645,7 +648,8 @@ public class OrderServiceImpl implements OrderService {
 
           <!-- Provider Tabs -->
           <div class="so-provider-tabs">
-            <button class="so-tab-btn active" data-provider="custom_openai">3rd Party (GapGPT)</button>
+            <button class="so-tab-btn active" data-provider="custom_openai">GapGPT</button>
+            <button class="so-tab-btn" data-provider="avalai">AvalAI</button>
             <button class="so-tab-btn" data-provider="gemini">Gemini</button>
             <button class="so-tab-btn" data-provider="openai">OpenAI</button>
           </div>
@@ -662,7 +666,8 @@ public class OrderServiceImpl implements OrderService {
             </div>
             <div class="so-url-presets">
               <span class="so-hint-text">Quick:</span>
-              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="gpt-5-nano">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="deepseek-v4.1-flash">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.avalai.ir/v1" data-preset-model="deepseek-v4.1-flash">AvalAI</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.deepseek.com/v1" data-preset-model="deepseek-chat">DeepSeek</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.groq.com/openai/v1" data-preset-model="llama-3.3-70b-versatile">Groq</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://openrouter.ai/api/v1" data-preset-model="deepseek/deepseek-chat">OpenRouter</button>
@@ -675,14 +680,14 @@ public class OrderServiceImpl implements OrderService {
           <div class="so-form-group">
             <div class="so-form-label-row">
               <label for="api-key-input">API Key</label>
-              <a id="get-key-link" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get Key &rarr;</a>
+              <a id="get-key-link" href="https://gapgpt.app" target="_blank" rel="noopener">Get Key &rarr;</a>
             </div>
             <div class="so-input-wrapper">
               <input type="password" id="api-key-input" value="sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX" placeholder="Primary API key...">
               <button id="btn-toggle-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
               <button id="btn-save-key" class="so-btn-save-inside">Save</button>
             </div>
-            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.</p>
+            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Default model: deepseek-v4.1-flash.</p>
           </div>
 
           <!-- Backup API Key (Key 2) for Rate Limit Failover -->
@@ -700,20 +705,23 @@ public class OrderServiceImpl implements OrderService {
           </div>
 
           <!-- Model Selection -->
-          <div class="so-form-group">
+          <div class="so-form-group" id="model-select-group">
             <div class="so-form-label-row">
               <label for="model-select">AI Model</label>
-              <button type="button" id="btn-fetch-models" class="so-btn-fetch-models" style="display: none;" title="Fetch all available models directly from this API endpoint">
-                🔄 Load Models from API
-              </button>
+              <span id="model-count-badge" class="so-model-count-badge" style="display: none;"></span>
             </div>
             <select id="model-select" class="so-select">
-              <option value="gpt-5-nano" selected>gpt-5-nano (GapGPT / 3rd Party)</option>
+              <option value="deepseek-v4.1-flash" selected>⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)</option>
+              <option value="gpt-5-nano">gpt-5-nano</option>
               <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
               <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
               <option value="deepseek-chat">deepseek-chat</option>
               <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
             </select>
+            <button type="button" id="btn-fetch-models" class="so-btn-fetch-dedicated" title="Fetch and refresh available models directly from this API endpoint">
+              <span class="btn-icon">🔄</span>
+              <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>
+            </button>
           </div>
 
           <!-- Custom Model Name Input -->
@@ -747,32 +755,36 @@ public class OrderServiceImpl implements OrderService {
               <label for="system-prompt">System Prompt</label>
               <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
             </div>
-            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه و مسلط در جلسه امتحان هستید. خروجی باید ۱۰۰٪ آماده برای کپی‌پیست مستقیم در برگه یا سیستم آزمون باشد و به هیچ وجه نباید کوچک‌ترین نشانه‌ای از هوش مصنوعی داشته باشد (کاملاً طبیعی، انسانی، بدون الگوها و کلمات رباتیک).
+            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
 
-قوانین بسیار حیاتی (Strict Copy-Paste & Human Tone):
-۱. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ مقدمه، نتیجه‌گیری، سلام، یا جملاتی مثل «در ادامه پاسخ‌ها آمده است» یا «امیدوارم موفق باشید» ننویس. فوراً و مستقیماً با پاسخ «سوال ۱» شروع کن تا کاربر بتواند بلافاصله کپی‌پیست کند.
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
 
-۲. لحن و نگارش کاملاً انسانی (غیرقابل تشخیص از AI):
-- متن را طوری بنویس که انگار یک دانشجوی مسلط خودش مستقیماً تایپ کرده است.
-- از کلمات کلیشه‌ای و لو‌دهنده هوش مصنوعی (مانند «شایان ذکر است»، «در واقع می‌توان گفت»، «به عنوان جمع‌بندی»، «به طور کلی»، «لازم به یادآوری است») اکیداً خودداری کن.
-- جملات صریح، طبیعی، تمیز و استاندارد دانشگاهی باشند.
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
 
-۳. تفکیک دقیق و ذکر نکات نمره‌آور تک‌تک سوالات:
-اگر در تصویر یا متن ورودی چند سوال وجود دارد، به تک‌تک سوالات به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
-• سوال ۲: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
 • سوال ۳: ...
-هیچ سوالی را جا نینداز و سوالات را با هم ادغام نکن.
-
-۴. نحوه پاسخ به انواع سوالات:
-- سوالات تشریحی و مفهومی: نکات کلیدی و نمره‌آور تخصصی (Keywords) را در ۲ تا ۴ سطر کاملاً دقیق و شفاف بنویس تا مصحح حداکثر نمره را بدهد.
-- سوالات تستی و چهارگزینه‌ای: فوراً گزینه صحیح را مشخص کن (مثلاً: گزینه ۳) و در صورت لزوم حداکثر در یک خط کوتاه دلیل فنی و نمره‌آور آن را بنویس.
-- سوالات برنامه‌نویسی و کد: فقط خود کد تمیز و استاندارد Java را بدون توضیحات طولانی و غیرضروری بنویس.
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
 
 ۵. زبان و فرمت:
-تمام پاسخ‌های متنی به زبان فارسی طبیعی و تمام کدها به زبان Java باشد.</textarea>
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.</textarea>
           </div>
+
+          <!-- Done / Close Button on Mobile -->
+          <button type="button" id="btn-done-sidebar" class="so-btn-done-sidebar so-mobile-only">
+            ✔️ بستن و ذخیره تنظیمات (Done)
+          </button>
         </div>
       </div>
 

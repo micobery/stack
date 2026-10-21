@@ -13,6 +13,10 @@ const DEFAULT_GEMINI_KEY = 'AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Ge
 const DEFAULT_GAPGPT_URL = 'https://api.gapgpt.app/v1';
 const DEFAULT_GAPGPT_KEY = 'sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX';
 
+// Default 3rd Party #2 (AvalAI) API URL & Key provided by user
+const DEFAULT_AVALAI_URL = 'https://api.avalai.ir/v1';
+const DEFAULT_AVALAI_KEY = 'aa-d7tPVrnvwXyu03TJGpXfSPMkaesXshv98TqFM3P6p6aPmWzN';
+
 // Prompt Presets tailored for developer productivity: Persian explanations + Java code + Human tone
 const PRESETS = {
   'so-solve': `You are an experienced human senior developer answering a coding question or solving an error. Respond naturally and authentically like a real human programmer — NEVER sound like an AI (avoid robotic intros like "Certainly!", "Here is the code", or formal bot disclaimers).
@@ -29,31 +33,30 @@ CRITICAL RULES:
 2. Code in Java: ALL code fixes, snippets, or implementations MUST be written in Java.
 3. Natural Human Tone: Speak directly and naturally like an experienced colleague solving the bug shown in the image. Return the working Java code ready to use.`,
 
-  'exam-answer': `شما یک دانشجوی نخبه و مسلط در جلسه امتحان هستید. خروجی باید ۱۰۰٪ آماده برای کپی‌پیست مستقیم در برگه یا سیستم آزمون باشد و به هیچ وجه نباید کوچک‌ترین نشانه‌ای از هوش مصنوعی داشته باشد (کاملاً طبیعی، انسانی، بدون الگوها و کلمات رباتیک).
+  'exam-answer': `شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
 
-قوانین بسیار حیاتی (Strict Copy-Paste & Human Tone):
-۱. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ مقدمه، نتیجه‌گیری، سلام، یا جملاتی مثل «در ادامه پاسخ‌ها آمده است» یا «امیدوارم موفق باشید» ننویس. فوراً و مستقیماً با پاسخ «سوال ۱» شروع کن تا کاربر بتواند بلافاصله کپی‌پیست کند.
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
 
-۲. لحن و نگارش کاملاً انسانی (غیرقابل تشخیص از AI):
-- متن را طوری بنویس که انگار یک دانشجوی مسلط خودش مستقیماً تایپ کرده است.
-- از کلمات کلیشه‌ای و لو‌دهنده هوش مصنوعی (مانند «شایان ذکر است»، «در واقع می‌توان گفت»، «به عنوان جمع‌بندی»، «به طور کلی»، «لازم به یادآوری است») اکیداً خودداری کن.
-- جملات صریح، طبیعی، تمیز و استاندارد دانشگاهی باشند.
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
 
-۳. تفکیک دقیق و ذکر نکات نمره‌آور تک‌تک سوالات:
-اگر در تصویر یا متن ورودی چند سوال وجود دارد، به تک‌تک سوالات به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
-• سوال ۲: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
 • سوال ۳: ...
-هیچ سوالی را جا نینداز و سوالات را با هم ادغام نکن.
-
-۴. نحوه پاسخ به انواع سوالات:
-- سوالات تشریحی و مفهومی: نکات کلیدی و نمره‌آور تخصصی (Keywords) را در ۲ تا ۴ سطر کاملاً دقیق و شفاف بنویس تا مصحح حداکثر نمره را بدهد.
-- سوالات تستی و چهارگزینه‌ای: فوراً گزینه صحیح را مشخص کن (مثلاً: گزینه ۳) و در صورت لزوم حداکثر در یک خط کوتاه دلیل فنی و نمره‌آور آن را بنویس.
-- سوالات برنامه‌نویسی و کد: فقط خود کد تمیز و استاندارد Java را بدون توضیحات طولانی و غیرضروری بنویس.
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
 
 ۵. زبان و فرمت:
-تمام پاسخ‌های متنی به زبان فارسی طبیعی و تمام کدها به زبان Java باشد.`,
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.`,
 
   'code-debug': `بررسی و دیباگ کد:
 1. تمام توضیحات، علت خطا و نکات باید به زبان فارسی روان و کاملاً انسانی (غیررباتیک) بیان شود.
@@ -79,19 +82,23 @@ class App {
       gemini: DEFAULT_GEMINI_KEY,
       geminiBackup: '',
       openai: '',
-      custom_openai: DEFAULT_GAPGPT_KEY
+      custom_openai: DEFAULT_GAPGPT_KEY,
+      avalai: DEFAULT_AVALAI_KEY
     };
     this.apiUrls = {
       openai: 'https://api.openai.com/v1',
-      custom_openai: DEFAULT_GAPGPT_URL
+      custom_openai: DEFAULT_GAPGPT_URL,
+      avalai: DEFAULT_AVALAI_URL
     };
     this.selectedModels = {
       gemini: PROVIDERS.gemini.defaultModel,
       openai: PROVIDERS.openai.defaultModel,
-      custom_openai: 'gpt-5-nano'
+      custom_openai: 'deepseek-v4.1-flash',
+      avalai: 'deepseek-v4.1-flash'
     };
     this.customModels = {
-      custom_openai: 'gpt-5-nano'
+      custom_openai: 'deepseek-v4.1-flash',
+      avalai: 'deepseek-v4.1-flash'
     };
     this.fetchedModels = {};
     this.autoSync = false; // Default: Inactive (do not auto-read clipboard)
@@ -134,6 +141,11 @@ class App {
         this.apiKeys.custom_openai = DEFAULT_GAPGPT_KEY;
       }
 
+      // Preload AvalAI 3rd-party key if none is present
+      if (!this.apiKeys.avalai || !this.apiKeys.avalai.trim()) {
+        this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+      }
+
       const storedProvider = localStorage.getItem('cbai_provider');
       if (storedProvider && PROVIDERS[storedProvider]) {
         this.currentProvider = storedProvider;
@@ -151,6 +163,11 @@ class App {
         this.apiUrls.custom_openai = DEFAULT_GAPGPT_URL;
       }
 
+      // Preload AvalAI URL if none is present
+      if (!this.apiUrls.avalai) {
+        this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+      }
+
       this.saveKeys();
 
       const storedCustomModels = localStorage.getItem('cbai_custom_models');
@@ -161,21 +178,22 @@ class App {
       const storedModels = localStorage.getItem('cbai_models');
       if (storedModels) this.selectedModels = { ...this.selectedModels, ...JSON.parse(storedModels) };
 
-      // Ensure custom_openai defaults to gpt-5-nano
-      if (!this.selectedModels.custom_openai || 
-          this.selectedModels.custom_openai === 'deepseek/deepseek-chat' || 
-          this.selectedModels.custom_openai === 'gpt-4o-mini') {
-        this.selectedModels.custom_openai = 'gpt-5-nano';
-      }
-
-      // Default to 3rd Party provider (GapGPT) and gpt-5-nano model
-      const providerDefaultMigrated = localStorage.getItem('cbai_default_gapgpt_v3');
-      if (!providerDefaultMigrated) {
-        this.currentProvider = 'custom_openai';
-        this.selectedModels.custom_openai = 'gpt-5-nano';
-        localStorage.setItem('cbai_provider', 'custom_openai');
-        localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
-        localStorage.setItem('cbai_default_gapgpt_v3', 'true');
+      // Set default model for both 3rd-party providers (GapGPT and AvalAI) to deepseek-v4.1-flash
+      const deepseekMigrated = localStorage.getItem('cbai_deepseek_flash_v5');
+      if (!deepseekMigrated) {
+        this.selectedModels.custom_openai = 'deepseek-v4.1-flash';
+        this.selectedModels.avalai = 'deepseek-v4.1-flash';
+        this.customModels.custom_openai = 'deepseek-v4.1-flash';
+        this.customModels.avalai = 'deepseek-v4.1-flash';
+        this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+        this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+        try {
+          localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+          localStorage.setItem('cbai_custom_models', JSON.stringify(this.customModels));
+          localStorage.setItem('cbai_api_keys', JSON.stringify(this.apiKeys));
+          localStorage.setItem('cbai_api_urls', JSON.stringify(this.apiUrls));
+          localStorage.setItem('cbai_deepseek_flash_v5', 'true');
+        } catch (e) {}
       }
 
       const storedFetchedModels = localStorage.getItem('cbai_fetched_models');
@@ -206,11 +224,13 @@ class App {
       }
 
       const storedPrompt = localStorage.getItem('cbai_prompt');
-      const examPromptHumanUpdated = localStorage.getItem('cbai_exam_human_v3');
-      if (!examPromptHumanUpdated && this.currentPreset === 'exam-answer') {
+      const examPromptUltraShort = localStorage.getItem('cbai_exam_ultrashort_v4');
+      if (!examPromptUltraShort && this.currentPreset === 'exam-answer') {
         this.systemPrompt = PRESETS['exam-answer'];
-        localStorage.setItem('cbai_prompt', this.systemPrompt);
-        localStorage.setItem('cbai_exam_human_v3', 'true');
+        try {
+          localStorage.setItem('cbai_prompt', this.systemPrompt);
+          localStorage.setItem('cbai_exam_ultrashort_v4', 'true');
+        } catch (e) {}
       } else if (!storedPrompt || storedPrompt.includes('Stack Overflow Copilot. The user has copied') || storedPrompt.includes('Fulfill the user input concisely')) {
         this.systemPrompt = PRESETS[this.currentPreset] || PRESETS['so-solve'];
         localStorage.setItem('cbai_prompt', this.systemPrompt);
@@ -249,8 +269,8 @@ class App {
   }
 
   hasActiveKey() {
-    if (this.currentProvider === 'custom_openai') {
-      const url = this.apiUrls.custom_openai || '';
+    if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai') {
+      const url = this.apiUrls[this.currentProvider] || '';
       // For local Ollama or local LM Studio endpoints, API key is optional
       if (url.includes('localhost') || url.includes('127.0.0.1') || url.includes(':11434')) {
         return true;
@@ -453,6 +473,7 @@ class App {
     document.getElementById('btn-mobile-settings')?.addEventListener('click', () => toggleMobileSidebar(true));
     document.getElementById('btn-mobile-settings-bar')?.addEventListener('click', () => toggleMobileSidebar(true));
     document.getElementById('btn-close-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
+    document.getElementById('btn-done-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
     document.getElementById('mobile-sidebar-backdrop')?.addEventListener('click', () => toggleMobileSidebar(false));
 
     // Keyboard Shortcuts
@@ -813,11 +834,13 @@ class App {
     if (link) {
       link.href = prov.keyHelpUrl;
       if (this.currentProvider === 'gemini') {
-        link.textContent = 'Get Key (AI Studio) \u2192';
+        link.textContent = 'Get Key (AI Studio) →';
       } else if (this.currentProvider === 'custom_openai') {
-        link.textContent = 'Get Key (GapGPT) \u2192';
+        link.textContent = 'Get Key (GapGPT) →';
+      } else if (this.currentProvider === 'avalai') {
+        link.textContent = 'Get Key (AvalAI) →';
       } else {
-        link.textContent = 'Get Key \u2192';
+        link.textContent = 'Get Key →';
       }
     }
 
@@ -825,9 +848,9 @@ class App {
     const urlGroup = document.getElementById('api-url-group');
     const urlInput = document.getElementById('api-url-input');
     if (urlGroup) {
-      if (this.currentProvider === 'custom_openai') {
+      if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai') {
         urlGroup.style.display = 'flex';
-        if (urlInput) urlInput.value = this.apiUrls.custom_openai || prov.defaultUrl || '';
+        if (urlInput) urlInput.value = this.apiUrls[this.currentProvider] || prov.defaultUrl || '';
       } else {
         urlGroup.style.display = 'none';
       }
@@ -846,7 +869,9 @@ class App {
       if (this.currentProvider === 'gemini') {
         keyHint.textContent = 'Default Gemini API key preloaded.';
       } else if (this.currentProvider === 'custom_openai') {
-        keyHint.textContent = 'GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.';
+        keyHint.textContent = 'GapGPT API preloaded. Default model: deepseek-v4.1-flash.';
+      } else if (this.currentProvider === 'avalai') {
+        keyHint.textContent = 'AvalAI API preloaded. Default model: deepseek-v4.1-flash.';
       } else {
         keyHint.textContent = 'Saved securely in your browser localStorage.';
       }
@@ -867,7 +892,7 @@ class App {
     // Show Load Models from API button for all providers
     const btnFetchModels = document.getElementById('btn-fetch-models');
     if (btnFetchModels) {
-      btnFetchModels.style.display = 'inline-flex';
+      btnFetchModels.style.display = 'flex';
     }
 
     // Populate Models dropdown
@@ -888,6 +913,17 @@ class App {
 
     const currentSelected = this.selectedModels[this.currentProvider];
     const fetchedList = this.fetchedModels[this.currentProvider] || [];
+
+    // Update count badge if present
+    const countBadge = document.getElementById('model-count-badge');
+    if (countBadge) {
+      if (fetchedList.length > 0) {
+        countBadge.style.display = 'inline-block';
+        countBadge.textContent = `${fetchedList.length} مدل فعال`;
+      } else {
+        countBadge.style.display = 'none';
+      }
+    }
 
     // If we have models fetched directly from the API, display them
     if (fetchedList.length > 0) {
@@ -987,11 +1023,10 @@ class App {
 
     const btnFetch = document.getElementById('btn-fetch-models');
     const btnQuick = document.getElementById('btn-fetch-models-quick');
-    const origText = btnFetch ? btnFetch.textContent : '';
 
     if (btnFetch) {
       btnFetch.disabled = true;
-      btnFetch.textContent = '⏳ Loading Models...';
+      btnFetch.innerHTML = '<span class="btn-icon">⏳</span> <span class="btn-text">در حال بارگذاری مدل‌ها...</span>';
     }
     if (btnQuick) {
       btnQuick.disabled = true;
@@ -1004,8 +1039,8 @@ class App {
         this.ui.showToast('Connecting to Google Gemini API (AI Studio)...', 'info');
         models = await fetchGeminiModels({ apiKey });
       } else {
-        const baseUrl = provider === 'custom_openai' 
-          ? (this.apiUrls.custom_openai || 'https://api.gapgpt.app/v1') 
+        const baseUrl = (provider === 'custom_openai' || provider === 'avalai')
+          ? (this.apiUrls[provider] || PROVIDERS[provider]?.defaultUrl || 'https://api.avalai.ir/v1') 
           : (this.apiUrls.openai || 'https://api.openai.com/v1');
         this.ui.showToast(`Connecting to ${baseUrl}/models ...`, 'info');
         models = await fetchOpenAIModels({ baseUrl, apiKey });
@@ -1026,6 +1061,10 @@ class App {
       sound.playSuccess();
       const providerName = PROVIDERS[provider]?.name || provider;
       this.ui.showToast(`🎉 Loaded ${models.length} models for ${providerName}!`, 'success');
+
+      if (btnFetch) {
+        btnFetch.innerHTML = `<span class="btn-icon">✅</span> <span class="btn-text">${models.length} مدل لود شد (به‌روزرسانی مجدد)</span>`;
+      }
     } catch (err) {
       console.error('Failed to load models:', err);
       sound.playError();
@@ -1033,7 +1072,9 @@ class App {
     } finally {
       if (btnFetch) {
         btnFetch.disabled = false;
-        btnFetch.textContent = origText || '🔄 Load Models from API';
+        if (!btnFetch.innerHTML.includes('✅')) {
+          btnFetch.innerHTML = '<span class="btn-icon">🔄</span> <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>';
+        }
       }
       if (btnQuick) {
         btnQuick.disabled = false;

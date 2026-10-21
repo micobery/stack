@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stack Overflow — Instant Clipboard AI Copilot</title>
   <meta name="description" content="Stack Overflow style Clipboard Copilot: Automatically reads copied code or questions, solves them with Gemini, and copies the solution back to your clipboard.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzNyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjM3IiBmaWxsPSJub25lIj4KICA8IS0tIFN0YWNrIE92ZXJmbG93IFRyYXkgLS0+CiAgPHBhdGggZD0iTTI2IDMzdi05aDR2MTNIMlYyNGg0djloMjB6IiBmaWxsPSIjQkNCQkJCIi8+CiAgPCEtLSBTdGFjayBPdmVyZmxvdyBPdmVyZmxvd2luZyBCYXJzIGluIFNpZ25hdHVyZSBPcmFuZ2UgLS0+CiAgPHBhdGggZD0iTTYuNSAyOC41aDE5di00aC0xOXY0eiIgZmlsbD0iI0Y0ODAyNCIvPgogIDxwYXRoIGQ9Ik03LjUgMjBsMTguNSA0IC44LTMuOS0xOC41LTQtLjggMy45eiIgZmlsbD0iI0Y0ODAyNCIvPgogIDxwYXRoIGQ9Ik0xMC41IDExLjhsMTcgOC41IDEuOC0zLjYtMTctOC41LTEuOCAzLjZ6IiBmaWxsPSIjRjQ4MDI0Ii8+CiAgPHBhdGggZD0iTTE2IDMuOGwxNC41IDEyLjUgMi42LTNMMTguNi44bC0yLjYgM3oiIGZpbGw9IiNGNDgwMjQiLz4KICA8cGF0aCBkPSJNMjUgMGwtMy4zIDIuMyAxMS41IDE1LjIgMy4zLTIuM0wyNSAweiIgZmlsbD0iI0Y0ODAyNCIvPgo8L3N2Zz4K">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1455,8 +1455,8 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 /* Provider Tabs in Widget */
 .so-provider-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.3rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
   background: #f1f2f3;
   padding: 0.25rem;
   border-radius: 4px;
@@ -1608,6 +1608,86 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   color: var(--so-text-muted);
   cursor: not-allowed;
   text-decoration: none;
+}
+
+/* Dedicated Full-Width Load Models Button */
+.so-btn-fetch-dedicated {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #f1f6fb;
+  color: var(--so-link);
+  border: 1px solid #c5d9e8;
+  border-radius: 4px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-top: 0.35rem;
+  min-height: 38px;
+}
+
+.so-btn-fetch-dedicated:hover {
+  background-color: #e1ecf4;
+  border-color: #7aa7c7;
+  color: #005999;
+}
+
+.so-btn-fetch-dedicated:active {
+  background-color: #d0e3f1;
+  transform: translateY(1px);
+}
+
+.so-btn-fetch-dedicated:disabled {
+  background-color: #f8f9fa;
+  border-color: var(--so-border-subtle);
+  color: var(--so-text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.so-btn-fetch-dedicated .btn-icon {
+  font-size: 0.95rem;
+}
+
+.so-model-count-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--so-green);
+  background: var(--so-green-bg);
+  border: 1px solid var(--so-green-border);
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+}
+
+.so-btn-done-sidebar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--so-orange);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.65rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  min-height: 42px;
+}
+
+.so-btn-done-sidebar:hover {
+  background: var(--so-orange-hover);
+}
+
+.so-btn-done-sidebar:active {
+  transform: translateY(1px);
 }
 
 .so-select, .so-textarea {
@@ -1830,9 +1910,9 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-  z-index: 1050;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 1150;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -2256,22 +2336,125 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
   .so-right-sidebar.mobile-open {
     display: flex !important;
+    flex-direction: column;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 88vw;
-    max-width: 380px;
-    z-index: 1060;
+    width: 100%;
+    max-width: 440px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1200;
     background: #ffffff;
-    box-shadow: -6px 0 30px rgba(0, 0, 0, 0.35);
+    box-shadow: -8px 0 35px rgba(0, 0, 0, 0.4);
     overflow-y: auto;
-    padding: 1.25rem 1rem 5.5rem 1rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 0 1rem calc(6.5rem + env(safe-area-inset-bottom, 0px)) 1rem;
     animation: soSlideDrawer 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .so-sidebar-mobile-header {
+    display: flex !important;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #ffffff;
+    padding: 0.95rem 0.25rem 0.8rem 0.25rem;
+    margin-bottom: 0.85rem;
+    border-bottom: 2px solid var(--so-border-subtle);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .so-sidebar-mobile-title {
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--so-text-main);
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: #f1f2f3;
+    color: var(--so-text-secondary);
+    font-size: 1.35rem;
+    line-height: 1;
+    border: 1px solid var(--so-border);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .modal-close:hover {
+    background: #e3e6e8;
+    color: var(--so-text-main);
+  }
+}
+
+@media (max-width: 480px) {
+  .so-right-sidebar.mobile-open {
+    max-width: 100%;
+    padding: 0 0.85rem calc(6.5rem + env(safe-area-inset-bottom, 0px)) 0.85rem;
+  }
+
+  /* 2x2 Clean Layout for Provider Tabs on Small Phones */
+  .so-provider-tabs {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.35rem !important;
+    padding: 0.35rem !important;
+  }
+
+  .so-tab-btn {
+    padding: 0.55rem 0.35rem !important;
+    font-size: 0.82rem !important;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .so-btn-fetch-dedicated {
+    min-height: 44px;
+    font-size: 0.85rem;
+  }
+
+  .so-input-wrapper input {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+    min-height: 42px;
+  }
+
+  .so-select {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+    min-height: 42px;
+  }
+
+  .so-textarea {
+    font-size: 14px;
+    max-height: 130px;
+    min-height: 85px;
+  }
+
+  .so-url-presets {
+    gap: 0.35rem;
+  }
+
+  .so-chip-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -2481,6 +2664,7 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
 </style>
   
+
 </head>
 <body class="so-theme-light">
   <!-- Top Navigation Bar -->
@@ -3087,9 +3271,12 @@ public class OrderServiceImpl implements OrderService {
     <!-- Right Sidebar (The Overflow Blog & AI Settings) -->
     <aside class="so-right-sidebar">
       <!-- Mobile Drawer Close Header -->
-      <div class="so-sidebar-mobile-header so-mobile-only">
-        <span>⚙️ Copilot Config &amp; Keys</span>
-        <button id="btn-close-sidebar" class="modal-close" title="Close settings">&times;</button>
+      <div class="so-sidebar-mobile-header">
+        <div class="so-sidebar-mobile-title">
+          <span class="icon">⚙️</span>
+          <span>تنظیمات و کلیدهای هوش مصنوعی</span>
+        </div>
+        <button id="btn-close-sidebar" class="modal-close" title="Close settings" aria-label="Close">&times;</button>
       </div>
 
       <!-- "The Overflow Config" Box -->
@@ -3106,7 +3293,8 @@ public class OrderServiceImpl implements OrderService {
 
           <!-- Provider Tabs -->
           <div class="so-provider-tabs">
-            <button class="so-tab-btn active" data-provider="custom_openai">3rd Party (GapGPT)</button>
+            <button class="so-tab-btn active" data-provider="custom_openai">GapGPT</button>
+            <button class="so-tab-btn" data-provider="avalai">AvalAI</button>
             <button class="so-tab-btn" data-provider="gemini">Gemini</button>
             <button class="so-tab-btn" data-provider="openai">OpenAI</button>
           </div>
@@ -3123,7 +3311,8 @@ public class OrderServiceImpl implements OrderService {
             </div>
             <div class="so-url-presets">
               <span class="so-hint-text">Quick:</span>
-              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="gpt-5-nano">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="deepseek-v4.1-flash">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.avalai.ir/v1" data-preset-model="deepseek-v4.1-flash">AvalAI</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.deepseek.com/v1" data-preset-model="deepseek-chat">DeepSeek</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.groq.com/openai/v1" data-preset-model="llama-3.3-70b-versatile">Groq</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://openrouter.ai/api/v1" data-preset-model="deepseek/deepseek-chat">OpenRouter</button>
@@ -3136,14 +3325,14 @@ public class OrderServiceImpl implements OrderService {
           <div class="so-form-group">
             <div class="so-form-label-row">
               <label for="api-key-input">API Key</label>
-              <a id="get-key-link" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get Key &rarr;</a>
+              <a id="get-key-link" href="https://gapgpt.app" target="_blank" rel="noopener">Get Key &rarr;</a>
             </div>
             <div class="so-input-wrapper">
               <input type="password" id="api-key-input" value="sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX" placeholder="Primary API key...">
               <button id="btn-toggle-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
               <button id="btn-save-key" class="so-btn-save-inside">Save</button>
             </div>
-            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.</p>
+            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Default model: deepseek-v4.1-flash.</p>
           </div>
 
           <!-- Backup API Key (Key 2) for Rate Limit Failover -->
@@ -3161,20 +3350,23 @@ public class OrderServiceImpl implements OrderService {
           </div>
 
           <!-- Model Selection -->
-          <div class="so-form-group">
+          <div class="so-form-group" id="model-select-group">
             <div class="so-form-label-row">
               <label for="model-select">AI Model</label>
-              <button type="button" id="btn-fetch-models" class="so-btn-fetch-models" style="display: none;" title="Fetch all available models directly from this API endpoint">
-                🔄 Load Models from API
-              </button>
+              <span id="model-count-badge" class="so-model-count-badge" style="display: none;"></span>
             </div>
             <select id="model-select" class="so-select">
-              <option value="gpt-5-nano" selected>gpt-5-nano (GapGPT / 3rd Party)</option>
+              <option value="deepseek-v4.1-flash" selected>⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)</option>
+              <option value="gpt-5-nano">gpt-5-nano</option>
               <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
               <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
               <option value="deepseek-chat">deepseek-chat</option>
               <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
             </select>
+            <button type="button" id="btn-fetch-models" class="so-btn-fetch-dedicated" title="Fetch and refresh available models directly from this API endpoint">
+              <span class="btn-icon">🔄</span>
+              <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>
+            </button>
           </div>
 
           <!-- Custom Model Name Input -->
@@ -3208,32 +3400,36 @@ public class OrderServiceImpl implements OrderService {
               <label for="system-prompt">System Prompt</label>
               <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
             </div>
-            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه و مسلط در جلسه امتحان هستید. خروجی باید ۱۰۰٪ آماده برای کپی‌پیست مستقیم در برگه یا سیستم آزمون باشد و به هیچ وجه نباید کوچک‌ترین نشانه‌ای از هوش مصنوعی داشته باشد (کاملاً طبیعی، انسانی، بدون الگوها و کلمات رباتیک).
+            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
 
-قوانین بسیار حیاتی (Strict Copy-Paste & Human Tone):
-۱. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ مقدمه، نتیجه‌گیری، سلام، یا جملاتی مثل «در ادامه پاسخ‌ها آمده است» یا «امیدوارم موفق باشید» ننویس. فوراً و مستقیماً با پاسخ «سوال ۱» شروع کن تا کاربر بتواند بلافاصله کپی‌پیست کند.
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
 
-۲. لحن و نگارش کاملاً انسانی (غیرقابل تشخیص از AI):
-- متن را طوری بنویس که انگار یک دانشجوی مسلط خودش مستقیماً تایپ کرده است.
-- از کلمات کلیشه‌ای و لو‌دهنده هوش مصنوعی (مانند «شایان ذکر است»، «در واقع می‌توان گفت»، «به عنوان جمع‌بندی»، «به طور کلی»، «لازم به یادآوری است») اکیداً خودداری کن.
-- جملات صریح، طبیعی، تمیز و استاندارد دانشگاهی باشند.
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
 
-۳. تفکیک دقیق و ذکر نکات نمره‌آور تک‌تک سوالات:
-اگر در تصویر یا متن ورودی چند سوال وجود دارد، به تک‌تک سوالات به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
-• سوال ۲: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
 • سوال ۳: ...
-هیچ سوالی را جا نینداز و سوالات را با هم ادغام نکن.
-
-۴. نحوه پاسخ به انواع سوالات:
-- سوالات تشریحی و مفهومی: نکات کلیدی و نمره‌آور تخصصی (Keywords) را در ۲ تا ۴ سطر کاملاً دقیق و شفاف بنویس تا مصحح حداکثر نمره را بدهد.
-- سوالات تستی و چهارگزینه‌ای: فوراً گزینه صحیح را مشخص کن (مثلاً: گزینه ۳) و در صورت لزوم حداکثر در یک خط کوتاه دلیل فنی و نمره‌آور آن را بنویس.
-- سوالات برنامه‌نویسی و کد: فقط خود کد تمیز و استاندارد Java را بدون توضیحات طولانی و غیرضروری بنویس.
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
 
 ۵. زبان و فرمت:
-تمام پاسخ‌های متنی به زبان فارسی طبیعی و تمام کدها به زبان Java باشد.</textarea>
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.</textarea>
           </div>
+
+          <!-- Done / Close Button on Mobile -->
+          <button type="button" id="btn-done-sidebar" class="so-btn-done-sidebar so-mobile-only">
+            ✔️ بستن و ذخیره تنظیمات (Done)
+          </button>
         </div>
       </div>
 
@@ -3374,11 +3570,9 @@ public class OrderServiceImpl implements OrderService {
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Scripts -->
-  <script>
+  <script id="app-bundle">
 
-// ==========================================
-// 1. SOUND FX ENGINE
-// ==========================================
+// ==================== SOUND FX ====================
 // Web Audio API synthesizer for instant zero-dependency audio feedback
 class SoundFX {
   constructor() {
@@ -3486,9 +3680,7 @@ class SoundFX {
 const sound = new SoundFX();
 
 
-// ==========================================
-// 2. CLIPBOARD MANAGER
-// ==========================================
+// ==================== CLIPBOARD ====================
 // System Clipboard API Interface with Multimodal Screenshot & Text Support
 
 class ClipboardManager {
@@ -3670,421 +3862,10 @@ class ClipboardManager {
 const clipboard = new ClipboardManager();
 
 
-// ==========================================
-// 3. AI PROVIDERS & INFERENCE ENGINE
-// ==========================================
-// Multi-Provider AI Inference Engine with Multimodal Vision & Dual-Key Failover
-
-const PROVIDERS = {
-  gemini: {
-    id: 'gemini',
-    name: 'Google Gemini',
-    keyHelpUrl: 'https://aistudio.google.com/app/apikey',
-    placeholder: 'AQ.Ab8RN...',
-    models: [
-      { id: 'gemini-3.8-flash', name: '⚡ Gemini 3.8 Flash (Vision & Code — Default)' },
-      { id: 'gemini-2.5-flash', name: '⚡ Gemini 2.5 Flash (Ultra Fast Multimodal)' },
-      { id: 'gemini-3.1-pro-preview', name: '🧠 Gemini 3.1 Pro Preview (Deep Vision & Reasoning)' },
-      { id: 'gemini-pro-latest', name: '🧠 Gemini Pro Latest (Multimodal Reasoning)' }
-    ],
-    defaultModel: 'gemini-3.8-flash'
-  },
-  openai: {
-    id: 'openai',
-    name: 'OpenAI ChatGPT',
-    keyHelpUrl: 'https://platform.openai.com/api-keys',
-    placeholder: 'sk-proj-...',
-    models: [
-      { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast Multimodal)' },
-      { id: 'gpt-4o', name: 'GPT-4o (Omni Flagship Vision)' },
-      { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo (Text Only)' }
-    ],
-    defaultModel: 'gpt-4o-mini',
-    defaultUrl: 'https://api.openai.com/v1'
-  },
-  custom_openai: {
-    id: 'custom_openai',
-    name: '3rd Party (GapGPT / OpenAI)',
-    keyHelpUrl: 'https://gapgpt.app',
-    placeholder: 'sk-F4T2AxOQ...',
-    defaultUrl: 'https://api.gapgpt.app/v1',
-    models: [
-      { id: 'gpt-5-nano', name: '⚡ GPT-5 Nano (Ultra Fast & Accurate — Default)' },
-      { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Reliable)' },
-      { id: 'gpt-5-mini', name: 'GPT-5 Mini' },
-      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
-      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1 Reasoning)' },
-      { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
-      { id: 'gpt-4o', name: 'GPT-4o (Vision & Code Flagship)' },
-      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
-    ],
-    defaultModel: 'gpt-5-nano'
-  }
-};
-
-async function callAI({ provider, apiKey, backupApiKey = null, baseUrl = null, model, systemPrompt, text = '', image = null, onKeySwitch = null }) {
-  // Key check: Allow empty key for local Ollama/LM Studio endpoints
-  const isLocal = baseUrl && (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1') || baseUrl.includes(':11434'));
-  if (!isLocal && (!apiKey || !apiKey.trim())) {
-    throw new Error(`API key for ${PROVIDERS[provider]?.name || provider} is missing. Please enter and save your key.`);
-  }
-
-  const hasText = Boolean(text && text.trim());
-  const hasImage = Boolean(image && image.base64);
-
-  if (!hasText && !hasImage) {
-    throw new Error('Clipboard input is empty (neither text nor screenshot found).');
-  }
-
-  const effectivePrompt = systemPrompt || `You are an experienced human senior developer answering a coding question. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
-CRITICAL RULES:
-1. Explanations in Persian: ALL explanations, descriptions, or notes MUST be in natural, fluent Persian (فارسی روان و تخصصی).
-2. Code in Java: ALL code, solutions, and implementations MUST be written in Java.
-3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague in a chat or Stack Overflow.`;
-
-  switch (provider) {
-    case 'gemini':
-      return await callGeminiWithFailover({
-        primaryKey: apiKey.trim(),
-        backupKey: backupApiKey ? backupApiKey.trim() : null,
-        model,
-        systemPrompt: effectivePrompt,
-        text,
-        image,
-        onKeySwitch
-      });
-    case 'openai':
-      return await callOpenAICompatible({
-        baseUrl: baseUrl || 'https://api.openai.com/v1',
-        apiKey: apiKey ? apiKey.trim() : '',
-        model: model || 'gpt-4o-mini',
-        systemPrompt: effectivePrompt,
-        text,
-        image
-      });
-    case 'custom_openai':
-      return await callOpenAICompatible({
-        baseUrl: baseUrl || 'https://api.gapgpt.app/v1',
-        apiKey: apiKey ? apiKey.trim() : '',
-        model: model || 'gpt-5-nano',
-        systemPrompt: effectivePrompt,
-        text,
-        image
-      });
-    default:
-      throw new Error(`Unknown provider: ${provider}`);
-  }
-}
-
-// Google Gemini Dual-Key Failover Wrapper
-async function callGeminiWithFailover({ primaryKey, backupKey, model, systemPrompt, text, image, onKeySwitch }) {
-  try {
-    return await callGemini(primaryKey, model, systemPrompt, text, image);
-  } catch (err) {
-    const isQuotaOrLimit = err.message.includes('429') ||
-                           err.message.includes('RESOURCE_EXHAUSTED') ||
-                           err.message.includes('quota') ||
-                           err.message.includes('limit');
-
-    // If Key #1 hits rate limits and user provided a Backup Key #2, switch automatically!
-    if (isQuotaOrLimit && backupKey) {
-      console.warn('Gemini Key #1 hit quota/rate limit (429). Automatically switching to Backup Key #2...');
-      if (onKeySwitch) onKeySwitch(1, 2);
-      try {
-        return await callGemini(backupKey, model, systemPrompt, text, image);
-      } catch (backupErr) {
-        throw new Error(`Both Key #1 and Backup Key #2 failed. Backup Error: ${backupErr.message}`);
-      }
-    }
-
-    // If quota exceeded but no backup key was provided, give helpful guidance
-    if (isQuotaOrLimit && !backupKey) {
-      throw new Error(`Gemini Key #1 reached account rate limits (429). Add a Backup Gemini Key (Key #2) in the right sidebar to avoid limits!`);
-    }
-
-    throw err;
-  }
-}
-
-// Google Gemini Single-Call Multimodal API Handler
-async function callGemini(apiKey, model, systemPrompt, text, image) {
-  const targetModel = model || 'gemini-3.8-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
-
-  const parts = [];
-
-  // 1. Add Screenshot Image if present
-  if (image && image.base64) {
-    parts.push({
-      inline_data: {
-        mime_type: image.mimeType || 'image/png',
-        data: image.base64
-      }
-    });
-  }
-
-  // 2. Add Prompt and Text Instruction
-  let promptText = '';
-  if (image && text) {
-    promptText = `${systemPrompt}\n\nHere is the screenshot and additional context/question:\n${text}`;
-  } else if (image) {
-    promptText = `${systemPrompt}\n\nAnalyze this screenshot. If there are multiple questions or problems shown in the image, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short, and effective answers.`;
-  } else {
-    promptText = text;
-  }
-
-  parts.push({ text: promptText });
-
-  const payload = {
-    system_instruction: {
-      parts: [{ text: systemPrompt }]
-    },
-    contents: [
-      {
-        role: 'user',
-        parts: parts
-      }
-    ],
-    generationConfig: {
-      temperature: 0.2
-    }
-  };
-
-  let response;
-  try {
-    response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-  } catch (netErr) {
-    throw new Error(`Network error contacting Gemini API: ${netErr.message}`);
-  }
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    // If targetModel fails with 404, fallback to gemini-2.5-flash
-    if (response.status === 404 && targetModel !== 'gemini-2.5-flash') {
-      console.warn(`Model ${targetModel} not found, falling back to gemini-2.5-flash`);
-      return await callGemini(apiKey, 'gemini-2.5-flash', systemPrompt, text, image);
-    }
-    const errMessage = data?.error?.message || `Gemini API Error (${response.status}): ${response.statusText}`;
-    throw new Error(errMessage);
-  }
-
-  const candidate = data.candidates?.[0];
-  if (!candidate || !candidate.content?.parts?.length) {
-    if (candidate?.finishReason === 'SAFETY') {
-      throw new Error('Gemini response was blocked by safety filters.');
-    }
-    throw new Error('Gemini returned an empty response.');
-  }
-
-  return candidate.content.parts.map(p => p.text).join('').trim();
-}
-
-// Universal OpenAI-Compatible API Handler (OpenAI, OpenRouter, DeepSeek, Groq, Ollama, LM Studio, etc.)
-// Supports Multimodal Screenshot Analysis with vision-capable models
-async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text, image }) {
-  let cleanUrl = (baseUrl || 'https://api.openai.com/v1').trim().replace(/\/+$/, '');
-  if (!cleanUrl.endsWith('/chat/completions')) {
-    cleanUrl = `${cleanUrl}/chat/completions`;
-  }
-
-  const userContent = [];
-  if (text) {
-    userContent.push({ type: 'text', text: text });
-  } else if (image) {
-    userContent.push({ type: 'text', text: 'Analyze all questions, code, or problems shown in this screenshot. If there are multiple questions, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short and effective answers.' });
-  }
-
-  if (image && image.base64) {
-    userContent.push({
-      type: 'image_url',
-      image_url: {
-        url: `data:${image.mimeType || 'image/png'};base64,${image.base64}`
-      }
-    });
-  }
-
-  // Format payload
-  const formattedUserContent = (image && image.base64)
-    ? userContent
-    : (text || 'Solve the code problem.');
-
-  const payload = {
-    model: model || 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: formattedUserContent }
-    ],
-    temperature: 0.3
-  };
-
-  const headers = {
-    'Content-Type': 'application/json'
-  };
-
-  if (apiKey && apiKey.trim()) {
-    headers['Authorization'] = `Bearer ${apiKey.trim()}`;
-  }
-
-  // Helpful headers for OpenRouter
-  if (cleanUrl.includes('openrouter.ai')) {
-    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:2080';
-    headers['X-Title'] = 'Stack Overflow Copilot';
-  }
-
-  const response = await fetch(cleanUrl, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(payload)
-  });
-
-  const data = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    const errMessage = data?.error?.message ||
-                       data?.message ||
-                       `API Error (${response.status} from ${cleanUrl}): ${response.statusText}`;
-    throw new Error(errMessage);
-  }
-
-  const answer = data?.choices?.[0]?.message?.content;
-  if (!answer) {
-    throw new Error(`API returned an empty response from ${cleanUrl}.`);
-  }
-
-  return answer.trim();
-}
-
-// Fetch list of available models from any OpenAI-compatible endpoint (GET /models)
-async function fetchOpenAIModels({ baseUrl, apiKey }) {
-  let cleanUrl = (baseUrl || 'https://api.gapgpt.app/v1').trim().replace(/\/+$/, '');
-  if (cleanUrl.endsWith('/chat/completions')) {
-    cleanUrl = cleanUrl.replace(/\/chat\/completions$/, '');
-  }
-  if (!cleanUrl.endsWith('/models')) {
-    cleanUrl = `${cleanUrl}/models`;
-  }
-
-  const headers = {};
-  if (apiKey && apiKey.trim()) {
-    headers['Authorization'] = `Bearer ${apiKey.trim()}`;
-  }
-  if (cleanUrl.includes('openrouter.ai')) {
-    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:2080';
-    headers['X-Title'] = 'Stack Overflow Copilot';
-  }
-
-  const response = await fetch(cleanUrl, {
-    method: 'GET',
-    headers: headers
-  });
-
-  const data = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    const errMessage = data?.error?.message ||
-                       data?.message ||
-                       `Failed to fetch models (${response.status} from ${cleanUrl}): ${response.statusText}`;
-    throw new Error(errMessage);
-  }
-
-  let rawList = [];
-  if (Array.isArray(data)) {
-    rawList = data;
-  } else if (Array.isArray(data?.data)) {
-    rawList = data.data;
-  } else if (Array.isArray(data?.models)) {
-    rawList = data.models;
-  }
-
-  if (!rawList.length) {
-    throw new Error(`No models found in the API response from ${cleanUrl}.`);
-  }
-
-  // Map to clean format: { id: string, name: string }
-  const models = rawList.map(item => {
-    const id = typeof item === 'string' ? item : (item.id || item.name);
-    const name = typeof item === 'object' && item.name && item.name !== id
-      ? `${item.name} (${id})`
-      : id;
-    return { id, name };
-  }).filter(m => Boolean(m.id));
-
-  // Sort models alphabetically
-  models.sort((a, b) => a.id.localeCompare(b.id));
-
-  return models;
-}
-
-// Fetch list of available models from Google Gemini API (GET /v1beta/models)
-export async function fetchGeminiModels({ apiKey }) {
-  if (!apiKey || !apiKey.trim()) {
-    throw new Error('Please enter and save your Gemini API key first.');
-  }
-
-  const cleanKey = apiKey.trim();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${cleanKey}`;
-
-  const response = await fetch(url, {
-    method: 'GET'
-  });
-
-  const data = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    const errMessage = data?.error?.message ||
-                       data?.message ||
-                       `Failed to fetch Gemini models (${response.status}): ${response.statusText}`;
-    throw new Error(errMessage);
-  }
-
-  const rawList = data?.models || [];
-  if (!rawList.length) {
-    throw new Error('No models found in the Gemini API response.');
-  }
-
-  // Filter for models supporting content generation
-  const validModels = rawList.filter(m => {
-    const methods = m.supportedGenerationMethods || [];
-    return methods.includes('generateContent');
-  });
-
-  const listToUse = validModels.length ? validModels : rawList;
-
-  // Map to clean format: { id: string, name: string }
-  const models = listToUse.map(item => {
-    const rawId = item.name || '';
-    const cleanId = rawId.replace(/^models\//, '');
-    const displayName = item.displayName || cleanId;
-    const name = displayName !== cleanId ? `⚡ ${displayName} (${cleanId})` : cleanId;
-    return { id: cleanId, name };
-  }).filter(m => Boolean(m.id));
-
-  // Sort: prioritize flash models, then alphabetical
-  models.sort((a, b) => {
-    const aIsFlash = a.id.includes('flash');
-    const bIsFlash = b.id.includes('flash');
-    if (aIsFlash && !bIsFlash) return -1;
-    if (!aIsFlash && bIsFlash) return 1;
-    return a.id.localeCompare(b.id);
-  });
-
-  return models;
-}
-
-
-// ==========================================
-// 4. UI CONTROLLER
-// ==========================================
+// ==================== UI MANAGER ====================
 // User Interface Controller & Visual Feedback Engine for Stack Overflow Copilot
 
-class UIController {
+export class UIController {
   constructor() {
     // Elements
     this.statusPill = document.getElementById('status-pill');
@@ -4461,15 +4242,441 @@ class UIController {
 }
 
 
-// ==========================================
-// 5. MAIN APPLICATION
-// ==========================================
+// ==================== AI PROVIDERS ====================
+// Multi-Provider AI Inference Engine with Multimodal Vision & Dual-Key Failover
+
+const PROVIDERS = {
+  gemini: {
+    id: 'gemini',
+    name: 'Google Gemini',
+    keyHelpUrl: 'https://aistudio.google.com/app/apikey',
+    placeholder: 'AQ.Ab8RN...',
+    models: [
+      { id: 'gemini-3.8-flash', name: '⚡ Gemini 3.8 Flash (Vision & Code — Default)' },
+      { id: 'gemini-2.5-flash', name: '⚡ Gemini 2.5 Flash (Ultra Fast Multimodal)' },
+      { id: 'gemini-3.1-pro-preview', name: '🧠 Gemini 3.1 Pro Preview (Deep Vision & Reasoning)' },
+      { id: 'gemini-pro-latest', name: '🧠 Gemini Pro Latest (Multimodal Reasoning)' }
+    ],
+    defaultModel: 'gemini-3.8-flash'
+  },
+  openai: {
+    id: 'openai',
+    name: 'OpenAI ChatGPT',
+    keyHelpUrl: 'https://platform.openai.com/api-keys',
+    placeholder: 'sk-proj-...',
+    models: [
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast Multimodal)' },
+      { id: 'gpt-4o', name: 'GPT-4o (Omni Flagship Vision)' },
+      { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo (Text Only)' }
+    ],
+    defaultModel: 'gpt-4o-mini',
+    defaultUrl: 'https://api.openai.com/v1'
+  },
+  custom_openai: {
+    id: 'custom_openai',
+    name: '3rd Party 1 (GapGPT)',
+    keyHelpUrl: 'https://gapgpt.app',
+    placeholder: 'sk-F4T2AxOQ...',
+    defaultUrl: 'https://api.gapgpt.app/v1',
+    models: [
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'gpt-5-nano', name: 'GPT-5 Nano' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Reliable)' },
+      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
+      { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
+      { id: 'gpt-4o', name: 'GPT-4o' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'deepseek-v4.1-flash'
+  },
+  avalai: {
+    id: 'avalai',
+    name: '3rd Party 2 (AvalAI)',
+    keyHelpUrl: 'https://avalai.ir',
+    placeholder: 'aa-d7tPVrnv...',
+    defaultUrl: 'https://api.avalai.ir/v1',
+    models: [
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
+      { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'deepseek-v4.1-flash'
+  }
+};
+
+async function callAI({ provider, apiKey, backupApiKey = null, baseUrl = null, model, systemPrompt, text = '', image = null, onKeySwitch = null }) {
+  // Key check: Allow empty key for local Ollama/LM Studio endpoints
+  const isLocal = baseUrl && (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1') || baseUrl.includes(':11434'));
+  if (!isLocal && (!apiKey || !apiKey.trim())) {
+    throw new Error(`API key for ${PROVIDERS[provider]?.name || provider} is missing. Please enter and save your key.`);
+  }
+
+  const hasText = Boolean(text && text.trim());
+  const hasImage = Boolean(image && image.base64);
+
+  if (!hasText && !hasImage) {
+    throw new Error('Clipboard input is empty (neither text nor screenshot found).');
+  }
+
+  const effectivePrompt = systemPrompt || `You are an experienced human senior developer answering a coding question. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
+CRITICAL RULES:
+1. Explanations in Persian: ALL explanations, descriptions, or notes MUST be in natural, fluent Persian (فارسی روان و تخصصی).
+2. Code in Java: ALL code, solutions, and implementations MUST be written in Java.
+3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague in a chat or Stack Overflow.`;
+
+  switch (provider) {
+    case 'gemini':
+      return await callGeminiWithFailover({
+        primaryKey: apiKey.trim(),
+        backupKey: backupApiKey ? backupApiKey.trim() : null,
+        model,
+        systemPrompt: effectivePrompt,
+        text,
+        image,
+        onKeySwitch
+      });
+    case 'openai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.openai.com/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'gpt-4o-mini',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'custom_openai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.gapgpt.app/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'avalai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.avalai.ir/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    default:
+      throw new Error(`Unknown provider: ${provider}`);
+  }
+}
+
+// Google Gemini Dual-Key Failover Wrapper
+async function callGeminiWithFailover({ primaryKey, backupKey, model, systemPrompt, text, image, onKeySwitch }) {
+  try {
+    return await callGemini(primaryKey, model, systemPrompt, text, image);
+  } catch (err) {
+    const isQuotaOrLimit = err.message.includes('429') ||
+                           err.message.includes('RESOURCE_EXHAUSTED') ||
+                           err.message.includes('quota') ||
+                           err.message.includes('limit');
+
+    // If Key #1 hits rate limits and user provided a Backup Key #2, switch automatically!
+    if (isQuotaOrLimit && backupKey) {
+      console.warn('Gemini Key #1 hit quota/rate limit (429). Automatically switching to Backup Key #2...');
+      if (onKeySwitch) onKeySwitch(1, 2);
+      try {
+        return await callGemini(backupKey, model, systemPrompt, text, image);
+      } catch (backupErr) {
+        throw new Error(`Both Key #1 and Backup Key #2 failed. Backup Error: ${backupErr.message}`);
+      }
+    }
+
+    // If quota exceeded but no backup key was provided, give helpful guidance
+    if (isQuotaOrLimit && !backupKey) {
+      throw new Error(`Gemini Key #1 reached account rate limits (429). Add a Backup Gemini Key (Key #2) in the right sidebar to avoid limits!`);
+    }
+
+    throw err;
+  }
+}
+
+// Google Gemini Single-Call Multimodal API Handler
+async function callGemini(apiKey, model, systemPrompt, text, image) {
+  const targetModel = model || 'gemini-3.8-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
+
+  const parts = [];
+
+  // 1. Add Screenshot Image if present
+  if (image && image.base64) {
+    parts.push({
+      inline_data: {
+        mime_type: image.mimeType || 'image/png',
+        data: image.base64
+      }
+    });
+  }
+
+  // 2. Add Prompt and Text Instruction
+  let promptText = '';
+  if (image && text) {
+    promptText = `${systemPrompt}\n\nHere is the screenshot and additional context/question:\n${text}`;
+  } else if (image) {
+    promptText = `${systemPrompt}\n\nAnalyze this screenshot. If there are multiple questions or problems shown in the image, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short, and effective answers.`;
+  } else {
+    promptText = text;
+  }
+
+  parts.push({ text: promptText });
+
+  const payload = {
+    system_instruction: {
+      parts: [{ text: systemPrompt }]
+    },
+    contents: [
+      {
+        role: 'user',
+        parts: parts
+      }
+    ],
+    generationConfig: {
+      temperature: 0.2
+    }
+  };
+
+  let response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (netErr) {
+    throw new Error(`Network error contacting Gemini API: ${netErr.message}`);
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    // If targetModel fails with 404, fallback to gemini-2.5-flash
+    if (response.status === 404 && targetModel !== 'gemini-2.5-flash') {
+      console.warn(`Model ${targetModel} not found, falling back to gemini-2.5-flash`);
+      return await callGemini(apiKey, 'gemini-2.5-flash', systemPrompt, text, image);
+    }
+    const errMessage = data?.error?.message || `Gemini API Error (${response.status}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  const candidate = data.candidates?.[0];
+  if (!candidate || !candidate.content?.parts?.length) {
+    if (candidate?.finishReason === 'SAFETY') {
+      throw new Error('Gemini response was blocked by safety filters.');
+    }
+    throw new Error('Gemini returned an empty response.');
+  }
+
+  return candidate.content.parts.map(p => p.text).join('').trim();
+}
+
+// Universal OpenAI-Compatible API Handler (OpenAI, OpenRouter, DeepSeek, Groq, Ollama, LM Studio, etc.)
+// Supports Multimodal Screenshot Analysis with vision-capable models
+async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text, image }) {
+  let cleanUrl = (baseUrl || 'https://api.openai.com/v1').trim().replace(/\/+$/, '');
+  if (!cleanUrl.endsWith('/chat/completions')) {
+    cleanUrl = `${cleanUrl}/chat/completions`;
+  }
+
+  const userContent = [];
+  if (text) {
+    userContent.push({ type: 'text', text: text });
+  } else if (image) {
+    userContent.push({ type: 'text', text: 'Analyze all questions, code, or problems shown in this screenshot. If there are multiple questions, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short and effective answers.' });
+  }
+
+  if (image && image.base64) {
+    userContent.push({
+      type: 'image_url',
+      image_url: {
+        url: `data:${image.mimeType || 'image/png'};base64,${image.base64}`
+      }
+    });
+  }
+
+  // Format payload
+  const formattedUserContent = (image && image.base64)
+    ? userContent
+    : (text || 'Solve the code problem.');
+
+  const payload = {
+    model: model || 'gpt-4o-mini',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: formattedUserContent }
+    ],
+    temperature: 0.3
+  };
+
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+
+  if (apiKey && apiKey.trim()) {
+    headers['Authorization'] = `Bearer ${apiKey.trim()}`;
+  }
+
+  // Helpful headers for OpenRouter
+  if (cleanUrl.includes('openrouter.ai')) {
+    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:2080';
+    headers['X-Title'] = 'Stack Overflow Copilot';
+  }
+
+  const response = await fetch(cleanUrl, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errMessage = data?.error?.message ||
+                       data?.message ||
+                       `API Error (${response.status} from ${cleanUrl}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  const answer = data?.choices?.[0]?.message?.content;
+  if (!answer) {
+    throw new Error(`API returned an empty response from ${cleanUrl}.`);
+  }
+
+  return answer.trim();
+}
+
+// Fetch list of available models from any OpenAI-compatible endpoint (GET /models)
+async function fetchOpenAIModels({ baseUrl, apiKey }) {
+  let cleanUrl = (baseUrl || 'https://api.gapgpt.app/v1').trim().replace(/\/+$/, '');
+  if (cleanUrl.endsWith('/chat/completions')) {
+    cleanUrl = cleanUrl.replace(/\/chat\/completions$/, '');
+  }
+  if (!cleanUrl.endsWith('/models')) {
+    cleanUrl = `${cleanUrl}/models`;
+  }
+
+  const headers = {};
+  if (apiKey && apiKey.trim()) {
+    headers['Authorization'] = `Bearer ${apiKey.trim()}`;
+  }
+  if (cleanUrl.includes('openrouter.ai')) {
+    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:2080';
+    headers['X-Title'] = 'Stack Overflow Copilot';
+  }
+
+  const response = await fetch(cleanUrl, {
+    method: 'GET',
+    headers: headers
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errMessage = data?.error?.message ||
+                       data?.message ||
+                       `Failed to fetch models (${response.status} from ${cleanUrl}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  let rawList = [];
+  if (Array.isArray(data)) {
+    rawList = data;
+  } else if (Array.isArray(data?.data)) {
+    rawList = data.data;
+  } else if (Array.isArray(data?.models)) {
+    rawList = data.models;
+  }
+
+  if (!rawList.length) {
+    throw new Error(`No models found in the API response from ${cleanUrl}.`);
+  }
+
+  // Map to clean format: { id: string, name: string }
+  const models = rawList.map(item => {
+    const id = typeof item === 'string' ? item : (item.id || item.name);
+    const name = typeof item === 'object' && item.name && item.name !== id
+      ? `${item.name} (${id})`
+      : id;
+    return { id, name };
+  }).filter(m => Boolean(m.id));
+
+  // Sort models alphabetically
+  models.sort((a, b) => a.id.localeCompare(b.id));
+
+  return models;
+}
+
+// Fetch list of available models from Google Gemini API (GET /v1beta/models)
+async function fetchGeminiModels({ apiKey }) {
+  if (!apiKey || !apiKey.trim()) {
+    throw new Error('Please enter and save your Gemini API key first.');
+  }
+
+  const cleanKey = apiKey.trim();
+  const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${cleanKey}`;
+
+  const response = await fetch(url, {
+    method: 'GET'
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errMessage = data?.error?.message ||
+                       data?.message ||
+                       `Failed to fetch Gemini models (${response.status}): ${response.statusText}`;
+    throw new Error(errMessage);
+  }
+
+  const rawList = data?.models || [];
+  if (!rawList.length) {
+    throw new Error('No models found in the Gemini API response.');
+  }
+
+  // Filter for models supporting content generation
+  const validModels = rawList.filter(m => {
+    const methods = m.supportedGenerationMethods || [];
+    return methods.includes('generateContent');
+  });
+
+  const listToUse = validModels.length ? validModels : rawList;
+
+  // Map to clean format: { id: string, name: string }
+  const models = listToUse.map(item => {
+    const rawId = item.name || '';
+    const cleanId = rawId.replace(/^models\//, '');
+    const displayName = item.displayName || cleanId;
+    const name = displayName !== cleanId ? `⚡ ${displayName} (${cleanId})` : cleanId;
+    return { id: cleanId, name };
+  }).filter(m => Boolean(m.id));
+
+  // Sort: prioritize flash models, then alphabetical
+  models.sort((a, b) => {
+    const aIsFlash = a.id.includes('flash');
+    const bIsFlash = b.id.includes('flash');
+    if (aIsFlash && !bIsFlash) return -1;
+    if (!aIsFlash && bIsFlash) return 1;
+    return a.id.localeCompare(b.id);
+  });
+
+  return models;
+}
+
+
+// ==================== APP MAIN ====================
 // Main Application Controller & Orchestration Engine for Stack Overflow Copilot
 // Supports Multimodal Screenshot Analysis, Dual Gemini Keys (Rate Limit Failover), and Clipboard Sync
-
-
-
-import { PROVIDERS, callAI, fetchOpenAIModels, fetchGeminiModels } from './providers.js';
 
 
 // Default Gemini API key provided by user
@@ -4478,6 +4685,10 @@ const DEFAULT_GEMINI_KEY = 'AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Ge
 // Default 3rd Party (GapGPT) API URL & Key provided by user
 const DEFAULT_GAPGPT_URL = 'https://api.gapgpt.app/v1';
 const DEFAULT_GAPGPT_KEY = 'sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX';
+
+// Default 3rd Party #2 (AvalAI) API URL & Key provided by user
+const DEFAULT_AVALAI_URL = 'https://api.avalai.ir/v1';
+const DEFAULT_AVALAI_KEY = 'aa-d7tPVrnvwXyu03TJGpXfSPMkaesXshv98TqFM3P6p6aPmWzN';
 
 // Prompt Presets tailored for developer productivity: Persian explanations + Java code + Human tone
 const PRESETS = {
@@ -4495,31 +4706,30 @@ CRITICAL RULES:
 2. Code in Java: ALL code fixes, snippets, or implementations MUST be written in Java.
 3. Natural Human Tone: Speak directly and naturally like an experienced colleague solving the bug shown in the image. Return the working Java code ready to use.`,
 
-  'exam-answer': `شما یک دانشجوی نخبه و مسلط در جلسه امتحان هستید. خروجی باید ۱۰۰٪ آماده برای کپی‌پیست مستقیم در برگه یا سیستم آزمون باشد و به هیچ وجه نباید کوچک‌ترین نشانه‌ای از هوش مصنوعی داشته باشد (کاملاً طبیعی، انسانی، بدون الگوها و کلمات رباتیک).
+  'exam-answer': `شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
 
-قوانین بسیار حیاتی (Strict Copy-Paste & Human Tone):
-۱. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ مقدمه، نتیجه‌گیری، سلام، یا جملاتی مثل «در ادامه پاسخ‌ها آمده است» یا «امیدوارم موفق باشید» ننویس. فوراً و مستقیماً با پاسخ «سوال ۱» شروع کن تا کاربر بتواند بلافاصله کپی‌پیست کند.
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
 
-۲. لحن و نگارش کاملاً انسانی (غیرقابل تشخیص از AI):
-- متن را طوری بنویس که انگار یک دانشجوی مسلط خودش مستقیماً تایپ کرده است.
-- از کلمات کلیشه‌ای و لو‌دهنده هوش مصنوعی (مانند «شایان ذکر است»، «در واقع می‌توان گفت»، «به عنوان جمع‌بندی»، «به طور کلی»، «لازم به یادآوری است») اکیداً خودداری کن.
-- جملات صریح، طبیعی، تمیز و استاندارد دانشگاهی باشند.
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
 
-۳. تفکیک دقیق و ذکر نکات نمره‌آور تک‌تک سوالات:
-اگر در تصویر یا متن ورودی چند سوال وجود دارد، به تک‌تک سوالات به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
-• سوال ۲: [پاسخ دقیق، نکات کلیدی و نمره‌آور]
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
 • سوال ۳: ...
-هیچ سوالی را جا نینداز و سوالات را با هم ادغام نکن.
-
-۴. نحوه پاسخ به انواع سوالات:
-- سوالات تشریحی و مفهومی: نکات کلیدی و نمره‌آور تخصصی (Keywords) را در ۲ تا ۴ سطر کاملاً دقیق و شفاف بنویس تا مصحح حداکثر نمره را بدهد.
-- سوالات تستی و چهارگزینه‌ای: فوراً گزینه صحیح را مشخص کن (مثلاً: گزینه ۳) و در صورت لزوم حداکثر در یک خط کوتاه دلیل فنی و نمره‌آور آن را بنویس.
-- سوالات برنامه‌نویسی و کد: فقط خود کد تمیز و استاندارد Java را بدون توضیحات طولانی و غیرضروری بنویس.
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
 
 ۵. زبان و فرمت:
-تمام پاسخ‌های متنی به زبان فارسی طبیعی و تمام کدها به زبان Java باشد.`,
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.`,
 
   'code-debug': `بررسی و دیباگ کد:
 1. تمام توضیحات، علت خطا و نکات باید به زبان فارسی روان و کاملاً انسانی (غیررباتیک) بیان شود.
@@ -4545,19 +4755,23 @@ class App {
       gemini: DEFAULT_GEMINI_KEY,
       geminiBackup: '',
       openai: '',
-      custom_openai: DEFAULT_GAPGPT_KEY
+      custom_openai: DEFAULT_GAPGPT_KEY,
+      avalai: DEFAULT_AVALAI_KEY
     };
     this.apiUrls = {
       openai: 'https://api.openai.com/v1',
-      custom_openai: DEFAULT_GAPGPT_URL
+      custom_openai: DEFAULT_GAPGPT_URL,
+      avalai: DEFAULT_AVALAI_URL
     };
     this.selectedModels = {
       gemini: PROVIDERS.gemini.defaultModel,
       openai: PROVIDERS.openai.defaultModel,
-      custom_openai: 'gpt-5-nano'
+      custom_openai: 'deepseek-v4.1-flash',
+      avalai: 'deepseek-v4.1-flash'
     };
     this.customModels = {
-      custom_openai: 'gpt-5-nano'
+      custom_openai: 'deepseek-v4.1-flash',
+      avalai: 'deepseek-v4.1-flash'
     };
     this.fetchedModels = {};
     this.autoSync = false; // Default: Inactive (do not auto-read clipboard)
@@ -4600,6 +4814,11 @@ class App {
         this.apiKeys.custom_openai = DEFAULT_GAPGPT_KEY;
       }
 
+      // Preload AvalAI 3rd-party key if none is present
+      if (!this.apiKeys.avalai || !this.apiKeys.avalai.trim()) {
+        this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+      }
+
       const storedProvider = localStorage.getItem('cbai_provider');
       if (storedProvider && PROVIDERS[storedProvider]) {
         this.currentProvider = storedProvider;
@@ -4617,6 +4836,11 @@ class App {
         this.apiUrls.custom_openai = DEFAULT_GAPGPT_URL;
       }
 
+      // Preload AvalAI URL if none is present
+      if (!this.apiUrls.avalai) {
+        this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+      }
+
       this.saveKeys();
 
       const storedCustomModels = localStorage.getItem('cbai_custom_models');
@@ -4627,21 +4851,22 @@ class App {
       const storedModels = localStorage.getItem('cbai_models');
       if (storedModels) this.selectedModels = { ...this.selectedModels, ...JSON.parse(storedModels) };
 
-      // Ensure custom_openai defaults to gpt-5-nano
-      if (!this.selectedModels.custom_openai || 
-          this.selectedModels.custom_openai === 'deepseek/deepseek-chat' || 
-          this.selectedModels.custom_openai === 'gpt-4o-mini') {
-        this.selectedModels.custom_openai = 'gpt-5-nano';
-      }
-
-      // Default to 3rd Party provider (GapGPT) and gpt-5-nano model
-      const providerDefaultMigrated = localStorage.getItem('cbai_default_gapgpt_v3');
-      if (!providerDefaultMigrated) {
-        this.currentProvider = 'custom_openai';
-        this.selectedModels.custom_openai = 'gpt-5-nano';
-        localStorage.setItem('cbai_provider', 'custom_openai');
-        localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
-        localStorage.setItem('cbai_default_gapgpt_v3', 'true');
+      // Set default model for both 3rd-party providers (GapGPT and AvalAI) to deepseek-v4.1-flash
+      const deepseekMigrated = localStorage.getItem('cbai_deepseek_flash_v5');
+      if (!deepseekMigrated) {
+        this.selectedModels.custom_openai = 'deepseek-v4.1-flash';
+        this.selectedModels.avalai = 'deepseek-v4.1-flash';
+        this.customModels.custom_openai = 'deepseek-v4.1-flash';
+        this.customModels.avalai = 'deepseek-v4.1-flash';
+        this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+        this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+        try {
+          localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+          localStorage.setItem('cbai_custom_models', JSON.stringify(this.customModels));
+          localStorage.setItem('cbai_api_keys', JSON.stringify(this.apiKeys));
+          localStorage.setItem('cbai_api_urls', JSON.stringify(this.apiUrls));
+          localStorage.setItem('cbai_deepseek_flash_v5', 'true');
+        } catch (e) {}
       }
 
       const storedFetchedModels = localStorage.getItem('cbai_fetched_models');
@@ -4672,11 +4897,13 @@ class App {
       }
 
       const storedPrompt = localStorage.getItem('cbai_prompt');
-      const examPromptHumanUpdated = localStorage.getItem('cbai_exam_human_v3');
-      if (!examPromptHumanUpdated && this.currentPreset === 'exam-answer') {
+      const examPromptUltraShort = localStorage.getItem('cbai_exam_ultrashort_v4');
+      if (!examPromptUltraShort && this.currentPreset === 'exam-answer') {
         this.systemPrompt = PRESETS['exam-answer'];
-        localStorage.setItem('cbai_prompt', this.systemPrompt);
-        localStorage.setItem('cbai_exam_human_v3', 'true');
+        try {
+          localStorage.setItem('cbai_prompt', this.systemPrompt);
+          localStorage.setItem('cbai_exam_ultrashort_v4', 'true');
+        } catch (e) {}
       } else if (!storedPrompt || storedPrompt.includes('Stack Overflow Copilot. The user has copied') || storedPrompt.includes('Fulfill the user input concisely')) {
         this.systemPrompt = PRESETS[this.currentPreset] || PRESETS['so-solve'];
         localStorage.setItem('cbai_prompt', this.systemPrompt);
@@ -4715,8 +4942,8 @@ class App {
   }
 
   hasActiveKey() {
-    if (this.currentProvider === 'custom_openai') {
-      const url = this.apiUrls.custom_openai || '';
+    if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai') {
+      const url = this.apiUrls[this.currentProvider] || '';
       // For local Ollama or local LM Studio endpoints, API key is optional
       if (url.includes('localhost') || url.includes('127.0.0.1') || url.includes(':11434')) {
         return true;
@@ -4919,6 +5146,7 @@ class App {
     document.getElementById('btn-mobile-settings')?.addEventListener('click', () => toggleMobileSidebar(true));
     document.getElementById('btn-mobile-settings-bar')?.addEventListener('click', () => toggleMobileSidebar(true));
     document.getElementById('btn-close-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
+    document.getElementById('btn-done-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
     document.getElementById('mobile-sidebar-backdrop')?.addEventListener('click', () => toggleMobileSidebar(false));
 
     // Keyboard Shortcuts
@@ -5279,11 +5507,13 @@ class App {
     if (link) {
       link.href = prov.keyHelpUrl;
       if (this.currentProvider === 'gemini') {
-        link.textContent = 'Get Key (AI Studio) \u2192';
+        link.textContent = 'Get Key (AI Studio) →';
       } else if (this.currentProvider === 'custom_openai') {
-        link.textContent = 'Get Key (GapGPT) \u2192';
+        link.textContent = 'Get Key (GapGPT) →';
+      } else if (this.currentProvider === 'avalai') {
+        link.textContent = 'Get Key (AvalAI) →';
       } else {
-        link.textContent = 'Get Key \u2192';
+        link.textContent = 'Get Key →';
       }
     }
 
@@ -5291,9 +5521,9 @@ class App {
     const urlGroup = document.getElementById('api-url-group');
     const urlInput = document.getElementById('api-url-input');
     if (urlGroup) {
-      if (this.currentProvider === 'custom_openai') {
+      if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai') {
         urlGroup.style.display = 'flex';
-        if (urlInput) urlInput.value = this.apiUrls.custom_openai || prov.defaultUrl || '';
+        if (urlInput) urlInput.value = this.apiUrls[this.currentProvider] || prov.defaultUrl || '';
       } else {
         urlGroup.style.display = 'none';
       }
@@ -5312,7 +5542,9 @@ class App {
       if (this.currentProvider === 'gemini') {
         keyHint.textContent = 'Default Gemini API key preloaded.';
       } else if (this.currentProvider === 'custom_openai') {
-        keyHint.textContent = 'GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.';
+        keyHint.textContent = 'GapGPT API preloaded. Default model: deepseek-v4.1-flash.';
+      } else if (this.currentProvider === 'avalai') {
+        keyHint.textContent = 'AvalAI API preloaded. Default model: deepseek-v4.1-flash.';
       } else {
         keyHint.textContent = 'Saved securely in your browser localStorage.';
       }
@@ -5333,7 +5565,7 @@ class App {
     // Show Load Models from API button for all providers
     const btnFetchModels = document.getElementById('btn-fetch-models');
     if (btnFetchModels) {
-      btnFetchModels.style.display = 'inline-flex';
+      btnFetchModels.style.display = 'flex';
     }
 
     // Populate Models dropdown
@@ -5354,6 +5586,17 @@ class App {
 
     const currentSelected = this.selectedModels[this.currentProvider];
     const fetchedList = this.fetchedModels[this.currentProvider] || [];
+
+    // Update count badge if present
+    const countBadge = document.getElementById('model-count-badge');
+    if (countBadge) {
+      if (fetchedList.length > 0) {
+        countBadge.style.display = 'inline-block';
+        countBadge.textContent = `${fetchedList.length} مدل فعال`;
+      } else {
+        countBadge.style.display = 'none';
+      }
+    }
 
     // If we have models fetched directly from the API, display them
     if (fetchedList.length > 0) {
@@ -5453,11 +5696,10 @@ class App {
 
     const btnFetch = document.getElementById('btn-fetch-models');
     const btnQuick = document.getElementById('btn-fetch-models-quick');
-    const origText = btnFetch ? btnFetch.textContent : '';
 
     if (btnFetch) {
       btnFetch.disabled = true;
-      btnFetch.textContent = '⏳ Loading Models...';
+      btnFetch.innerHTML = '<span class="btn-icon">⏳</span> <span class="btn-text">در حال بارگذاری مدل‌ها...</span>';
     }
     if (btnQuick) {
       btnQuick.disabled = true;
@@ -5470,8 +5712,8 @@ class App {
         this.ui.showToast('Connecting to Google Gemini API (AI Studio)...', 'info');
         models = await fetchGeminiModels({ apiKey });
       } else {
-        const baseUrl = provider === 'custom_openai' 
-          ? (this.apiUrls.custom_openai || 'https://api.gapgpt.app/v1') 
+        const baseUrl = (provider === 'custom_openai' || provider === 'avalai')
+          ? (this.apiUrls[provider] || PROVIDERS[provider]?.defaultUrl || 'https://api.avalai.ir/v1') 
           : (this.apiUrls.openai || 'https://api.openai.com/v1');
         this.ui.showToast(`Connecting to ${baseUrl}/models ...`, 'info');
         models = await fetchOpenAIModels({ baseUrl, apiKey });
@@ -5492,6 +5734,10 @@ class App {
       sound.playSuccess();
       const providerName = PROVIDERS[provider]?.name || provider;
       this.ui.showToast(`🎉 Loaded ${models.length} models for ${providerName}!`, 'success');
+
+      if (btnFetch) {
+        btnFetch.innerHTML = `<span class="btn-icon">✅</span> <span class="btn-text">${models.length} مدل لود شد (به‌روزرسانی مجدد)</span>`;
+      }
     } catch (err) {
       console.error('Failed to load models:', err);
       sound.playError();
@@ -5499,7 +5745,9 @@ class App {
     } finally {
       if (btnFetch) {
         btnFetch.disabled = false;
-        btnFetch.textContent = origText || '🔄 Load Models from API';
+        if (!btnFetch.innerHTML.includes('✅')) {
+          btnFetch.innerHTML = '<span class="btn-icon">🔄</span> <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>';
+        }
       }
       if (btnQuick) {
         btnQuick.disabled = false;
@@ -5790,7 +6038,6 @@ class App {
 window.addEventListener('DOMContentLoaded', () => {
   new App();
 });
-
 
 </script>
 </body>
