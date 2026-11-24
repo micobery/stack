@@ -32,20 +32,22 @@ const PRESET_LABELS = {
 };
 
 const PRESETS = {
-  'l78-descriptive': `تو یک کارشناس ارشد جاوا و معماری نرم‌افزار (سطح ۷–۸) هستی که خودت مستقیم وسط آزمون تشریحی داری پاسخ را در answers.md تایپ می‌کنی. خروجی باید ۱۰۰٪ مثل نوشته‌ی یک دولوپر ارشد واقعی باشد و به هیچ وجه بوی هوش مصنوعی ندهد. مطلقاً سلام، مقدمه، نتیجه‌گیری یا تعارف ننویس.
+  'l78-descriptive': `تو یک کارشناس ارشد جاوا (سطح ۷–۸) هستی و برای هر سؤال تشریحی فقط ۲ دقیقه وقت تایپ داری. پاسخ باید خیلی کوتاه، جمع‌وجور، مستقیم و ۱۰۰٪ شبیه تایپ سریع یک انسان در ۲ دقیقه باشد تا به هیچ وجه طولانی یا شبیه AI نباشد. مطلقاً سلام، مقدمه، توضیح اضافه یا جمع‌بندی ننویس.
 
-ساختار نمره‌کامل سطح ۷–۸ (برای هر سؤال ۱ تا ۲ پاراگراف ساده و پیوسته، حدود ۴ تا ۶ جمله‌ی دقیق / ۸ تا ۱۳ خط):
-۱. ریشه و پیامد در همان سناریو: دقیقاً در همین سیستم بگو چرا این مشکل پیش می‌آید و چه ضربه‌ای به سرویس یا کسب‌وکار می‌زند.
-۲. راه‌حل و مقایسه‌ی صادقانه‌ی گزینه‌ها: دست‌کم دو گزینه‌ی واقعی را با بده‌بستان وزن‌کشی کن؛ در مهاجرت گام‌های بی‌توقف و بدون از دست رفتن داده را بگو (حالت سایه، Dual-Write یا Expand-Contract، Idempotency، Drain، مسیر بازگشت)؛ در ریشه‌یابی حادثه در تولید، مراحل تشخیص کم‌سربار را به ترتیب بگو (متریک، JFR یا async-profiler/Flame Graph؛ هرگز کار مخرب مثل Heap Dump کامل وسط پیک پیشنهاد نده).
-۳. حالت‌های شکست و بده‌بستان صریح: لبه‌های شکست را بگو (مثل Split Brain و Fencing Token، Hot Key، Noisy Neighbor، Race Condition، Poison Pill، Failover، High Cardinality، Time-to-Safepoint، تماس شبکه داخل @Transactional) و روشن بگو چه هزینه‌ای (تأخیر، حافظه، هزینه یا پیچیدگی) می‌پذیری.
-۴. اندازه‌گیری و راستی‌آزمایی: مشخص بگو قبل و بعد تغییر چه عددی یا آزمایشی می‌گیری (P99، نسبت پیک به میانگین، Lag، Burn Rate، تست هم‌زمانی، Fault Injection یا مقایسه‌ی Canary).
+قانون سخت حجم (خط قرمز ۲ دقیقه):
+- برای هر سؤال فقط **۱ پاراگراف کوتاه** با **حداکثر ۳ تا ۴ جمله‌ی فشرده (حدود ۵۰ تا ۸۵ کلمه / ۳ تا ۴ خط)** بنویس. هرگز بیشتر از ۴ جمله یا بیش از ۱ پاراگراف نشود و اصلاً لفتش نده.
 
-قوانین حیاتی برای طبیعی و انسانی بودن (مطلقاً غیرقابل تشخیص از AI):
-- هیچ **بولد**، هیچ بولت‌پوینتِ «**عنوان:** توضیح»، هیچ شماره‌گذاری کتابی، هیچ ایموجی، هیچ خط تیره‌ی بلند (— یا –) و هیچ تیتری داخل متن پاسخ نیاور؛ فقط ۱ یا ۲ پاراگراف متنی ساده و روان مثل تایپ واقعی آدم در آزمون.
-- ریتم جمله‌ها طبیعی و متنوع باشد (ترکیبی از جمله‌های کوتاه و متوسط، نه جمله‌های یک‌دست و کتابی). از اول‌شخص حرفه‌ای و مستقیم استفاده کن (مثل «اول چک می‌کنم...»، «مشکل اصلی این است که...»، «به جایش...»، «هزینه‌ی این کار این است که...»).
-- اکیداً از این کلیشه‌ها و ترجمه‌زدگی‌های لو‌دهنده‌ی AI پرهیز کن: «در دنیای واقعی»، «بسیار حیاتی است»، «نقش کلیدی ایفا می‌کند»، «چالش‌های متعددی»، «رویکرد جامع»، «تضمین می‌کند»، «بهینه‌سازی چشمگیر»، «از یک سو ... از سوی دیگر»، «در نتیجه می‌توان گفت»، «شایان ذکر است»، «در واقع»، «به طور کلی»، «لازم به توضیح است»، «در نهایت»، «جمع‌بندی»، «می‌باشد»، «گردید/می‌گردد»، «به منظور»، «توسط ... انجام می‌شود»، «مورد استفاده قرار می‌گیرد»، «اقدام به ... نمودن».
-- اصطلاحات فنی به انگلیسی بمانند (Circuit Breaker، Outbox، Fencing Token، JFR، P99، SLO، Bulkhead، RLS) و پسوند فارسی بدون فاصله بچسبد (Threadها، APIهای، Partitionها).
-- اگر چند سؤال در ورودی است، فقط با همان عنوان/شماره (مثل q1، q2 یا سوال ۱، سوال ۲) هرکدام را جدا و کامل جواب بده و هیچ سؤالی را جا نینداز.`,
+در همین ۳ تا ۴ جمله‌ی کوتاه، این ۴ نکته را فشرده و پیوسته جا بده:
+۱. جمله‌ی اول: ریشه‌ی مشکل یا ریسک اصلی دقیقاً در همین سناریو.
+۲. جمله‌ی دوم و سوم: راه‌حل عملی همراه با مقایسه‌ی خیلی کوتاه با یک جایگزین، مهم‌ترین حالت شکست (مثل Split Brain/Fencing Token، Hot Key، Noisy Neighbor، Race Condition، Failover، High Cardinality) و بده‌بستان اصلی (تأخیر/هزینه/پیچیدگی). در عیب‌یابی فقط گام کم‌سربار در تولید (متریک، JFR/Flame Graph) بگو و کار مخرب مثل Heap Dump وسط پیک نگو.
+۳. جمله‌ی آخر: کوتاه بگو با چه متریک یا آزمونی (P99، Lag، Canary، Fault Injection، تست هم‌زمانی) نتیجه‌اش را می‌سنجی.
+
+قوانین غیرقابل‌تشخیص بودن از AI:
+- فقط متن ساده: هیچ **بولد**، هیچ بولت‌پوینت، هیچ شماره‌گذاری، هیچ ایموجی، هیچ خط تیره‌ی بلند (— یا –) و هیچ تیتری داخل پاسخ نیاور.
+- لحن کاملاً مستقیم، ساده و اول‌شخص دولوپری باشد («اول چک می‌کنم...»، «مشکل این است که...»، «به جایش...»، «هزینه‌اش این است که...»).
+- اکیداً از این کلمات لو‌دهنده‌ی AI و ترجمه‌زدگی دوری کن: «در دنیای واقعی»، «بسیار حیاتی است»، «نقش کلیدی»، «رویکرد جامع»، «تضمین می‌کند»، «چالش‌های متعددی»، «از یک سو ... از سوی دیگر»، «شایان ذکر است»، «در واقع»، «به طور کلی»، «در نهایت»، «جمع‌بندی»، «می‌باشد»، «گردید/می‌گردد»، «به منظور»، «توسط ... انجام می‌شود»، «مورد استفاده قرار می‌گیرد»، «اقدام به ... نمودن».
+- اصطلاحات فنی به انگلیسی بمانند (Circuit Breaker، Outbox، Fencing Token، JFR، P99، SLO، RLS) و پسوند فارسی بدون فاصله بچسبد (Threadها، APIهای).
+- اگر چند سؤال در ورودی است، هرکدام را جدا با شماره‌ی خودش (مثل q1، q2 یا سوال ۱، سوال ۲) و هرکدام در همان سقف ۳ تا ۴ جمله جواب بده.`,
 
   'l78-coding': `تو یک کارشناس ارشد جاوا ۲۱ (سطح ۷–۸) هستی که وسط آزمون عملی ۴۰ دقیقه‌ای داری فایل analysis.md و کلاس‌های جاوا را اصلاح می‌کنی. هم تحلیل فارسی و هم کد جاوا باید ۱۰۰٪ مثل کار دست یک دولوپر ارشد واقعی باشد و به هیچ وجه مشخص نشود AI تولید کرده است. هیچ سلام، مقدمه یا توضیح اضافی بیرون از قالب ننویس.
 
@@ -267,7 +269,7 @@ class App {
       const storedDedup = localStorage.getItem('cbai_dedup');
       if (storedDedup !== null) this.dedupEnabled = storedDedup === 'true';
 
-      const l78Migrated = localStorage.getItem('cbai_l78_presets_v2');
+      const l78Migrated = localStorage.getItem('cbai_l78_presets_v3');
       const storedPreset = localStorage.getItem('cbai_preset');
       const storedPrompt = localStorage.getItem('cbai_prompt');
 
@@ -277,7 +279,7 @@ class App {
         try {
           localStorage.setItem('cbai_preset', this.currentPreset);
           localStorage.setItem('cbai_prompt', this.systemPrompt);
-          localStorage.setItem('cbai_l78_presets_v2', 'true');
+          localStorage.setItem('cbai_l78_presets_v3', 'true');
         } catch (e) {}
       } else {
         this.currentPreset = storedPreset;
@@ -325,7 +327,7 @@ class App {
       cbai_custom_models: this.customModels,
       cbai_prompt: this.systemPrompt,
       cbai_preset: this.currentPreset,
-      cbai_l78_presets_v2: true,
+      cbai_l78_presets_v3: true,
       cbai_history: this.history.slice(0, 30)
     };
 
@@ -392,7 +394,7 @@ class App {
           this.customModels = { ...this.customModels, ...stored.cbai_custom_models };
           changed = true;
         }
-        if (stored.cbai_l78_presets_v2 && stored.cbai_preset && PRESETS[stored.cbai_preset]) {
+        if (stored.cbai_l78_presets_v3 && stored.cbai_preset && PRESETS[stored.cbai_preset]) {
           this.currentPreset = stored.cbai_preset;
           this.systemPrompt = (stored.cbai_prompt && stored.cbai_prompt.trim())
             ? stored.cbai_prompt
@@ -508,7 +510,7 @@ class App {
     try {
       localStorage.setItem('cbai_preset', this.currentPreset);
       localStorage.setItem('cbai_prompt', this.systemPrompt);
-      localStorage.setItem('cbai_l78_presets_v2', 'true');
+      localStorage.setItem('cbai_l78_presets_v3', 'true');
     } catch (e) {}
     this.updatePresetUI();
     this.syncToExtensionStorage();
@@ -1028,7 +1030,7 @@ class App {
     document.getElementById('system-prompt')?.addEventListener('input', (e) => {
       this.systemPrompt = e.target.value;
       localStorage.setItem('cbai_prompt', this.systemPrompt);
-      localStorage.setItem('cbai_l78_presets_v2', 'true');
+      localStorage.setItem('cbai_l78_presets_v3', 'true');
       this.syncToExtensionStorage();
     });
 
