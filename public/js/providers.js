@@ -29,21 +29,54 @@ export const PROVIDERS = {
   },
   custom_openai: {
     id: 'custom_openai',
-    name: '3rd Party (GapGPT / OpenAI)',
+    name: '3rd Party 1 (GapGPT)',
     keyHelpUrl: 'https://gapgpt.app',
     placeholder: 'sk-F4T2AxOQ...',
     defaultUrl: 'https://api.gapgpt.app/v1',
     models: [
-      { id: 'gpt-5-nano', name: '⚡ GPT-5 Nano (Ultra Fast & Accurate — Default)' },
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'gpt-5-nano', name: 'GPT-5 Nano' },
       { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Reliable)' },
-      { id: 'gpt-5-mini', name: 'GPT-5 Mini' },
       { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
-      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1 Reasoning)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
       { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
-      { id: 'gpt-4o', name: 'GPT-4o (Vision & Code Flagship)' },
+      { id: 'gpt-4o', name: 'GPT-4o' },
       { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
     ],
-    defaultModel: 'gpt-5-nano'
+    defaultModel: 'deepseek-v4.1-flash'
+  },
+  avalai: {
+    id: 'avalai',
+    name: '3rd Party 2 (AvalAI)',
+    keyHelpUrl: 'https://avalai.ir',
+    placeholder: 'aa-d7tPVrnv...',
+    defaultUrl: 'https://api.avalai.ir/v1',
+    models: [
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
+      { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'deepseek-v4.1-flash'
+  },
+  arvancloud: {
+    id: 'arvancloud',
+    name: '3rd Party 3 (ArvanCloud)',
+    keyHelpUrl: 'https://arvancloud.ir',
+    placeholder: '44f82d65-...',
+    defaultUrl: 'https://api.arvancloudai.ir/v1',
+    models: [
+      { id: 'DeepSeek-V4.1-Flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'DeepSeek-V4-Flash', name: 'DeepSeek 4 Flash' },
+      { id: 'DeepSeek-V4-Pro', name: 'DeepSeek 4 Pro' },
+      { id: 'GPT-5.6-Terra', name: 'GPT-5.6 Terra' },
+      { id: 'Claude-Opus-4.7', name: 'Claude Opus 4.7' },
+      { id: 'GLM-5.3-Flash', name: 'GLM-5.3 Flash' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'DeepSeek-V4.1-Flash'
   }
 };
 
@@ -91,7 +124,25 @@ CRITICAL RULES:
       return await callOpenAICompatible({
         baseUrl: baseUrl || 'https://api.gapgpt.app/v1',
         apiKey: apiKey ? apiKey.trim() : '',
-        model: model || 'gpt-5-nano',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'avalai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.avalai.ir/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'arvancloud':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.arvancloudai.ir/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'DeepSeek-V4.1-Flash',
         systemPrompt: effectivePrompt,
         text,
         image
@@ -259,7 +310,7 @@ async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text
 
   // Helpful headers for OpenRouter
   if (cleanUrl.includes('openrouter.ai')) {
-    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:8080';
+    headers['HTTP-Referer'] = (typeof window !== 'undefined' && window.location?.origin) || 'http://localhost:2080';
     headers['X-Title'] = 'Stack Overflow Copilot';
   }
 
@@ -301,7 +352,7 @@ export async function fetchOpenAIModels({ baseUrl, apiKey }) {
     headers['Authorization'] = `Bearer ${apiKey.trim()}`;
   }
   if (cleanUrl.includes('openrouter.ai')) {
-    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:8080';
+    headers['HTTP-Referer'] = (typeof window !== 'undefined' && window.location?.origin) || 'http://localhost:2080';
     headers['X-Title'] = 'Stack Overflow Copilot';
   }
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stack Overflow — Instant Clipboard AI Copilot</title>
   <meta name="description" content="Stack Overflow style Clipboard Copilot: Automatically reads copied code or questions, solves them with Gemini, and copies the solution back to your clipboard.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzNyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjM3IiBmaWxsPSJub25lIj4KICA8IS0tIFN0YWNrIE92ZXJmbG93IFRyYXkgLS0+CiAgPHBhdGggZD0iTTI2IDMzdi05aDR2MTNIMlYyNGg0djloMjB6IiBmaWxsPSIjQkNCQkJCIi8+CiAgPCEtLSBTdGFjayBPdmVyZmxvdyBPdmVyZmxvd2luZyBCYXJzIGluIFNpZ25hdHVyZSBPcmFuZ2UgLS0+CiAgPHBhdGggZD0iTTYuNSAyOC41aDE5di00aC0xOXY0eiIgZmlsbD0iI0Y0ODAyNCIvPgogIDxwYXRoIGQ9Ik03LjUgMjBsMTguNSA0IC44LTMuOS0xOC41LTQtLjggMy45eiIgZmlsbD0iI0Y0ODAyNCIvPgogIDxwYXRoIGQ9Ik0xMC41IDExLjhsMTcgOC41IDEuOC0zLjYtMTctOC41LTEuOCAzLjZ6IiBmaWxsPSIjRjQ4MDI0Ii8+CiAgPHBhdGggZD0iTTE2IDMuOGwxNC41IDEyLjUgMi42LTNMMTguNi44bC0yLjYgM3oiIGZpbGw9IiNGNDgwMjQiLz4KICA8cGF0aCBkPSJNMjUgMGwtMy4zIDIuMyAxMS41IDE1LjIgMy4zLTIuM0wyNSAweiIgZmlsbD0iI0Y0ODAyNCIvPgo8L3N2Zz4K">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -249,6 +249,52 @@ body, body.so-theme-light {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
+.so-btn-ext-install {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--so-text-secondary, #6a737c);
+  border: 1px solid var(--so-border, #d6d9dc);
+  border-radius: 3px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+.so-btn-ext-install:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--so-text-main, #232629);
+  border-color: var(--so-border, #d6d9dc);
+  opacity: 1;
+}
+
+.so-bookmarklet-link {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border: 2px dashed #1a73e8;
+  color: #1a73e8;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.so-bookmarklet-link:hover {
+  background: #1a73e8;
+  color: #ffffff;
+  border-style: solid;
+}
+
 .status-dot {
   width: 7px;
   height: 7px;
@@ -391,6 +437,32 @@ body, body.so-theme-light {
   color: var(--so-text-secondary);
 }
 
+.so-toggle-featured {
+  background: var(--so-bg-topbar);
+  padding: 0.6rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--so-border);
+  margin-bottom: 0.2rem;
+}
+
+.so-toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.so-toggle-title {
+  font-weight: 600;
+  font-size: 0.76rem;
+  color: var(--so-text-main);
+}
+
+.so-toggle-desc {
+  font-size: 0.68rem;
+  color: var(--so-text-muted);
+  font-weight: 500;
+}
+
 /* Sm Switch */
 .switch-sm {
   position: relative;
@@ -485,28 +557,29 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 .so-highlight { color: var(--so-text-secondary); font-weight: 600; }
 .so-highlight-green { color: var(--so-green); font-weight: 600; }
 
-/* Status Notification Banner (Light Mode Warm Notice) */
+/* Status Notification Banner (Discreet Clean White Background) */
 .so-notice-banner {
-  background-color: var(--so-widget-yellow-bg);
-  border: 1px solid var(--so-widget-yellow-border);
-  border-left: 4px solid var(--so-orange);
-  border-radius: 4px;
-  padding: 1rem 1.25rem;
+  background-color: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 6px;
+  padding: 0.85rem 1.15rem;
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .so-notice-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(244, 128, 36, 0.15);
+  background: #f1f2f3;
+  color: var(--so-text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
 }
 
@@ -568,15 +641,17 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 }
 
 .so-accepted-answer {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #e3e6e8;
+  border-left: 4px solid var(--so-green);
+  border-radius: 4px;
   padding: 1.25rem;
   margin-top: 1rem;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 /* Voting Column */
@@ -598,10 +673,9 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--so-text-muted);
-  font-size: 0.9rem;
+  color: #6a737c;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.15s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
@@ -612,17 +686,22 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 }
 
 .so-vote-count {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  color: var(--so-text-main);
+  color: #232629;
 }
 
 .so-vote-action {
   background: none;
   border: none;
-  color: var(--so-text-muted);
-  font-size: 1.1rem;
+  color: #838c95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
+  transition: color 0.15s ease;
 }
 
 .so-vote-action:hover { color: var(--so-orange); }
@@ -930,40 +1009,324 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   color: var(--so-text-muted);
 }
 
-/* Answers Section Header */
+/* Authentic Stack Overflow Comments / Discussion Thread */
+.so-comments-container {
+  border-top: 1px solid var(--so-border-subtle);
+  margin-top: 1rem;
+  padding-top: 0.25rem;
+}
+
+.so-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #f1f2f3;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #232629;
+}
+
+.so-comment-vote {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 28px;
+  justify-content: flex-end;
+}
+
+.so-comment-score {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6a737c;
+}
+
+.so-comment-up {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #9199a1;
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.so-comment-up:hover {
+  color: var(--so-orange);
+}
+
+.so-comment-text {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.so-comment-text code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: #f6f6f6;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #e3e6e8;
+}
+
+.so-comment-user {
+  color: #0074cc;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+.so-comment-user:hover {
+  color: #0a95ff;
+  text-decoration: underline;
+}
+
+.so-comment-user.so-comment-op {
+  background-color: #e1ecf4;
+  color: #0074cc;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+}
+
+.so-comment-date {
+  color: #9199a1;
+  font-size: 0.75rem;
+  margin-left: 0.35rem;
+}
+
+.so-add-comment-wrap {
+  padding: 0.5rem 0 0.25rem;
+}
+
+.so-add-comment-link {
+  color: #6a737c;
+  font-size: 0.8rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.so-add-comment-link:hover {
+  color: #0074cc;
+}
+
+/* Question Scenario Description */
+.so-question-desc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--so-text-main);
+  margin-bottom: 0.85rem;
+}
+
+.so-question-desc p {
+  margin: 0 0 0.65rem 0;
+}
+
+.so-question-desc code, .so-answer-text code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: #f6f6f6;
+  padding: 2px 5px;
+  border-radius: 3px;
+  border: 1px solid #e3e6e8;
+  color: #c7254e;
+}
+
+/* Additional Community Answers */
+.so-community-answer {
+  background: #ffffff;
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.so-answer-text {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--so-text-main);
+  margin-bottom: 1rem;
+}
+
+.so-answer-text h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0.25rem 0 0.65rem;
+  color: var(--so-text-main);
+}
+
+.so-answer-text pre {
+  background-color: #f6f6f6;
+  border: 1px solid #e3e6e8;
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #232629;
+  margin: 0.75rem 0;
+}
+
+/* Related Questions Sidebar Widget */
+.so-related-widget {
+  margin-top: 1.5rem;
+}
+
+.so-related-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--so-text-main);
+  margin-bottom: 0.75rem;
+}
+
+.so-related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.so-related-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.so-related-score {
+  background: #f1f2f3;
+  color: #3b4045;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.so-related-score.answered {
+  background: #2e7d32;
+  color: #ffffff;
+}
+
+.so-related-link {
+  color: #0074cc;
+  text-decoration: none;
+}
+
+.so-related-link:hover {
+  color: #0a95ff;
+  text-decoration: underline;
+}
+
+/* Ask Question Primary Button */
+.so-btn-ask {
+  background-color: #0a95ff;
+  color: #ffffff;
+  border: 1px solid transparent;
+  padding: 0.6rem 0.95rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: background-color 0.15s ease;
+}
+
+.so-btn-ask:hover {
+  background-color: #0074cc;
+  color: #ffffff;
+}
+
+/* Modern Answers Section Header & Sort */
 .so-answers-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1.5rem 0 1rem;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--so-border);
 }
 
-.so-answers-header h2 {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--so-text-main);
+.so-answers-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #232629;
+  margin: 0;
 }
 
-.so-answers-filter {
+.so-answers-sort-row {
   display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #525960;
+}
+
+.so-sort-select {
+  background: #ffffff;
   border: 1px solid var(--so-border);
   border-radius: 4px;
-  overflow: hidden;
-}
-
-.so-filter-btn {
-  background: #ffffff;
-  border: none;
-  border-right: 1px solid var(--so-border);
-  color: var(--so-text-secondary);
   padding: 0.35rem 0.65rem;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
+  color: #232629;
   cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
 }
 
-.so-filter-btn:last-child { border-right: none; }
-.so-filter-btn:hover { background: #f8f9fa; }
-.so-filter-btn.active { background: #e3e6e8; color: #0c0d0e; font-weight: 600; }
+.so-sort-select:focus {
+  border-color: #0a95ff;
+  box-shadow: 0 0 0 3px rgba(10, 149, 255, 0.15);
+}
+
+.so-topbar-icon-btn {
+  background: none;
+  border: none;
+  color: #525960;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.so-topbar-icon-btn:hover {
+  background: #e3e6e8;
+  color: #0c0d0e;
+}
+
+.so-unread-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #d0393e;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* History Section */
 .so-history-section {
@@ -1073,8 +1436,9 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   background-color: var(--so-widget-yellow-bg);
   border: 1px solid var(--so-widget-yellow-border);
   border-radius: 4px;
-  overflow: hidden;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0 !important;
+  width: 100%;
 }
 
 .so-widget-header {
@@ -1087,6 +1451,7 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-shrink: 0;
 }
 
 .so-widget-body {
@@ -1094,6 +1459,7 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  flex-shrink: 0;
 }
 
 .so-widget-blue {
@@ -1139,8 +1505,8 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 /* Provider Tabs in Widget */
 .so-provider-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.3rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
   background: #f1f2f3;
   padding: 0.25rem;
   border-radius: 4px;
@@ -1292,6 +1658,86 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   color: var(--so-text-muted);
   cursor: not-allowed;
   text-decoration: none;
+}
+
+/* Dedicated Full-Width Load Models Button */
+.so-btn-fetch-dedicated {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #f1f6fb;
+  color: var(--so-link);
+  border: 1px solid #c5d9e8;
+  border-radius: 4px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-top: 0.35rem;
+  min-height: 38px;
+}
+
+.so-btn-fetch-dedicated:hover {
+  background-color: #e1ecf4;
+  border-color: #7aa7c7;
+  color: #005999;
+}
+
+.so-btn-fetch-dedicated:active {
+  background-color: #d0e3f1;
+  transform: translateY(1px);
+}
+
+.so-btn-fetch-dedicated:disabled {
+  background-color: #f8f9fa;
+  border-color: var(--so-border-subtle);
+  color: var(--so-text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.so-btn-fetch-dedicated .btn-icon {
+  font-size: 0.95rem;
+}
+
+.so-model-count-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--so-green);
+  background: var(--so-green-bg);
+  border: 1px solid var(--so-green-border);
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+}
+
+.so-btn-done-sidebar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--so-orange);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.65rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  min-height: 42px;
+}
+
+.so-btn-done-sidebar:hover {
+  background: var(--so-orange-hover);
+}
+
+.so-btn-done-sidebar:active {
+  transform: translateY(1px);
 }
 
 .so-select, .so-textarea {
@@ -1514,9 +1960,9 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-  z-index: 1050;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 1150;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -1940,22 +2386,133 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
   .so-right-sidebar.mobile-open {
     display: flex !important;
+    flex-direction: column;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 88vw;
-    max-width: 380px;
-    z-index: 1060;
+    width: 100%;
+    max-width: 440px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1200;
     background: #ffffff;
-    box-shadow: -6px 0 30px rgba(0, 0, 0, 0.35);
+    box-shadow: -8px 0 35px rgba(0, 0, 0, 0.4);
     overflow-y: auto;
-    padding: 1.25rem 1rem 5.5rem 1rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 0 1rem calc(6.5rem + env(safe-area-inset-bottom, 0px)) 1rem;
     animation: soSlideDrawer 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  .so-right-sidebar.mobile-open > * {
+    flex-shrink: 0 !important;
+  }
+
+  .so-right-sidebar.mobile-open .so-related-widget {
+    display: none !important;
+  }
+
   .so-sidebar-mobile-header {
+    display: flex !important;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #ffffff;
+    padding: 0.95rem 0.25rem 0.8rem 0.25rem;
+    margin-bottom: 0.85rem;
+    border-bottom: 2px solid var(--so-border-subtle);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .so-sidebar-mobile-title {
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--so-text-main);
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: #f1f2f3;
+    color: var(--so-text-secondary);
+    font-size: 1.35rem;
+    line-height: 1;
+    border: 1px solid var(--so-border);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .modal-close:hover {
+    background: #e3e6e8;
+    color: var(--so-text-main);
+  }
+}
+
+@media (max-width: 480px) {
+  .so-right-sidebar.mobile-open {
+    max-width: 100%;
+    padding: 0 0.85rem calc(6.5rem + env(safe-area-inset-bottom, 0px)) 0.85rem;
+  }
+
+  /* 2x2 Clean Layout for Provider Tabs on Small Phones */
+  .so-provider-tabs {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.35rem !important;
+    padding: 0.35rem !important;
+  }
+
+  .so-tab-btn {
+    padding: 0.55rem 0.35rem !important;
+    font-size: 0.82rem !important;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .so-btn-fetch-dedicated {
+    min-height: 44px;
+    font-size: 0.85rem;
+  }
+
+  .so-input-wrapper input {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+    min-height: 42px;
+  }
+
+  .so-select {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+    min-height: 42px;
+  }
+
+  .so-textarea {
+    font-size: 14px;
+    max-height: 130px;
+    min-height: 85px;
+  }
+
+  .so-url-presets {
+    gap: 0.35rem;
+  }
+
+  .so-chip-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -2164,6 +2721,8 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
 
 </style>
+  
+  
 </head>
 <body class="so-theme-light">
   <!-- Top Navigation Bar -->
@@ -2207,17 +2766,32 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
         <!-- Live Status Pill -->
         <div id="status-pill" class="status-pill status-ready" title="Monitoring clipboard on tab switch">
           <span class="status-dot"></span>
-          <span id="status-pill-text">Auto-Sync Active</span>
+          <span id="status-pill-text">Manual Mode</span>
         </div>
 
         <!-- User Reputation Profile -->
-        <div class="so-user-rep" title="Milad — 1,337 reputation">
+        <div class="so-user-rep" title="Milad — 2,840 reputation">
           <div class="so-avatar">M</div>
-          <span class="so-rep-count">1,337</span>
-          <span class="badge-dot gold">● 1</span>
-          <span class="badge-dot silver">● 4</span>
-          <span class="badge-dot bronze">● 19</span>
+          <span class="so-rep-count">2,840</span>
+          <span class="badge-dot gold">● 2</span>
+          <span class="badge-dot silver">● 14</span>
+          <span class="badge-dot bronze">● 38</span>
         </div>
+
+        <!-- Modern Stack Overflow Inbox -->
+        <button class="so-topbar-icon-btn" title="Recent inbox messages (1 new)">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4zm0 2h12v5.5l-2.5 2.5H6.5L4 10.5V5zm3.5 8h5l1.5-1.5H6l1.5 1.5z"/>
+          </svg>
+          <span class="so-unread-dot">1</span>
+        </button>
+
+        <!-- Modern Stack Overflow Achievements -->
+        <button class="so-topbar-icon-btn" title="Recent achievements (+10 rep)">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M15 3h1a2 2 0 0 1 2 2v2c0 2.2-1.8 4-4 4h-.2a6 6 0 0 1-3.8 3.5V16h2a1 1 0 0 1 1 1v1H7v-1a1 1 0 0 1 1-1h2v-1.5A6 6 0 0 1 6.2 11H6a4 4 0 0 1-4-4V5c0-1.1.9-2 2-2h1V1h10v2zm1 2h-1v4h.2c1 0 1.8-.8 1.8-1.8V5zm-12 0H4v2.2C4 8.2 4.8 9 5.8 9H6V5z"/>
+          </svg>
+        </button>
 
         <button id="btn-mobile-settings" class="so-icon-btn so-mobile-only" title="API Settings & Models">
           ⚙️
@@ -2229,6 +2803,10 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
         <button id="btn-deploy-info" class="so-icon-btn" title="Free Cloud Deployment Guide">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><polyline points="13 11 12 7 11 11"/><line x1="12" y1="7" x2="12" y2="16"/></svg>
+        </button>
+
+        <button id="btn-ext-install" class="so-btn-ext-install" title="Install">
+          Install
         </button>
       </div>
     </div>
@@ -2248,11 +2826,14 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
         <div class="so-side-heading">CLIPBOARD ENGINE</div>
         <div class="so-toggle-box">
-          <div class="so-toggle-row">
-            <span>Auto Tab Sync</span>
-            <label class="switch-sm">
-              <input type="checkbox" id="toggle-autosync" checked>
-              <span class="slider-sm"></span>
+          <div class="so-toggle-row so-toggle-featured">
+            <div class="so-toggle-info">
+              <span class="so-toggle-title">Auto Read on Tab Focus</span>
+              <span class="so-toggle-desc" id="autosync-status-label">Disabled (Safe Mode)</span>
+            </div>
+            <label class="switch-sm" title="Auto Read on Tab Focus is disabled">
+              <input type="checkbox" id="toggle-autosync" disabled>
+              <span class="slider-sm" style="opacity: 0.5; cursor: not-allowed;"></span>
             </label>
           </div>
           <div class="so-toggle-row">
@@ -2285,8 +2866,9 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
       <!-- Question Title Header -->
       <div class="so-question-header">
         <div class="so-title-row">
-          <h1 class="so-question-title" id="live-state-title">How to solve the copied error / code with Gemini Copilot?</h1>
+          <h1 class="so-question-title" id="live-state-title">Spring Boot / Java: How to solve the copied error / code with Gemini Copilot?</h1>
           <div class="so-header-btn-group">
+            <a href="#text-input" class="so-btn-ask" id="btn-ask-question" title="Ask a new question on Stack Overflow">Ask Question</a>
             <button id="btn-camera" class="so-btn-camera" title="Take a photo with your phone's camera">
               📷 Take Photo
             </button>
@@ -2298,21 +2880,21 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
           <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
         </div>
         <div class="so-question-meta">
-          <span>Asked <time id="meta-time">just now</time></span>
+          <span>Asked <time id="meta-time">today</time></span>
           <span>Modified <span class="so-highlight">today</span></span>
-          <span>Viewed <span class="so-highlight">1,420 times</span></span>
-          <span>Mode: <span class="so-highlight-green">Tab Focus Auto-Sync Active</span></span>
+          <span>Viewed <span class="so-highlight">3,420 times</span></span>
+          <span>Mode: <span id="meta-sync-mode" class="so-highlight">Manual Mode (Click / Paste to Solve)</span></span>
         </div>
       </div>
 
       <!-- Live Radar Processing Pipeline Notification -->
       <div class="so-notice-banner status-visualizer-card">
         <div class="so-notice-icon" id="radar-core">
-          <span id="radar-icon">📋</span>
+          <span id="radar-icon">⚡</span>
         </div>
         <div class="so-notice-text">
-          <strong id="live-state-subtitle">Clipboard Monitoring Active</strong>
-          <p id="live-state-desc">Copy any code or error in your editor, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back to your clipboard!</p>
+          <strong id="live-state-subtitle">Manual Mode Ready</strong>
+          <p id="live-state-desc">Auto-read clipboard is disabled by default. Paste your code or screenshot (Ctrl+V) or click "Process Clipboard" to solve!</p>
           <div class="so-pipeline-steps">
             <span class="so-step-badge" id="step-read">1. Read Clipboard (Text / Screenshot)</span>
             <span class="so-step-arrow">&rarr;</span>
@@ -2326,11 +2908,19 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
       <!-- Question Post Box (Input) -->
       <article class="so-post-box">
         <div class="so-vote-col">
-          <button class="so-vote-btn" title="Upvote question">▲</button>
+          <button class="so-vote-btn" title="This question shows research effort; it is useful and clear">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
           <span class="so-vote-count">42</span>
-          <button class="so-vote-btn" title="Downvote question">▼</button>
-          <button class="so-vote-action" title="Bookmark question">★</button>
-          <button class="so-vote-action" title="Timeline history">🕒</button>
+          <button class="so-vote-btn" title="This question does not show any research effort; it is unclear or not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this question">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
         </div>
 
         <div class="so-post-body">
@@ -2338,10 +2928,19 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
             <span class="so-label">COPIED CODE / SCREENSHOT (INPUT)</span>
             <div class="so-tools-right">
               <span id="input-stats" class="so-stats-tag">0 chars</span>
+              <button id="btn-crop-screen" class="so-btn-subtle" title="کراپ اسکرین‌شات از صفحه (Ctrl+Shift+X / Ctrl+Shift+A)">📸 Crop Screen</button>
               <button id="btn-camera-inline" class="so-btn-subtle" title="Take a photo with camera">📷 Photo</button>
-              <button id="btn-paste-manual" class="so-btn-subtle" title="Paste text or screenshot">Paste</button>
+              <button id="btn-upload-file" class="so-btn-subtle" title="Upload screenshot / image file">🖼️ Upload</button>
+              <button id="btn-paste-manual" class="so-btn-subtle" title="Paste text or screenshot">📋 Paste</button>
               <button id="btn-clear-input" class="so-btn-subtle">Clear</button>
+              <input type="file" id="file-image-picker" accept="image/*" style="display: none;">
             </div>
+          </div>
+
+          <!-- Spring Boot Question Scenario Description -->
+          <div class="so-question-desc">
+            <p>I am building a high-throughput backend service using <strong>Spring Boot 3.3.x</strong> and <strong>Java 21</strong>. In my <code>@Service</code> classes, when handling concurrent requests that fetch entities from Spring Data JPA and convert them into DTOs, I occasionally encounter <code>NullPointerException</code> or <code>LazyInitializationException</code> when navigating relationships.</p>
+            <p>Here is my current code and stack trace snippet from IntelliJ / terminal below:</p>
           </div>
 
           <!-- Screenshot Preview Container -->
@@ -2359,35 +2958,72 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
           </div>
 
           <div class="so-editor-container">
-            <textarea id="text-input" class="so-code-editor" wrap="soft" placeholder="// Your copied text, code, or error message appears here... (Or take a screenshot with PrintScreen / Win+Shift+S / Cmd+Shift+4 and switch back!)"></textarea>
+            <textarea id="text-input" class="so-code-editor" wrap="soft" placeholder=""></textarea>
           </div>
 
           <!-- Tags row -->
           <div class="so-tags-row">
             <span class="so-tag">java</span>
-            <span class="so-tag">persian-fa</span>
-            <span class="so-tag">exam-answer</span>
-            <span class="so-tag">gpt-5-nano</span>
-            <span class="so-tag">gapgpt</span>
-            <span class="so-tag">clipboard-ai</span>
+            <span class="so-tag">spring-boot</span>
+            <span class="so-tag">spring-data-jpa</span>
+            <span class="so-tag">nullpointerexception</span>
+            <span class="so-tag">java-21</span>
+            <span class="so-tag">hibernate</span>
           </div>
 
           <!-- Post Signature -->
           <div class="so-post-footer">
             <div class="so-actions-sub">
               <a href="#">Share</a>
-              <a href="#">Edit</a>
+              <a href="#">Improve this question</a>
               <a href="#">Follow</a>
             </div>
             <div class="so-user-card">
-              <span class="so-user-time">asked just now</span>
+              <span class="so-user-time">asked Oct 21, 2026 at 19:42</span>
               <div class="so-user-info">
                 <div class="so-avatar sm">M</div>
                 <div>
                   <a href="#" class="so-user-name">Milad</a>
-                  <div class="so-user-badges"><span class="badge-dot gold">● 1</span> <span class="badge-dot silver">● 4</span></div>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 2</span> <span class="badge-dot silver">● 14</span> <span class="badge-dot bronze">● 38</span></div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Question Comments Thread (Authentic Stack Overflow Community Discussion) -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">3</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Could you check if you have circular dependency or if the Spring context fails during component scan? Also sharing the Java stacktrace would help.
+                – <a href="#" class="so-comment-user">Boris the Spider</a>
+                <span class="so-comment-date">yesterday at 19:42</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">5</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                If you're using Spring Boot 3+ with Java 17+, remember that <code>jakarta.persistence</code> is used instead of <code>javax.persistence</code>.
+                – <a href="#" class="so-comment-user">M. Deinum</a>
+                <span class="so-comment-date">Oct 21 at 12:05</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote"></div>
+              <div class="so-comment-text">
+                Thanks! I've pasted the code and error screenshot above for analysis.
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">just now</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#text-input" class="so-add-comment-link">Add a comment</a>
             </div>
           </div>
         </div>
@@ -2395,28 +3031,43 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
       <!-- Answer Section Header -->
       <div class="so-answers-header">
-        <h2>1 Accepted Solution (AI Answer)</h2>
-        <div class="so-answers-filter">
-          <button class="so-filter-btn active">Active</button>
-          <button class="so-filter-btn">Fastest</button>
-          <button class="so-filter-btn">Pro Reasoning</button>
+        <h2 class="so-answers-title">3 Answers</h2>
+        <div class="so-answers-sort-row">
+          <span>Sorted by:</span>
+          <select class="so-sort-select" title="Sort answers">
+            <option>Highest score (default)</option>
+            <option>Trending (recent votes count more)</option>
+            <option>Date modified (newest first)</option>
+            <option>Date created (oldest first)</option>
+          </select>
         </div>
       </div>
 
       <!-- Answer Post Box (Output / Solved) -->
       <article class="so-post-box so-accepted-answer" id="accepted-answer-box">
         <div class="so-vote-col">
-          <button class="so-vote-btn" title="Upvote answer">▲</button>
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
           <span class="so-vote-count">158</span>
-          <button class="so-vote-btn" title="Downvote answer">▼</button>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
           
           <!-- Stack Overflow Big Green Accepted Checkmark -->
           <div class="so-accepted-check" title="Accepted Solution">
-            <svg width="34" height="34" viewBox="0 0 36 36" fill="currentColor">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="#2e7d32">
               <path d="M6 14l8 8L30 6v6L14 28l-8-8z"/>
             </svg>
             <span class="so-accepted-text" id="accepted-check-text">ACCEPTED</span>
           </div>
+
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
         </div>
 
         <div class="so-post-body">
@@ -2451,7 +3102,7 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
               <a href="#">Follow</a>
             </div>
             <div class="so-user-card so-answered-card">
-              <span class="so-user-time">answered by AI Copilot</span>
+              <span class="so-user-time">answered just now</span>
               <div class="so-user-info">
                 <div class="so-avatar sm bot">🤖</div>
                 <div>
@@ -2459,6 +3110,208 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
                   <div class="so-user-badges"><span class="badge-dot gold">● 100k</span> Verified Solution</div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Answer Comments Thread (Authentic Stack Overflow Community Discussion) -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">14</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                This completely resolved the issue, especially handling null safety and boundary checks in Java. Clean and concise. +1
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">5 mins ago</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">6</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Confirmed working flawlessly on JDK 17 &amp; 21. Great job on the time complexity explanation as well.
+                – <a href="#" class="so-comment-user">AlexR</a>
+                <span class="so-comment-date">2 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#text-output" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Community Answer 2: Constructor Injection & Transaction Management -->
+      <article class="so-post-box so-community-answer">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">64</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-answer-text">
+            <h3>Approach 2: Use Constructor Injection with <code>@RequiredArgsConstructor</code> and <code>@Transactional(readOnly = true)</code></h3>
+            <p>Field injection via <code>@Autowired</code> is an anti-pattern in modern Spring Boot apps because it breaks immutability, hides dependencies, and complicates unit testing with Mockito. Switching to constructor injection ensures all dependencies are fully initialized before any service method is executed.</p>
+            <p>Additionally, marking read-only service queries with <code>@Transactional(readOnly = true)</code> keeps the Hibernate persistence session open throughout DTO mapping and enables Hibernate to optimize flush modes:</p>
+            <pre><code>@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+    private final UserMapper userMapper;
+
+    @Override
+    public OrderDTO getOrderDetails(Long orderId) {
+        Order order = orderRepository.findByIdWithItems(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
+
+        return userMapper.toDto(order);
+    }
+}</code></pre>
+            <p>Notice that <code>final</code> fields guarantee non-null bean references, preventing arbitrary <code>NullPointerException</code> at runtime if a dependency fails to autowire.</p>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">answered Oct 21, 2026 at 20:15</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">S</div>
+                <div>
+                  <a href="#" class="so-user-name">Sander Verhagen</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 9</span> <span class="badge-dot silver">● 64</span> <span class="badge-dot bronze">● 98</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments on Answer 2 -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">4</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Constructor injection makes unit testing so much cleaner because we can simply pass mocks into <code>new OrderServiceImpl(repo, mapper)</code> without reflection. +1
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">1 hour ago</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">7</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Also note that <code>@Transactional(readOnly = true)</code> informs Hibernate not to take dirty-checking snapshots, improving heap memory and latency.
+                – <a href="#" class="so-comment-user">vlad_mihalcea</a>
+                <span class="so-comment-date">45 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Community Answer 3: Spring Data JPA EntityGraph & Record Projections -->
+      <article class="so-post-box so-community-answer">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">28</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-answer-text">
+            <h3>Approach 3: Prevent N+1 issues using Spring Data JPA <code>@EntityGraph</code> or Java 21 Record DTO Projections</h3>
+            <p>If your <code>LazyInitializationException</code> occurs when mapping collection relations (like <code>Order.items</code> or <code>Order.customer</code>), using <code>@EntityGraph</code> instructs Spring Data JPA to perform an immediate SQL <code>LEFT OUTER JOIN</code>, preventing detached proxy errors.</p>
+            <p>In modern Spring Boot 3, using <strong>Java 21 Records</strong> for constructor query projection is even faster because it completely bypasses the Hibernate first-level cache:</p>
+            <pre><code>public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
+
+    // Solution A: Fetch graph for eager loading specific relations in one single query
+    @EntityGraph(attributePaths = {"orderItems", "customer"})
+    Optional&lt;Order&gt; findWithItemsById(Long id);
+
+    // Solution B: Java 21 Record Projection (skips Hibernate persistence context)
+    @Query("""
+        SELECT new com.example.dto.OrderSummaryDTO(o.id, o.status, c.email, COUNT(i.id))
+        FROM Order o
+        JOIN o.customer c
+        LEFT JOIN o.orderItems i
+        WHERE o.id = :id
+        GROUP BY o.id, o.status, c.email
+    """)
+    Optional&lt;OrderSummaryDTO&gt; findSummaryById(@Param("id") Long id);
+}</code></pre>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">answered Oct 21, 2026 at 21:04</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">S</div>
+                <div>
+                  <a href="#" class="so-user-name">Stéphane Nicoll</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 28</span> <span class="badge-dot silver">● 194</span> <span class="badge-dot bronze">● 320</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments on Answer 3 -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">5</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                DTO projections via Java Record are blazing fast and save substantial heap allocation during peak traffic. Excellent advice.
+                – <a href="#" class="so-comment-user">john_c</a>
+                <span class="so-comment-date">30 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#" class="so-add-comment-link">Add a comment</a>
             </div>
           </div>
         </div>
@@ -2481,9 +3334,12 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
     <!-- Right Sidebar (The Overflow Blog & AI Settings) -->
     <aside class="so-right-sidebar">
       <!-- Mobile Drawer Close Header -->
-      <div class="so-sidebar-mobile-header so-mobile-only">
-        <span>⚙️ Copilot Config &amp; Keys</span>
-        <button id="btn-close-sidebar" class="modal-close" title="Close settings">&times;</button>
+      <div class="so-sidebar-mobile-header">
+        <div class="so-sidebar-mobile-title">
+          <span class="icon">⚙️</span>
+          <span>تنظیمات و کلیدهای هوش مصنوعی</span>
+        </div>
+        <button id="btn-close-sidebar" class="modal-close" title="Close settings" aria-label="Close">&times;</button>
       </div>
 
       <!-- "The Overflow Config" Box -->
@@ -2500,7 +3356,9 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
 
           <!-- Provider Tabs -->
           <div class="so-provider-tabs">
-            <button class="so-tab-btn active" data-provider="custom_openai">3rd Party (GapGPT)</button>
+            <button class="so-tab-btn active" data-provider="custom_openai">GapGPT</button>
+            <button class="so-tab-btn" data-provider="avalai">AvalAI</button>
+            <button class="so-tab-btn" data-provider="arvancloud">ArvanCloud</button>
             <button class="so-tab-btn" data-provider="gemini">Gemini</button>
             <button class="so-tab-btn" data-provider="openai">OpenAI</button>
           </div>
@@ -2512,12 +3370,14 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
               <span class="so-pill-failover">OpenAI Compatible</span>
             </div>
             <div class="so-input-wrapper">
-              <input type="text" id="api-url-input" placeholder="https://api.gapgpt.app/v1">
+              <input type="text" id="api-url-input" value="https://api.gapgpt.app/v1" placeholder="https://api.gapgpt.app/v1">
               <button id="btn-save-url" class="so-btn-save-inside">Save</button>
             </div>
             <div class="so-url-presets">
               <span class="so-hint-text">Quick:</span>
-              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="gpt-5-nano">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="deepseek-v4.1-flash">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.avalai.ir/v1" data-preset-model="deepseek-v4.1-flash">AvalAI</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.arvancloudai.ir/v1" data-preset-model="DeepSeek-V4.1-Flash">ArvanCloud</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.deepseek.com/v1" data-preset-model="deepseek-chat">DeepSeek</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.groq.com/openai/v1" data-preset-model="llama-3.3-70b-versatile">Groq</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://openrouter.ai/api/v1" data-preset-model="deepseek/deepseek-chat">OpenRouter</button>
@@ -2530,24 +3390,24 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
           <div class="so-form-group">
             <div class="so-form-label-row">
               <label for="api-key-input">API Key</label>
-              <a id="get-key-link" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get Key &rarr;</a>
+              <a id="get-key-link" href="https://gapgpt.app" target="_blank" rel="noopener">Get Key &rarr;</a>
             </div>
             <div class="so-input-wrapper">
-              <input type="password" id="api-key-input" placeholder="Primary API key...">
+              <input type="password" id="api-key-input" value="sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX" placeholder="Primary API key...">
               <button id="btn-toggle-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
               <button id="btn-save-key" class="so-btn-save-inside">Save</button>
             </div>
-            <p class="so-hint-text" id="key-hint">Default Gemini API key preloaded.</p>
+            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Default model: deepseek-v4.1-flash.</p>
           </div>
 
           <!-- Backup API Key (Key 2) for Rate Limit Failover -->
-          <div class="so-form-group" id="backup-key-group">
+          <div class="so-form-group" id="backup-key-group" style="display: none;">
             <div class="so-form-label-row">
               <label for="api-key-backup-input">Key #2 (Backup / Limit Failover)</label>
               <span class="so-pill-failover">Auto-Fallback</span>
             </div>
             <div class="so-input-wrapper">
-              <input type="password" id="api-key-backup-input" placeholder="Paste 2nd Gemini key for quota backup...">
+              <input type="password" id="api-key-backup-input" value="AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Geg" placeholder="Paste 2nd Gemini key for quota backup...">
               <button id="btn-toggle-backup-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
               <button id="btn-save-backup-key" class="so-btn-save-inside">Save</button>
             </div>
@@ -2555,16 +3415,23 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
           </div>
 
           <!-- Model Selection -->
-          <div class="so-form-group">
+          <div class="so-form-group" id="model-select-group">
             <div class="so-form-label-row">
               <label for="model-select">AI Model</label>
-              <button type="button" id="btn-fetch-models" class="so-btn-fetch-models" style="display: none;" title="Fetch all available models directly from this API endpoint">
-                🔄 Load Models from API
-              </button>
+              <span id="model-count-badge" class="so-model-count-badge" style="display: none;"></span>
             </div>
             <select id="model-select" class="so-select">
-              <!-- Gemini 3.8 Flash, Gemini 2.5 Flash, Gemini 3.1 Pro Preview, Gemini Pro Latest -->
+              <option value="deepseek-v4.1-flash" selected>⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)</option>
+              <option value="gpt-5-nano">gpt-5-nano</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
+              <option value="deepseek-chat">deepseek-chat</option>
+              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
             </select>
+            <button type="button" id="btn-fetch-models" class="so-btn-fetch-dedicated" title="Fetch and refresh available models directly from this API endpoint">
+              <span class="btn-icon">🔄</span>
+              <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>
+            </button>
           </div>
 
           <!-- Custom Model Name Input -->
@@ -2580,8 +3447,8 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
           <div class="so-form-group">
             <label for="preset-select">Prompt Preset</label>
             <select id="preset-select" class="so-select">
-              <option value="so-solve" selected>👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
-              <option value="exam-answer">🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
+              <option value="exam-answer" selected>🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
+              <option value="so-solve">👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
               <option value="so-vision">📸 Screenshot Solver (Persian + Java Code)</option>
               <option value="code-debug">🐞 Debug Code &amp; Fix in Java (فارسی)</option>
               <option value="direct">🚀 پاسخ مستقیم و سریع (فارسی + جاوا)</option>
@@ -2598,8 +3465,36 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
               <label for="system-prompt">System Prompt</label>
               <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
             </div>
-            <textarea id="system-prompt" class="so-textarea" rows="3"></textarea>
+            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
+
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
+
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
+
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۳: ...
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
+
+۵. زبان و فرمت:
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.</textarea>
           </div>
+
+          <!-- Done / Close Button on Mobile -->
+          <button type="button" id="btn-done-sidebar" class="so-btn-done-sidebar so-mobile-only">
+            ✔️ بستن و ذخیره تنظیمات (Done)
+          </button>
         </div>
       </div>
 
@@ -2617,6 +3512,37 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
           </div>
           <div class="so-shortcut-item">
             <kbd>Alt+Tab</kbd> <span>Switch to tab (triggers auto-sync)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Questions Widget -->
+      <div class="so-related-widget">
+        <h4 class="so-related-heading">Related</h4>
+        <div class="so-related-list">
+          <div class="so-related-item">
+            <span class="so-related-score answered">1280</span>
+            <a href="#related-1" class="so-related-link">How does Spring @Autowired work under the hood in Spring Boot 3?</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">2150</span>
+            <a href="#related-2" class="so-related-link">LazyInitializationException: could not initialize proxy - no Session in Spring Boot</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">890</span>
+            <a href="#related-3" class="so-related-link">BeanCreationException: Error creating bean with name 'userRepository' defined in @EnableJpaRepositories</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">4320</span>
+            <a href="#related-4" class="so-related-link">What is the difference between @Component, @Repository &amp; @Service in Spring?</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">540</span>
+            <a href="#related-5" class="so-related-link">Spring Boot 3 migration: java.lang.ClassNotFoundException: jakarta.servlet.Filter vs javax</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score">315</span>
+            <a href="#related-6" class="so-related-link">How to resolve circular dependency between two @Service beans in Spring Boot 3.3?</a>
           </div>
         </div>
       </div>
@@ -2686,6 +3612,73 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
     </div>
   </div>
 
+  <!-- No-Flash Extension & Bookmarklet Modal -->
+  <div class="modal-backdrop" id="modal-ext-install">
+    <div class="so-modal" style="max-width: 640px;">
+      <div class="so-modal-header">
+        <h2>⚡ نصب و استفاده در هر سیستمی (بدون نیاز به فلش)</h2>
+        <button class="modal-close" data-close="modal-ext-install">&times;</button>
+      </div>
+      <div class="so-modal-body" style="direction: rtl; text-align: right; font-family: inherit;">
+        
+        <!-- Section 1: Magic Bookmarklet (Zero Install) -->
+        <div style="background: rgba(26, 115, 232, 0.08); border: 1.5px solid #1a73e8; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;">
+          <h4 style="color: #1a73e8; margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px; font-size: 15px;">
+            <span>⭐ روش اول (شاهکار بوکمارک - بدون دانلود، بدون نصب فایل و بدون فلش)</span>
+          </h4>
+          <p style="font-size: 13px; line-height: 1.6; margin: 0 0 12px 0; color: var(--so-text-main);">
+            این روش روی تمام سیستم‌های دانشگاهی، آزمون‌ها و لپ‌تاپ‌ها حتی با بسته بودن Developer Mode کار می‌کند! دکمه زیر را با ماوس بکشید و روی نوار بوکمارک بالای مرورگر (Bookmarks Bar - کلید <code>Ctrl+Shift+B</code>) رها کنید:
+          </p>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a id="bm-drag-btn" href="#" class="so-bookmarklet-link" title="این دکمه را با ماوس بکشید توی نوار بالای مرورگر (Bookmarks Bar)">
+              <svg width="16" height="16" viewBox="0 0 48 48" style="vertical-align: middle; margin-left: 4px;"><path fill="#1a73e8" d="M40 4H8C5.79 4 4 5.79 4 8v32c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V8c0-2.21-1.79-4-4-4z"/><path fill="#e8eaed" d="M22 22h18c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2H22c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2z"/></svg>
+              Google Translate me
+            </a>
+            <button id="btn-copy-bookmarklet" class="so-btn-secondary" style="font-size: 12px; padding: 6px 12px;">
+              📋 کپی کد بوکمارک
+            </button>
+          </div>
+          <p style="font-size: 11px; color: var(--so-text-secondary); margin: 8px 0 0 0;">
+            💡 در هر صفحه یا آزمونی: سوال را هایلایت کنید و روی بوکمارک در بالای مرورگر کلیک کنید -> تیک ۵۰۰ms در پایین راست ظاهر شده و پاسخ در کلیپ‌بورد کپی می‌شود.
+          </p>
+        </div>
+
+        <!-- Section 2: Direct Zip Download -->
+        <div style="border: 1px solid var(--so-border); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--so-text-main);">
+            📦 روش دوم: دانلود مستقیم فایل افزونه از همین سایت
+          </h4>
+          <p style="font-size: 13px; line-height: 1.5; margin: 0 0 12px 0; color: var(--so-text-secondary);">
+            نیازی به فلش ندارید! در هر کامپیوتری کافیست این سایت را باز کنید و مستقیماً روی دکمه دانلود زیر بزنید:
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="clipboard-copilot-chrome.zip" download="clipboard-copilot-chrome.zip" class="so-btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+              📥 دانلود مستقیم افزونه کروم / Edge (فقط ۹۱KB)
+            </a>
+            <a href="clipboard-copilot-firefox.zip" download="clipboard-copilot-firefox.zip" class="so-btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+              🦊 دانلود نسخه فایرفاکس
+            </a>
+          </div>
+          <ol style="font-size: 12px; line-height: 1.7; color: var(--so-text-secondary); margin: 12px 0 0 0; padding-right: 18px;">
+            <li><strong>برای کروم / Edge / Brave:</strong> 
+              <br>⚠️ <em>نکته مهم:</em> دکمه Load unpacked فقط <strong>پوشه</strong> قبول می‌کند! ابتدا روی فایل زیپ دانلودشده راست‌کلیک کرده و <strong>Extract Here</strong> بزنید. سپس در <code>chrome://extensions</code> دکمه Load unpacked را زده و <strong>پوشه استخراج‌شده</strong> را انتخاب کنید (پوشه Downloads را مستقیماً انتخاب نکنید).
+            </li>
+            <li><strong>برای فایرفاکس (حل ارور Not Verified):</strong> در فایرفاکس به آدرس <code>about:debugging#/runtime/this-firefox</code> بروید، دکمه <strong>Load Temporary Add-on...</strong> را بزنید و فایل <code>manifest.json</code> را انتخاب کنید.</li>
+          </ol>
+        </div>
+
+        <!-- Section 3: Web Store Explanation -->
+        <div style="font-size: 12px; color: var(--so-text-secondary); line-height: 1.6; border-top: 1px dashed var(--so-border); padding-top: 10px;">
+          ℹ️ <strong>چرا نصب ۱-کلیکه بدون باز کردن صفحه extensions ممکن نیست؟</strong> گوگل کروم برای پیشگیری از نفوذ بدافزارها از سال ۲۰۱۸ نصب مستقیم افزونه از سایت‌ها را غیرفعال کرده است و نصب کامپکت ۱-کلیکه تنها از طریق استور رسمی کروم (Chrome Web Store) مجاز است. اما با <strong>بوکمارک بالا</strong> یا <strong>دانلود مستقیم زیپ</strong>، بدون نیاز به هیچ فلشی در چند ثانیه کارتان راه می‌افتد.
+        </div>
+
+      </div>
+      <div class="so-modal-footer">
+        <button class="so-btn-primary" data-close="modal-ext-install">متوجه شدم</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Backdrop for Mobile Settings Drawer -->
   <div id="mobile-sidebar-backdrop" class="so-mobile-sidebar-backdrop"></div>
 
@@ -2709,11 +3702,8 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Scripts -->
-  <script>
-
-// ==========================================
-// 1. SOUND FX ENGINE
-// ==========================================
+  <script id="app-bundle">
+// ==================== SOUND ====================
 // Web Audio API synthesizer for instant zero-dependency audio feedback
 class SoundFX {
   constructor() {
@@ -2821,10 +3811,17 @@ class SoundFX {
 const sound = new SoundFX();
 
 
-// ==========================================
-// 2. CLIPBOARD MANAGER
-// ==========================================
+// ==================== CLIPBOARD ====================
 // System Clipboard API Interface with Multimodal Screenshot & Text Support
+
+function normalizeText(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '') // remove zero-width non-joiners & BOM
+    .trim();
+}
 
 class ClipboardManager {
   constructor() {
@@ -2833,22 +3830,109 @@ class ClipboardManager {
     this.lastImageHash = '';
     this.isProcessing = false;
     this.dedupEnabled = true;
+    this.lastWriteTime = 0;
+    this.isCopying = false;
+    this.knownOutputs = new Set();
+    this.knownOutputsList = [];
+  }
+
+  // Register an answer or copied snippet so it is never re-processed as a question
+  registerOutput(text) {
+    if (!text || typeof text !== 'string') return;
+    const clean = text.trim();
+    if (!clean) return;
+
+    this.lastOutput = clean;
+    this.lastWriteTime = Date.now();
+
+    const normalized = normalizeText(clean);
+    this.knownOutputs.add(clean);
+    this.knownOutputs.add(normalized);
+    this.knownOutputsList.push(normalized);
+
+    // Also extract code blocks inside markdown if present and register them
+    const codeBlockRegex = /```[a-zA-Z0-9_-]*\n?([\s\S]*?)```/g;
+    let match;
+    while ((match = codeBlockRegex.exec(clean)) !== null) {
+      const codeSnippet = match[1]?.trim();
+      if (codeSnippet) {
+        this.knownOutputs.add(codeSnippet);
+        this.knownOutputs.add(normalizeText(codeSnippet));
+      }
+    }
+
+    // Keep memory bounded to last 150 items
+    if (this.knownOutputsList.length > 150) {
+      const removed = this.knownOutputsList.shift();
+      if (!this.knownOutputsList.includes(removed)) {
+        this.knownOutputs.delete(removed);
+      }
+    }
+  }
+
+  // Check if text is a known output or generated solution
+  isKnownOutput(text) {
+    if (!text || typeof text !== 'string') return false;
+    const clean = text.trim();
+    if (!clean) return false;
+
+    const normalized = normalizeText(clean);
+
+    if (this.knownOutputs.has(clean) || this.knownOutputs.has(normalized)) {
+      return true;
+    }
+
+    if (this.lastOutput && (normalized === normalizeText(this.lastOutput) || clean === this.lastOutput.trim())) {
+      return true;
+    }
+
+    // Substring or fuzzy check for long texts (> 25 characters)
+    for (const known of this.knownOutputsList) {
+      if (known === normalized) return true;
+      if (normalized.length > 25 && (known.includes(normalized) || normalized.includes(known))) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   // Check if text is new and not an echo loop
-  shouldProcessText(text) {
+  shouldProcessText(text, { isAuto = false, history = [] } = {}) {
     if (!text || !text.trim()) return false;
     const clean = text.trim();
+    const normalized = normalizeText(clean);
 
-    if (!this.dedupEnabled) return true;
-
-    // Echo protection: Don't process if the clipboard text is what we just copied as output
-    if (clean === this.lastOutput.trim()) {
+    // 1. Time Cooldown: If the app itself wrote to clipboard within the last 3500ms, ignore auto triggers
+    if (isAuto && this.lastWriteTime && (Date.now() - this.lastWriteTime < 3500)) {
+      console.log('Ignored auto-sync trigger: within 3.5s self-write cooldown');
       return false;
     }
 
-    // Deduplication: Don't process if it's identical to the previous input
-    if (clean === this.lastInput.trim()) {
+    // 2. Strict Echo Protection: NEVER process text that matches any registered output
+    if (this.isKnownOutput(text)) {
+      console.log('Ignored clipboard text: matches known output (echo loop prevention)');
+      return false;
+    }
+
+    // 3. History check: check if this text matches any solution in app history
+    if (Array.isArray(history) && history.length > 0) {
+      const isHistoryMatch = history.some(item => {
+        if (!item || !item.output) return false;
+        const normHist = normalizeText(item.output);
+        return normHist === normalized || (normalized.length > 25 && (normHist.includes(normalized) || normalized.includes(normHist)));
+      });
+      if (isHistoryMatch) {
+        console.log('Ignored clipboard text: matches history item output');
+        return false;
+      }
+    }
+
+    if (!this.dedupEnabled) return true;
+
+    // 4. Deduplication: Don't process if it's identical to the previous input
+    if (this.lastInput && (normalized === normalizeText(this.lastInput) || clean === this.lastInput.trim())) {
+      console.log('Ignored clipboard text: identical to previous input');
       return false;
     }
 
@@ -2909,9 +3993,8 @@ class ClipboardManager {
             console.warn('readText fallback error:', textErr);
           }
         }
-        if (err.name === 'NotAllowedError') {
-          throw new Error('Clipboard permission denied by browser. Please click "Allow" on the permission prompt.');
-        }
+        console.warn('Clipboard read permission not available or denied:', err);
+        return { type: 'denied', reason: 'permission_restricted', error: err.name || 'NotAllowedError' };
       }
     }
 
@@ -2923,10 +4006,8 @@ class ClipboardManager {
           return { type: 'text', text: text.trim() };
         }
       } catch (err) {
-        if (err.name === 'NotAllowedError') {
-          throw new Error('Clipboard permission denied. Please allow clipboard access in your browser settings.');
-        }
-        throw err;
+        console.warn('Clipboard readText error:', err);
+        return { type: 'denied', reason: 'permission_restricted', error: err.name || 'NotAllowedError' };
       }
     }
 
@@ -2948,20 +4029,23 @@ class ClipboardManager {
     });
   }
 
-  // Write text back to system clipboard
+  // Write text back to system clipboard safely (returns true on success, false on failure)
   async writeText(text) {
-    if (!navigator.clipboard || !navigator.clipboard.writeText) {
-      return this.fallbackCopy(text);
+    if (!text) return false;
+
+    // Immediately record in known outputs and set cooldown
+    this.registerOutput(text);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        console.warn('navigator.clipboard.writeText failed, trying fallback:', err);
+      }
     }
 
-    try {
-      await navigator.clipboard.writeText(text);
-      this.lastOutput = text.trim();
-      return true;
-    } catch (err) {
-      console.warn('navigator.clipboard.writeText failed, trying fallback:', err);
-      return this.fallbackCopy(text);
-    }
+    return this.fallbackCopy(text);
   }
 
   // Fallback for older browsers or restricted contexts
@@ -2972,18 +4056,25 @@ class ClipboardManager {
       textarea.style.position = 'fixed';
       textarea.style.left = '-9999px';
       textarea.style.top = '-9999px';
+      textarea.style.opacity = '0';
+      textarea.setAttribute('readonly', '');
       document.body.appendChild(textarea);
-      textarea.focus();
+      
+      this.isCopying = true;
       textarea.select();
       const success = document.execCommand('copy');
       document.body.removeChild(textarea);
+      setTimeout(() => { this.isCopying = false; }, 300);
+
       if (success) {
-        this.lastOutput = text.trim();
+        this.registerOutput(text);
         return true;
       }
-      throw new Error('Fallback clipboard copy failed.');
+      console.warn('document.execCommand(copy) was unsuccessful');
+      return false;
     } catch (err) {
-      throw new Error('Unable to copy text to clipboard: ' + err.message);
+      console.warn('Fallback clipboard copy failed:', err);
+      return false;
     }
   }
 
@@ -3002,11 +4093,399 @@ class ClipboardManager {
 }
 
 const clipboard = new ClipboardManager();
+if (typeof window !== 'undefined') {
+  window.clipboardManager = clipboard;
+}
 
 
-// ==========================================
-// 3. AI PROVIDERS & INFERENCE ENGINE
-// ==========================================
+// ==================== UI ====================
+// User Interface Controller & Visual Feedback Engine for Stack Overflow Copilot
+
+class UIController {
+  constructor() {
+    // Elements
+    this.statusPill = document.getElementById('status-pill');
+    this.statusPillText = document.getElementById('status-pill-text');
+    this.radarCore = document.getElementById('radar-core');
+    this.radarIcon = document.getElementById('radar-icon');
+    this.noticeBanner = document.querySelector('.so-notice-banner');
+    this.liveTitle = document.getElementById('live-state-title');
+    this.liveSubtitle = document.getElementById('live-state-subtitle');
+    this.liveDesc = document.getElementById('live-state-desc');
+
+    this.stepRead = document.getElementById('step-read');
+    this.stepAi = document.getElementById('step-ai');
+    this.stepWrite = document.getElementById('step-write');
+
+    this.textInput = document.getElementById('text-input');
+    this.textOutput = document.getElementById('text-output');
+    this.solutionRenderBox = document.getElementById('solution-render-box');
+    this.solutionRenderContent = document.getElementById('solution-render-content');
+    this.acceptedCheckText = document.getElementById('accepted-check-text');
+    this.acceptedLabel = document.getElementById('accepted-label');
+    this.btnToggleRaw = document.getElementById('btn-toggle-raw');
+    this.acceptedAnswerBox = document.getElementById('accepted-answer-box');
+    this.inputStats = document.getElementById('input-stats');
+    this.outputStats = document.getElementById('output-stats');
+
+    this.toastContainer = document.getElementById('toast-container');
+    this.historyList = document.getElementById('history-list');
+    this.emptyHistory = document.getElementById('empty-history-placeholder');
+
+    this.initViewToggles();
+  }
+
+  initViewToggles() {
+    if (this.btnToggleRaw) {
+      this.btnToggleRaw.addEventListener('click', () => {
+        const isRawVisible = this.textOutput && this.textOutput.style.display !== 'none';
+        if (isRawVisible) {
+          if (this.textOutput) this.textOutput.style.display = 'none';
+          if (this.solutionRenderBox) this.solutionRenderBox.style.display = 'block';
+          this.btnToggleRaw.textContent = 'Raw Code';
+        } else {
+          if (this.textOutput) this.textOutput.style.display = 'block';
+          if (this.solutionRenderBox) this.solutionRenderBox.style.display = 'none';
+          this.btnToggleRaw.textContent = 'Formatted';
+        }
+      });
+    }
+  }
+
+  // Set Visual State to Ready / Listening
+  setReady(hasKey = true, autoSync = false) {
+    this.resetSteps();
+    if (this.statusPill) {
+      if (!hasKey) {
+        this.statusPill.className = 'status-pill status-warn';
+        this.statusPillText.textContent = 'API Key Required';
+      } else if (autoSync) {
+        this.statusPill.className = 'status-pill status-ready';
+        this.statusPillText.textContent = 'Auto-Sync Active';
+      } else {
+        this.statusPill.className = 'status-pill status-ready';
+        this.statusPillText.textContent = 'Manual Mode';
+      }
+    }
+    if (this.radarIcon) this.radarIcon.textContent = autoSync ? '📋' : '⚡';
+    if (this.liveSubtitle) {
+      if (!hasKey) {
+        this.liveSubtitle.textContent = 'API Key Setup Needed';
+      } else if (autoSync) {
+        this.liveSubtitle.textContent = 'Clipboard Monitoring Active';
+      } else {
+        this.liveSubtitle.textContent = 'Manual Mode Ready';
+      }
+    }
+    if (this.liveDesc) {
+      if (!hasKey) {
+        this.liveDesc.textContent = 'Please enter and save your API key in the settings.';
+      } else if (autoSync) {
+        this.liveDesc.textContent = 'Copy any code or error in your IDE/terminal, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back!';
+      } else {
+        this.liveDesc.textContent = 'Auto-read clipboard is disabled. Paste your question/screenshot (Ctrl+V) or click "Process Clipboard" to solve!';
+      }
+    }
+  }
+
+  // Set Visual State to Processing
+  setProcessing(stepName = 'Reading clipboard...') {
+    if (this.statusPill) {
+      this.statusPill.className = 'status-pill status-busy';
+      this.statusPillText.textContent = 'Processing...';
+    }
+    if (this.radarIcon) this.radarIcon.textContent = '⚡';
+    if (this.liveSubtitle) this.liveSubtitle.textContent = 'Analyzing Code & Generating Solution...';
+    if (this.liveDesc) this.liveDesc.textContent = stepName;
+  }
+
+  // Set Pipeline Step (1, 2, or 3)
+  setActiveStep(stepIndex) {
+    this.resetSteps();
+    if (stepIndex >= 1 && this.stepRead) this.stepRead.classList.add('step-active');
+    if (stepIndex >= 2 && this.stepAi) {
+      this.stepRead?.classList.remove('step-active');
+      this.stepRead?.classList.add('step-done');
+      this.stepAi.classList.add('step-active');
+    }
+    if (stepIndex >= 3 && this.stepWrite) {
+      this.stepAi?.classList.remove('step-active');
+      this.stepAi?.classList.add('step-done');
+      this.stepWrite.classList.add('step-active');
+    }
+  }
+
+  // Set Visual State to Success
+  setSuccess(message = 'Copied back to clipboard!', { isMobileScreenshot = false } = {}) {
+    if (this.statusPill) {
+      this.statusPill.className = 'status-pill status-ready';
+      this.statusPillText.textContent = isMobileScreenshot ? 'Answer Ready (In Box)' : 'Copied to Clipboard!';
+    }
+    if (this.stepWrite) {
+      this.stepWrite.classList.remove('step-active');
+      this.stepWrite.classList.add('step-done');
+    }
+    if (this.radarIcon) this.radarIcon.textContent = '✨';
+    if (this.liveSubtitle) {
+      this.liveSubtitle.textContent = isMobileScreenshot
+        ? 'Solution Displayed in Box Below'
+        : 'Solution Accepted & Copied to Clipboard!';
+    }
+    if (this.liveDesc) this.liveDesc.textContent = message;
+
+    // Reset back to ready after 5 seconds
+    setTimeout(() => {
+      this.setReady(true);
+    }, 5000);
+  }
+
+  // Set Visual State to Error
+  setError(errMessage) {
+    this.resetSteps();
+    if (this.statusPill) {
+      this.statusPill.className = 'status-pill status-warn';
+      this.statusPillText.textContent = 'Error Occurred';
+    }
+    if (this.radarIcon) this.radarIcon.textContent = '⚠️';
+    if (this.liveSubtitle) this.liveSubtitle.textContent = 'Failed to Process Clipboard';
+    if (this.liveDesc) this.liveDesc.textContent = errMessage;
+    this.showToast(errMessage, 'error');
+
+    setTimeout(() => {
+      this.setReady(true);
+    }, 5000);
+  }
+
+  resetSteps() {
+    [this.stepRead, this.stepAi, this.stepWrite].forEach(step => {
+      if (step) {
+        step.classList.remove('step-active', 'step-done');
+      }
+    });
+  }
+
+  // Screenshot Preview Controls
+  setScreenshotPreview({ dataUrl, mimeType, size }) {
+    const container = document.getElementById('screenshot-preview-container');
+    const img = document.getElementById('screenshot-preview-img');
+    const info = document.getElementById('screenshot-info');
+
+    if (container && img) {
+      img.src = dataUrl;
+      const sizeKb = Math.round(size / 1024);
+      if (info) info.textContent = `${mimeType || 'image/jpeg'} \u2022 ${sizeKb} KB`;
+      container.style.display = 'flex';
+      if (this.inputStats) this.inputStats.textContent = `Photo / Screenshot (${sizeKb} KB)`;
+    }
+  }
+
+  clearScreenshotPreview() {
+    const container = document.getElementById('screenshot-preview-container');
+    const img = document.getElementById('screenshot-preview-img');
+    if (container) container.style.display = 'none';
+    if (img) img.src = '';
+  }
+
+  // Update Input & Output Text boxes
+  setInputText(text) {
+    if (this.textInput) {
+      this.textInput.value = text;
+      if (this.inputStats && text) this.inputStats.textContent = `${text.length} chars`;
+    }
+  }
+
+  setOutputText(text, { isMobileScreenshot = false } = {}) {
+    if (this.textOutput) {
+      this.textOutput.value = text;
+      if (this.outputStats && text) this.outputStats.textContent = `${text.length} chars`;
+    }
+
+    if (this.solutionRenderContent) {
+      this.solutionRenderContent.innerHTML = this.renderSolutionHTML(text);
+
+      // Attach copy listeners to individual code snippets inside the formatted card
+      this.solutionRenderContent.querySelectorAll('.so-code-copy-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const code = btn.getAttribute('data-code');
+          if (code) {
+            try {
+              if (window.clipboardManager) {
+                await window.clipboardManager.writeText(code);
+              } else {
+                await navigator.clipboard.writeText(code);
+              }
+              btn.textContent = '✓ Copied';
+              this.showToast('Copied Java code snippet to clipboard!', 'success');
+              setTimeout(() => { btn.textContent = '📋 Copy Code'; }, 1800);
+            } catch (err) {
+              this.showToast('Failed to copy code: ' + err.message, 'error');
+            }
+          }
+        });
+      });
+    }
+
+    if (isMobileScreenshot) {
+      if (this.acceptedCheckText) this.acceptedCheckText.textContent = 'SOLVED';
+      if (this.acceptedLabel) this.acceptedLabel.textContent = 'ACCEPTED ANSWER • SHOWN IN BOX';
+
+      // Auto-scroll down smoothly to the answer box on mobile so user sees the solution immediately
+      if (this.acceptedAnswerBox) {
+        this.acceptedAnswerBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.acceptedAnswerBox.classList.add('highlight-pulse');
+        setTimeout(() => this.acceptedAnswerBox?.classList.remove('highlight-pulse'), 2500);
+      }
+    } else {
+      if (this.acceptedCheckText) this.acceptedCheckText.textContent = 'COPIED';
+      if (this.acceptedLabel) this.acceptedLabel.textContent = 'ACCEPTED ANSWER • IN YOUR CLIPBOARD';
+    }
+  }
+
+  // Show Toast Notification
+  showToast(message, type = 'info') {
+    if (!this.toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    
+    this.toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      toast.style.transition = 'all 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  // History Management
+  renderHistory(items, onCopyItem) {
+    if (!this.historyList) return;
+    this.historyList.innerHTML = '';
+
+    if (!items || items.length === 0) {
+      if (this.emptyHistory) {
+        this.historyList.appendChild(this.emptyHistory);
+      }
+      return;
+    }
+
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'so-history-item';
+      
+      const timeStr = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const durationStr = item.durationMs ? `${(item.durationMs / 1000).toFixed(1)}s` : '';
+
+      el.innerHTML = `
+        <div class="so-history-item-left">
+          <div class="so-history-meta">
+            <span class="so-tag sm">${item.model || 'Gemini'}</span>
+            <span>&bull;</span>
+            <span class="so-highlight">${timeStr}</span>
+            ${durationStr ? `<span>&bull; ${durationStr}</span>` : ''}
+          </div>
+          <div class="so-history-snippet" title="${this.escapeHtml(item.input)}">
+            Q: ${this.escapeHtml(item.input.slice(0, 80))}${item.input.length > 80 ? '...' : ''}
+          </div>
+        </div>
+        <div class="so-history-item-actions">
+          <button class="so-btn-green sm btn-history-copy" title="Copy answer to clipboard">
+            Copy
+          </button>
+        </div>
+      `;
+
+      const btnCopy = el.querySelector('.btn-history-copy');
+      btnCopy.addEventListener('click', () => {
+        if (window.clipboardManager && item.output) {
+          window.clipboardManager.registerOutput(item.output);
+        }
+        onCopyItem(item.output);
+        btnCopy.textContent = 'Copied!';
+        setTimeout(() => { btnCopy.textContent = 'Copy'; }, 1500);
+      });
+
+      this.historyList.appendChild(el);
+    });
+  }
+
+  escapeHtml(str) {
+    return (str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  renderSolutionHTML(rawText) {
+    if (!rawText || !rawText.trim()) {
+      return '<p class="so-placeholder-text">Stack Overflow Copilot will display the solved Java code and Persian explanation in this box...</p>';
+    }
+
+    const codeRegex = /```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g;
+    let lastIndex = 0;
+    let match;
+    let html = '';
+
+    while ((match = codeRegex.exec(rawText)) !== null) {
+      const textBefore = rawText.slice(lastIndex, match.index).trim();
+      if (textBefore) {
+        html += this.formatTextSection(textBefore);
+      }
+
+      const lang = (match[1] || 'java').toLowerCase();
+      const code = match[2].trim();
+      const escapedCode = this.escapeHtml(code);
+      const escapedCodeAttr = this.escapeHtml(code).replace(/'/g, '&#39;');
+
+      html += `
+        <div class="so-code-block-card">
+          <div class="so-code-block-header">
+            <span class="so-code-lang-tag">${this.escapeHtml(lang.toUpperCase())}</span>
+            <button class="so-code-copy-btn" data-code="${escapedCodeAttr}" title="Copy code snippet">
+              📋 Copy Code
+            </button>
+          </div>
+          <pre><code class="language-${this.escapeHtml(lang)}">${escapedCode}</code></pre>
+        </div>
+      `;
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    const remainingText = rawText.slice(lastIndex).trim();
+    if (remainingText) {
+      html += this.formatTextSection(remainingText);
+    }
+
+    return html;
+  }
+
+  formatTextSection(text) {
+    const paragraphs = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+    let html = '';
+    for (const p of paragraphs) {
+      const isPersian = /[\u0600-\u06FF]/.test(p);
+      const dir = isPersian ? 'rtl' : 'ltr';
+      const alignClass = isPersian ? 'so-persian-text' : 'so-latin-text';
+
+      let formatted = this.escapeHtml(p)
+        .replace(/`([^`]+)`/g, '<code class="so-inline-code">$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+
+      html += `<div class="so-paragraph ${alignClass}" dir="${dir}">${formatted}</div>`;
+    }
+    return html;
+  }
+}
+
+
+// ==================== PROVIDERS ====================
 // Multi-Provider AI Inference Engine with Multimodal Vision & Dual-Key Failover
 
 const PROVIDERS = {
@@ -3038,21 +4517,54 @@ const PROVIDERS = {
   },
   custom_openai: {
     id: 'custom_openai',
-    name: '3rd Party (GapGPT / OpenAI)',
+    name: '3rd Party 1 (GapGPT)',
     keyHelpUrl: 'https://gapgpt.app',
     placeholder: 'sk-F4T2AxOQ...',
     defaultUrl: 'https://api.gapgpt.app/v1',
     models: [
-      { id: 'gpt-5-nano', name: '⚡ GPT-5 Nano (Ultra Fast & Accurate — Default)' },
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'gpt-5-nano', name: 'GPT-5 Nano' },
       { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Reliable)' },
-      { id: 'gpt-5-mini', name: 'GPT-5 Mini' },
       { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
-      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1 Reasoning)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
       { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
-      { id: 'gpt-4o', name: 'GPT-4o (Vision & Code Flagship)' },
+      { id: 'gpt-4o', name: 'GPT-4o' },
       { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
     ],
-    defaultModel: 'gpt-5-nano'
+    defaultModel: 'deepseek-v4.1-flash'
+  },
+  avalai: {
+    id: 'avalai',
+    name: '3rd Party 2 (AvalAI)',
+    keyHelpUrl: 'https://avalai.ir',
+    placeholder: 'aa-d7tPVrnv...',
+    defaultUrl: 'https://api.avalai.ir/v1',
+    models: [
+      { id: 'deepseek-v4.1-flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)' },
+      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)' },
+      { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'deepseek-v4.1-flash'
+  },
+  arvancloud: {
+    id: 'arvancloud',
+    name: '3rd Party 3 (ArvanCloud)',
+    keyHelpUrl: 'https://arvancloud.ir',
+    placeholder: '44f82d65-...',
+    defaultUrl: 'https://api.arvancloudai.ir/v1',
+    models: [
+      { id: 'DeepSeek-V4.1-Flash', name: '⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)' },
+      { id: 'DeepSeek-V4-Flash', name: 'DeepSeek 4 Flash' },
+      { id: 'DeepSeek-V4-Pro', name: 'DeepSeek 4 Pro' },
+      { id: 'GPT-5.6-Terra', name: 'GPT-5.6 Terra' },
+      { id: 'Claude-Opus-4.7', name: 'Claude Opus 4.7' },
+      { id: 'GLM-5.3-Flash', name: 'GLM-5.3 Flash' },
+      { id: 'custom', name: '✍️ Custom Model Name (type your own)...' }
+    ],
+    defaultModel: 'DeepSeek-V4.1-Flash'
   }
 };
 
@@ -3100,7 +4612,25 @@ CRITICAL RULES:
       return await callOpenAICompatible({
         baseUrl: baseUrl || 'https://api.gapgpt.app/v1',
         apiKey: apiKey ? apiKey.trim() : '',
-        model: model || 'gpt-5-nano',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'avalai':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.avalai.ir/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'deepseek-v4.1-flash',
+        systemPrompt: effectivePrompt,
+        text,
+        image
+      });
+    case 'arvancloud':
+      return await callOpenAICompatible({
+        baseUrl: baseUrl || 'https://api.arvancloudai.ir/v1',
+        apiKey: apiKey ? apiKey.trim() : '',
+        model: model || 'DeepSeek-V4.1-Flash',
         systemPrompt: effectivePrompt,
         text,
         image
@@ -3268,7 +4798,7 @@ async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text
 
   // Helpful headers for OpenRouter
   if (cleanUrl.includes('openrouter.ai')) {
-    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:8080';
+    headers['HTTP-Referer'] = (typeof window !== 'undefined' && window.location?.origin) || 'http://localhost:2080';
     headers['X-Title'] = 'Stack Overflow Copilot';
   }
 
@@ -3310,7 +4840,7 @@ async function fetchOpenAIModels({ baseUrl, apiKey }) {
     headers['Authorization'] = `Bearer ${apiKey.trim()}`;
   }
   if (cleanUrl.includes('openrouter.ai')) {
-    headers['HTTP-Referer'] = window.location.origin || 'http://localhost:8080';
+    headers['HTTP-Referer'] = (typeof window !== 'undefined' && window.location?.origin) || 'http://localhost:2080';
     headers['X-Title'] = 'Stack Overflow Copilot';
   }
 
@@ -3413,371 +4943,7 @@ async function fetchGeminiModels({ apiKey }) {
 }
 
 
-// ==========================================
-// 4. UI CONTROLLER
-// ==========================================
-// User Interface Controller & Visual Feedback Engine for Stack Overflow Copilot
-
-class UIController {
-  constructor() {
-    // Elements
-    this.statusPill = document.getElementById('status-pill');
-    this.statusPillText = document.getElementById('status-pill-text');
-    this.radarCore = document.getElementById('radar-core');
-    this.radarIcon = document.getElementById('radar-icon');
-    this.noticeBanner = document.querySelector('.so-notice-banner');
-    this.liveTitle = document.getElementById('live-state-title');
-    this.liveSubtitle = document.getElementById('live-state-subtitle');
-    this.liveDesc = document.getElementById('live-state-desc');
-
-    this.stepRead = document.getElementById('step-read');
-    this.stepAi = document.getElementById('step-ai');
-    this.stepWrite = document.getElementById('step-write');
-
-    this.textInput = document.getElementById('text-input');
-    this.textOutput = document.getElementById('text-output');
-    this.solutionRenderBox = document.getElementById('solution-render-box');
-    this.solutionRenderContent = document.getElementById('solution-render-content');
-    this.acceptedCheckText = document.getElementById('accepted-check-text');
-    this.acceptedLabel = document.getElementById('accepted-label');
-    this.btnToggleRaw = document.getElementById('btn-toggle-raw');
-    this.acceptedAnswerBox = document.getElementById('accepted-answer-box');
-    this.inputStats = document.getElementById('input-stats');
-    this.outputStats = document.getElementById('output-stats');
-
-    this.toastContainer = document.getElementById('toast-container');
-    this.historyList = document.getElementById('history-list');
-    this.emptyHistory = document.getElementById('empty-history-placeholder');
-
-    this.initViewToggles();
-  }
-
-  initViewToggles() {
-    if (this.btnToggleRaw) {
-      this.btnToggleRaw.addEventListener('click', () => {
-        const isRawVisible = this.textOutput && this.textOutput.style.display !== 'none';
-        if (isRawVisible) {
-          if (this.textOutput) this.textOutput.style.display = 'none';
-          if (this.solutionRenderBox) this.solutionRenderBox.style.display = 'block';
-          this.btnToggleRaw.textContent = 'Raw Code';
-        } else {
-          if (this.textOutput) this.textOutput.style.display = 'block';
-          if (this.solutionRenderBox) this.solutionRenderBox.style.display = 'none';
-          this.btnToggleRaw.textContent = 'Formatted';
-        }
-      });
-    }
-  }
-
-  // Set Visual State to Ready / Listening
-  setReady(hasKey = true) {
-    this.resetSteps();
-    if (this.statusPill) {
-      this.statusPill.className = hasKey ? 'status-pill status-ready' : 'status-pill status-warn';
-      this.statusPillText.textContent = hasKey ? 'Auto-Sync Active' : 'API Key Required';
-    }
-    if (this.radarIcon) this.radarIcon.textContent = '📋';
-    if (this.liveSubtitle) this.liveSubtitle.textContent = hasKey ? 'Clipboard Monitoring Active' : 'API Key Setup Needed';
-    if (this.liveDesc) {
-      this.liveDesc.textContent = hasKey 
-        ? 'Copy any code or error in your IDE/terminal, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back!'
-        : 'Please enter and save your Gemini API key in the right sidebar.';
-    }
-  }
-
-  // Set Visual State to Processing
-  setProcessing(stepName = 'Reading clipboard...') {
-    if (this.statusPill) {
-      this.statusPill.className = 'status-pill status-busy';
-      this.statusPillText.textContent = 'Processing...';
-    }
-    if (this.radarIcon) this.radarIcon.textContent = '⚡';
-    if (this.liveSubtitle) this.liveSubtitle.textContent = 'Analyzing Code & Generating Solution...';
-    if (this.liveDesc) this.liveDesc.textContent = stepName;
-  }
-
-  // Set Pipeline Step (1, 2, or 3)
-  setActiveStep(stepIndex) {
-    this.resetSteps();
-    if (stepIndex >= 1 && this.stepRead) this.stepRead.classList.add('step-active');
-    if (stepIndex >= 2 && this.stepAi) {
-      this.stepRead?.classList.remove('step-active');
-      this.stepRead?.classList.add('step-done');
-      this.stepAi.classList.add('step-active');
-    }
-    if (stepIndex >= 3 && this.stepWrite) {
-      this.stepAi?.classList.remove('step-active');
-      this.stepAi?.classList.add('step-done');
-      this.stepWrite.classList.add('step-active');
-    }
-  }
-
-  // Set Visual State to Success
-  setSuccess(message = 'Copied back to clipboard!', { isMobileScreenshot = false } = {}) {
-    if (this.statusPill) {
-      this.statusPill.className = 'status-pill status-ready';
-      this.statusPillText.textContent = isMobileScreenshot ? 'Answer Ready (In Box)' : 'Copied to Clipboard!';
-    }
-    if (this.stepWrite) {
-      this.stepWrite.classList.remove('step-active');
-      this.stepWrite.classList.add('step-done');
-    }
-    if (this.radarIcon) this.radarIcon.textContent = '✨';
-    if (this.liveSubtitle) {
-      this.liveSubtitle.textContent = isMobileScreenshot
-        ? 'Solution Displayed in Box Below'
-        : 'Solution Accepted & Copied to Clipboard!';
-    }
-    if (this.liveDesc) this.liveDesc.textContent = message;
-
-    // Reset back to ready after 5 seconds
-    setTimeout(() => {
-      this.setReady(true);
-    }, 5000);
-  }
-
-  // Set Visual State to Error
-  setError(errMessage) {
-    this.resetSteps();
-    if (this.statusPill) {
-      this.statusPill.className = 'status-pill status-warn';
-      this.statusPillText.textContent = 'Error Occurred';
-    }
-    if (this.radarIcon) this.radarIcon.textContent = '⚠️';
-    if (this.liveSubtitle) this.liveSubtitle.textContent = 'Failed to Process Clipboard';
-    if (this.liveDesc) this.liveDesc.textContent = errMessage;
-    this.showToast(errMessage, 'error');
-
-    setTimeout(() => {
-      this.setReady(true);
-    }, 5000);
-  }
-
-  resetSteps() {
-    [this.stepRead, this.stepAi, this.stepWrite].forEach(step => {
-      if (step) {
-        step.classList.remove('step-active', 'step-done');
-      }
-    });
-  }
-
-  // Screenshot Preview Controls
-  setScreenshotPreview({ dataUrl, mimeType, size }) {
-    const container = document.getElementById('screenshot-preview-container');
-    const img = document.getElementById('screenshot-preview-img');
-    const info = document.getElementById('screenshot-info');
-
-    if (container && img) {
-      img.src = dataUrl;
-      const sizeKb = Math.round(size / 1024);
-      if (info) info.textContent = `${mimeType || 'image/jpeg'} \u2022 ${sizeKb} KB`;
-      container.style.display = 'flex';
-      if (this.inputStats) this.inputStats.textContent = `Photo / Screenshot (${sizeKb} KB)`;
-    }
-  }
-
-  clearScreenshotPreview() {
-    const container = document.getElementById('screenshot-preview-container');
-    const img = document.getElementById('screenshot-preview-img');
-    if (container) container.style.display = 'none';
-    if (img) img.src = '';
-  }
-
-  // Update Input & Output Text boxes
-  setInputText(text) {
-    if (this.textInput) {
-      this.textInput.value = text;
-      if (this.inputStats && text) this.inputStats.textContent = `${text.length} chars`;
-    }
-  }
-
-  setOutputText(text, { isMobileScreenshot = false } = {}) {
-    if (this.textOutput) {
-      this.textOutput.value = text;
-      if (this.outputStats && text) this.outputStats.textContent = `${text.length} chars`;
-    }
-
-    if (this.solutionRenderContent) {
-      this.solutionRenderContent.innerHTML = this.renderSolutionHTML(text);
-
-      // Attach copy listeners to individual code snippets inside the formatted card
-      this.solutionRenderContent.querySelectorAll('.so-code-copy-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const code = btn.getAttribute('data-code');
-          if (code) {
-            try {
-              await navigator.clipboard.writeText(code);
-              btn.textContent = '✓ Copied';
-              this.showToast('Copied Java code snippet to clipboard!', 'success');
-              setTimeout(() => { btn.textContent = '📋 Copy Code'; }, 1800);
-            } catch (err) {
-              this.showToast('Failed to copy code: ' + err.message, 'error');
-            }
-          }
-        });
-      });
-    }
-
-    if (isMobileScreenshot) {
-      if (this.acceptedCheckText) this.acceptedCheckText.textContent = 'SOLVED';
-      if (this.acceptedLabel) this.acceptedLabel.textContent = 'ACCEPTED ANSWER • SHOWN IN BOX';
-
-      // Auto-scroll down smoothly to the answer box on mobile so user sees the solution immediately
-      if (this.acceptedAnswerBox) {
-        this.acceptedAnswerBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        this.acceptedAnswerBox.classList.add('highlight-pulse');
-        setTimeout(() => this.acceptedAnswerBox?.classList.remove('highlight-pulse'), 2500);
-      }
-    } else {
-      if (this.acceptedCheckText) this.acceptedCheckText.textContent = 'COPIED';
-      if (this.acceptedLabel) this.acceptedLabel.textContent = 'ACCEPTED ANSWER • IN YOUR CLIPBOARD';
-    }
-  }
-
-  // Show Toast Notification
-  showToast(message, type = 'info') {
-    if (!this.toastContainer) return;
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    
-    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
-    
-    this.toastContainer.appendChild(toast);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(10px)';
-      toast.style.transition = 'all 0.3s ease';
-      setTimeout(() => toast.remove(), 300);
-    }, 3500);
-  }
-
-  // History Management
-  renderHistory(items, onCopyItem) {
-    if (!this.historyList) return;
-    this.historyList.innerHTML = '';
-
-    if (!items || items.length === 0) {
-      if (this.emptyHistory) {
-        this.historyList.appendChild(this.emptyHistory);
-      }
-      return;
-    }
-
-    items.forEach(item => {
-      const el = document.createElement('div');
-      el.className = 'so-history-item';
-      
-      const timeStr = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const durationStr = item.durationMs ? `${(item.durationMs / 1000).toFixed(1)}s` : '';
-
-      el.innerHTML = `
-        <div class="so-history-item-left">
-          <div class="so-history-meta">
-            <span class="so-tag sm">${item.model || 'Gemini'}</span>
-            <span>&bull;</span>
-            <span class="so-highlight">${timeStr}</span>
-            ${durationStr ? `<span>&bull; ${durationStr}</span>` : ''}
-          </div>
-          <div class="so-history-snippet" title="${this.escapeHtml(item.input)}">
-            Q: ${this.escapeHtml(item.input.slice(0, 80))}${item.input.length > 80 ? '...' : ''}
-          </div>
-        </div>
-        <div class="so-history-item-actions">
-          <button class="so-btn-green sm btn-history-copy" title="Copy answer to clipboard">
-            Copy
-          </button>
-        </div>
-      `;
-
-      const btnCopy = el.querySelector('.btn-history-copy');
-      btnCopy.addEventListener('click', () => {
-        onCopyItem(item.output);
-        btnCopy.textContent = 'Copied!';
-        setTimeout(() => { btnCopy.textContent = 'Copy'; }, 1500);
-      });
-
-      this.historyList.appendChild(el);
-    });
-  }
-
-  escapeHtml(str) {
-    return (str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  renderSolutionHTML(rawText) {
-    if (!rawText || !rawText.trim()) {
-      return '<p class="so-placeholder-text">Stack Overflow Copilot will display the solved Java code and Persian explanation in this box...</p>';
-    }
-
-    const codeRegex = /```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g;
-    let lastIndex = 0;
-    let match;
-    let html = '';
-
-    while ((match = codeRegex.exec(rawText)) !== null) {
-      const textBefore = rawText.slice(lastIndex, match.index).trim();
-      if (textBefore) {
-        html += this.formatTextSection(textBefore);
-      }
-
-      const lang = (match[1] || 'java').toLowerCase();
-      const code = match[2].trim();
-      const escapedCode = this.escapeHtml(code);
-      const escapedCodeAttr = this.escapeHtml(code).replace(/'/g, '&#39;');
-
-      html += `
-        <div class="so-code-block-card">
-          <div class="so-code-block-header">
-            <span class="so-code-lang-tag">${this.escapeHtml(lang.toUpperCase())}</span>
-            <button class="so-code-copy-btn" data-code="${escapedCodeAttr}" title="Copy code snippet">
-              📋 Copy Code
-            </button>
-          </div>
-          <pre><code class="language-${this.escapeHtml(lang)}">${escapedCode}</code></pre>
-        </div>
-      `;
-
-      lastIndex = match.index + match[0].length;
-    }
-
-    const remainingText = rawText.slice(lastIndex).trim();
-    if (remainingText) {
-      html += this.formatTextSection(remainingText);
-    }
-
-    return html;
-  }
-
-  formatTextSection(text) {
-    const paragraphs = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
-    let html = '';
-    for (const p of paragraphs) {
-      const isPersian = /[\u0600-\u06FF]/.test(p);
-      const dir = isPersian ? 'rtl' : 'ltr';
-      const alignClass = isPersian ? 'so-persian-text' : 'so-latin-text';
-
-      let formatted = this.escapeHtml(p)
-        .replace(/`([^`]+)`/g, '<code class="so-inline-code">$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n/g, '<br>');
-
-      html += `<div class="so-paragraph ${alignClass}" dir="${dir}">${formatted}</div>`;
-    }
-    return html;
-  }
-}
-
-
-// ==========================================
-// 5. MAIN APPLICATION
-// ==========================================
+// ==================== APP ====================
 // Main Application Controller & Orchestration Engine for Stack Overflow Copilot
 // Supports Multimodal Screenshot Analysis, Dual Gemini Keys (Rate Limit Failover), and Clipboard Sync
 
@@ -3788,6 +4954,14 @@ const DEFAULT_GEMINI_KEY = 'AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Ge
 // Default 3rd Party (GapGPT) API URL & Key provided by user
 const DEFAULT_GAPGPT_URL = 'https://api.gapgpt.app/v1';
 const DEFAULT_GAPGPT_KEY = 'sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX';
+
+// Default 3rd Party #2 (AvalAI) API URL & Key provided by user
+const DEFAULT_AVALAI_URL = 'https://api.avalai.ir/v1';
+const DEFAULT_AVALAI_KEY = 'aa-d7tPVrnvwXyu03TJGpXfSPMkaesXshv98TqFM3P6p6aPmWzN';
+
+// Default 3rd Party #3 (ArvanCloud AI) API URL & Key provided by user
+const DEFAULT_ARVANCLOUD_URL = 'https://api.arvancloudai.ir/v1';
+const DEFAULT_ARVANCLOUD_KEY = '44f82d65-9e2b-536f-a7af-c4a353735f3e';
 
 // Prompt Presets tailored for developer productivity: Persian explanations + Java code + Human tone
 const PRESETS = {
@@ -3805,27 +4979,30 @@ CRITICAL RULES:
 2. Code in Java: ALL code fixes, snippets, or implementations MUST be written in Java.
 3. Natural Human Tone: Speak directly and naturally like an experienced colleague solving the bug shown in the image. Return the working Java code ready to use.`,
 
-  'exam-answer': `شما در حال پاسخ به سوالات یک آزمون/امتحان هستید (Exam Solver). پاسخ‌ها باید بسیار کوتاه، موثر، دقیق، نمره‌آور و کاملاً تفکیک‌شده باشند (Short & Effective Exam Answers). از هرگونه مقدمه‌چینی رباتیک، تعارفات، جملات تکراری و حاشیه‌پردازی خودداری کنید.
+  'exam-answer': `شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
 
-قوانین حیاتی برای پاسخ‌دهی (به‌ویژه در اسکرین‌شات‌ها و متون دارای چند سوال):
-۱. تفکیک و پاسخ جداگانه به تک‌تک سوالات:
-اگر در تصویر یا متن ورودی چند سوال وجود دارد (حتی اگر شماره‌گذاری نشده باشند یا روی برگه امتحانی باشند)، باید به تک‌تک سوالات به‌صورت جداگانه، مشخص و با شماره پاسخ دهید:
-• سوال ۱: [پاسخ دقیق، کوتاه و مستقیم]
-• سوال ۲: [پاسخ دقیق، کوتاه و مستقیم]
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
+
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
+
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
 • سوال ۳: ...
-هیچ سوالی را جا نیندازید و پاسخ سوالات مختلف را با هم ادغام نکنید.
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
 
-۲. سوالات تستی و چندگزینه‌ای:
-برای هر سوال تستی، فوراً شماره یا متن گزینه صحیح را مشخص کنید (مثلاً: «گزینه ۲») و در صورت لزوم حداکثر در یک خط کوتاه دلیل آن را بنویسید.
-
-۳. سوالات تشریحی، تئوری و مفهومی:
-نکات کلیدی و نمره‌آور هر سوال را به‌صورت خلاصه و تفکیک‌شده (۲ الی ۴ خط) بنویسید تا مصحح بالاترین نمره را بدهد.
-
-۴. سوالات برنامه‌نویسی و کد:
-برای هر سوال کدنویسی، فقط کد دقیق، تمیز و آماده اجرا به زبان Java بنویسید و از نوشتن کدهای غیرضروری خودداری کنید.
-
-۵. زبان و لحن:
-تمام توضیحات به زبان فارسی روان و تمام کدها به زبان Java باشد. لحن پاسخ کاملاً انسانی و قاطع باشد.`,
+۵. زبان و فرمت:
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.`,
 
   'code-debug': `بررسی و دیباگ کد:
 1. تمام توضیحات، علت خطا و نکات باید به زبان فارسی روان و کاملاً انسانی (غیررباتیک) بیان شود.
@@ -3851,22 +5028,30 @@ class App {
       gemini: DEFAULT_GEMINI_KEY,
       geminiBackup: '',
       openai: '',
-      custom_openai: DEFAULT_GAPGPT_KEY
+      custom_openai: DEFAULT_GAPGPT_KEY,
+      avalai: DEFAULT_AVALAI_KEY,
+      arvancloud: DEFAULT_ARVANCLOUD_KEY
     };
     this.apiUrls = {
       openai: 'https://api.openai.com/v1',
-      custom_openai: DEFAULT_GAPGPT_URL
+      custom_openai: DEFAULT_GAPGPT_URL,
+      avalai: DEFAULT_AVALAI_URL,
+      arvancloud: DEFAULT_ARVANCLOUD_URL
     };
     this.selectedModels = {
       gemini: PROVIDERS.gemini.defaultModel,
       openai: PROVIDERS.openai.defaultModel,
-      custom_openai: 'gpt-5-nano'
+      custom_openai: 'deepseek-v4.1-flash',
+      avalai: 'deepseek-v4.1-flash',
+      arvancloud: 'DeepSeek-V4.1-Flash'
     };
     this.customModels = {
-      custom_openai: 'gpt-5-nano'
+      custom_openai: 'deepseek-v4.1-flash',
+      avalai: 'deepseek-v4.1-flash',
+      arvancloud: 'DeepSeek-V4.1-Flash'
     };
     this.fetchedModels = {};
-    this.autoSync = true;
+    this.autoSync = false; // Default: Inactive (do not auto-read clipboard)
     this.soundEnabled = true;
     this.notificationEnabled = false;
     this.dedupEnabled = true;
@@ -3885,7 +5070,9 @@ class App {
     this.checkInitialPermissions();
     this.updateProviderView();
     this.ui.renderHistory(this.history, (text) => this.copyTextDirect(text));
-    this.ui.setReady(this.hasActiveKey());
+    this.ui.setReady(this.hasActiveKey(), this.autoSync);
+    this.loadFromExtensionStorageAsync();
+    this.initMessageListeners();
   }
 
   // Load persistence
@@ -3901,9 +5088,19 @@ class App {
         this.apiKeys.gemini = DEFAULT_GEMINI_KEY;
       }
 
-      // Preload GapGPT 3rd-party key if none is present
-      if (!this.apiKeys.custom_openai || !this.apiKeys.custom_openai.trim()) {
+      // Strictly restore GapGPT 3rd-party key if missing or overwritten
+      if (!this.apiKeys.custom_openai || !this.apiKeys.custom_openai.trim() || this.apiKeys.custom_openai.startsWith('44f82d65') || this.apiKeys.custom_openai.startsWith('aa-')) {
         this.apiKeys.custom_openai = DEFAULT_GAPGPT_KEY;
+      }
+
+      // Preload AvalAI 3rd-party key if none is present or corrupted
+      if (!this.apiKeys.avalai || !this.apiKeys.avalai.trim() || this.apiKeys.avalai.startsWith('sk-') || this.apiKeys.avalai.startsWith('44f82d65')) {
+        this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+      }
+
+      // Preload ArvanCloud 3rd-party key if none is present or corrupted
+      if (!this.apiKeys.arvancloud || !this.apiKeys.arvancloud.trim() || this.apiKeys.arvancloud.startsWith('sk-') || this.apiKeys.arvancloud.startsWith('aa-')) {
+        this.apiKeys.arvancloud = DEFAULT_ARVANCLOUD_KEY;
       }
 
       const storedProvider = localStorage.getItem('cbai_provider');
@@ -3918,9 +5115,19 @@ class App {
         this.apiUrls = { ...this.apiUrls, ...JSON.parse(storedUrls) };
       }
 
-      // Preload GapGPT URL if none is present or if previously pointed to openrouter
-      if (!this.apiUrls.custom_openai || this.apiUrls.custom_openai.includes('openrouter.ai')) {
+      // Strictly restore GapGPT URL (never let it point to ArvanCloud or OpenRouter)
+      if (!this.apiUrls.custom_openai || this.apiUrls.custom_openai.includes('arvancloud') || this.apiUrls.custom_openai.includes('openrouter.ai')) {
         this.apiUrls.custom_openai = DEFAULT_GAPGPT_URL;
+      }
+
+      // Strictly enforce AvalAI URL
+      if (!this.apiUrls.avalai || !this.apiUrls.avalai.includes('avalai')) {
+        this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+      }
+
+      // Strictly enforce ArvanCloud URL
+      if (!this.apiUrls.arvancloud || !this.apiUrls.arvancloud.includes('arvancloud')) {
+        this.apiUrls.arvancloud = DEFAULT_ARVANCLOUD_URL;
       }
 
       this.saveKeys();
@@ -3933,21 +5140,22 @@ class App {
       const storedModels = localStorage.getItem('cbai_models');
       if (storedModels) this.selectedModels = { ...this.selectedModels, ...JSON.parse(storedModels) };
 
-      // Ensure custom_openai defaults to gpt-5-nano
-      if (!this.selectedModels.custom_openai || 
-          this.selectedModels.custom_openai === 'deepseek/deepseek-chat' || 
-          this.selectedModels.custom_openai === 'gpt-4o-mini') {
-        this.selectedModels.custom_openai = 'gpt-5-nano';
-      }
-
-      // Default to 3rd Party provider (GapGPT) and gpt-5-nano model
-      const providerDefaultMigrated = localStorage.getItem('cbai_default_gapgpt_v3');
-      if (!providerDefaultMigrated) {
-        this.currentProvider = 'custom_openai';
-        this.selectedModels.custom_openai = 'gpt-5-nano';
-        localStorage.setItem('cbai_provider', 'custom_openai');
-        localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
-        localStorage.setItem('cbai_default_gapgpt_v3', 'true');
+      // Set default model for both 3rd-party providers (GapGPT and AvalAI) to deepseek-v4.1-flash
+      const deepseekMigrated = localStorage.getItem('cbai_deepseek_flash_v5');
+      if (!deepseekMigrated) {
+        this.selectedModels.custom_openai = 'deepseek-v4.1-flash';
+        this.selectedModels.avalai = 'deepseek-v4.1-flash';
+        this.customModels.custom_openai = 'deepseek-v4.1-flash';
+        this.customModels.avalai = 'deepseek-v4.1-flash';
+        this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+        this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+        try {
+          localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+          localStorage.setItem('cbai_custom_models', JSON.stringify(this.customModels));
+          localStorage.setItem('cbai_api_keys', JSON.stringify(this.apiKeys));
+          localStorage.setItem('cbai_api_urls', JSON.stringify(this.apiUrls));
+          localStorage.setItem('cbai_deepseek_flash_v5', 'true');
+        } catch (e) {}
       }
 
       const storedFetchedModels = localStorage.getItem('cbai_fetched_models');
@@ -3959,8 +5167,9 @@ class App {
         }
       }
 
-      const storedAutoSync = localStorage.getItem('cbai_autosync');
-      if (storedAutoSync !== null) this.autoSync = storedAutoSync === 'true';
+      // Auto-sync on tab switch is permanently disabled to prevent intrusive clipboard reading
+      this.autoSync = false;
+      localStorage.setItem('cbai_autosync_v2', 'false');
 
       const storedSound = localStorage.getItem('cbai_sound');
       if (storedSound !== null) this.soundEnabled = storedSound === 'true';
@@ -3974,11 +5183,13 @@ class App {
       }
 
       const storedPrompt = localStorage.getItem('cbai_prompt');
-      const examPromptMultiUpdated = localStorage.getItem('cbai_exam_multi_v2');
-      if (!examPromptMultiUpdated && this.currentPreset === 'exam-answer') {
+      const examPromptUltraShort = localStorage.getItem('cbai_exam_ultrashort_v4');
+      if (!examPromptUltraShort && this.currentPreset === 'exam-answer') {
         this.systemPrompt = PRESETS['exam-answer'];
-        localStorage.setItem('cbai_prompt', this.systemPrompt);
-        localStorage.setItem('cbai_exam_multi_v2', 'true');
+        try {
+          localStorage.setItem('cbai_prompt', this.systemPrompt);
+          localStorage.setItem('cbai_exam_ultrashort_v4', 'true');
+        } catch (e) {}
       } else if (!storedPrompt || storedPrompt.includes('Stack Overflow Copilot. The user has copied') || storedPrompt.includes('Fulfill the user input concisely')) {
         this.systemPrompt = PRESETS[this.currentPreset] || PRESETS['so-solve'];
         localStorage.setItem('cbai_prompt', this.systemPrompt);
@@ -3987,7 +5198,14 @@ class App {
       }
 
       const storedHistory = localStorage.getItem('cbai_history');
-      if (storedHistory) this.history = JSON.parse(storedHistory);
+      if (storedHistory) {
+        this.history = JSON.parse(storedHistory);
+        if (Array.isArray(this.history)) {
+          this.history.forEach(item => {
+            if (item && item.output) clipboard.registerOutput(item.output);
+          });
+        }
+      }
     } catch (e) {
       console.warn('Failed to load local storage state:', e);
     }
@@ -3997,20 +5215,163 @@ class App {
   }
 
   saveKeys() {
-    localStorage.setItem('cbai_api_keys', JSON.stringify(this.apiKeys));
-    localStorage.setItem('cbai_api_urls', JSON.stringify(this.apiUrls));
-    localStorage.setItem('cbai_custom_models', JSON.stringify(this.customModels));
+    try {
+      localStorage.setItem('cbai_api_keys', JSON.stringify(this.apiKeys));
+      localStorage.setItem('cbai_api_urls', JSON.stringify(this.apiUrls));
+      localStorage.setItem('cbai_custom_models', JSON.stringify(this.customModels));
+    } catch (e) {
+      console.warn('Could not persist keys to localStorage (e.g. file:// security restriction):', e);
+    }
+    this.syncToExtensionStorage();
     this.updateKeyBadge();
   }
 
+  syncToExtensionStorage() {
+    const ext = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+    if (!ext || !ext.storage || !ext.storage.local) return;
+
+    const data = {
+      cbai_provider: this.currentProvider,
+      cbai_api_keys: this.apiKeys,
+      cbai_api_urls: this.apiUrls,
+      cbai_models: this.selectedModels,
+      cbai_custom_models: this.customModels,
+      cbai_prompt: this.systemPrompt,
+      cbai_preset: this.currentPreset,
+      cbai_history: this.history.slice(0, 30)
+    };
+
+    try {
+      if (typeof ext.storage.local.set === 'function') {
+        const res = ext.storage.local.set(data, () => {
+          if (ext.runtime?.lastError) {
+            console.warn('Storage sync error:', ext.runtime.lastError);
+          }
+        });
+        if (res && typeof res.catch === 'function') {
+          res.catch(() => {});
+        }
+      }
+    } catch (e) {
+      console.warn('Could not sync to extension storage:', e);
+    }
+  }
+
+  loadFromExtensionStorageAsync() {
+    const ext = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+    if (!ext || !ext.storage || !ext.storage.local) return;
+
+    try {
+      ext.storage.local.get(null, (stored) => {
+        if (!stored) return;
+        let changed = false;
+
+        if (stored.cbai_provider && PROVIDERS[stored.cbai_provider]) {
+          this.currentProvider = stored.cbai_provider;
+          changed = true;
+        }
+        if (stored.cbai_api_keys) {
+          this.apiKeys = { ...this.apiKeys, ...stored.cbai_api_keys };
+          if (!this.apiKeys.custom_openai || this.apiKeys.custom_openai.startsWith('44f82d65') || this.apiKeys.custom_openai.startsWith('aa-')) {
+            this.apiKeys.custom_openai = DEFAULT_GAPGPT_KEY;
+          }
+          if (!this.apiKeys.arvancloud || this.apiKeys.arvancloud.startsWith('sk-')) {
+            this.apiKeys.arvancloud = DEFAULT_ARVANCLOUD_KEY;
+          }
+          if (!this.apiKeys.avalai || this.apiKeys.avalai.startsWith('sk-')) {
+            this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+          }
+          changed = true;
+        }
+        if (stored.cbai_api_urls) {
+          this.apiUrls = { ...this.apiUrls, ...stored.cbai_api_urls };
+          if (!this.apiUrls.custom_openai || this.apiUrls.custom_openai.includes('arvancloud') || this.apiUrls.custom_openai.includes('openrouter.ai')) {
+            this.apiUrls.custom_openai = DEFAULT_GAPGPT_URL;
+          }
+          if (!this.apiUrls.arvancloud || !this.apiUrls.arvancloud.includes('arvancloud')) {
+            this.apiUrls.arvancloud = DEFAULT_ARVANCLOUD_URL;
+          }
+          if (!this.apiUrls.avalai || !this.apiUrls.avalai.includes('avalai')) {
+            this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+          }
+          changed = true;
+        }
+        if (stored.cbai_models) {
+          this.selectedModels = { ...this.selectedModels, ...stored.cbai_models };
+          changed = true;
+        }
+        if (stored.cbai_custom_models) {
+          this.customModels = { ...this.customModels, ...stored.cbai_custom_models };
+          changed = true;
+        }
+        if (stored.cbai_prompt) {
+          this.systemPrompt = stored.cbai_prompt;
+          const promptArea = document.getElementById('system-prompt');
+          if (promptArea) promptArea.value = this.systemPrompt;
+          changed = true;
+        }
+        if (stored.cbai_preset) {
+          this.currentPreset = stored.cbai_preset;
+          const presetSelect = document.getElementById('preset-select');
+          if (presetSelect) presetSelect.value = this.currentPreset;
+          changed = true;
+        }
+
+        // Check for newly cropped screenshot from extension overlay (Ctrl+Alt+Shift)
+        if (stored.cbai_staged_screenshot && stored.cbai_new_crop_pending) {
+          this.applyCroppedScreenshot(stored.cbai_staged_screenshot);
+          try {
+            ext.storage.local.set({ cbai_new_crop_pending: false });
+          } catch (e) {}
+        }
+
+        if (changed) {
+          this.updateProviderView();
+          this.ui.setReady(this.hasActiveKey(), this.autoSync);
+        }
+      });
+    } catch (e) {}
+  }
+
+  initMessageListeners() {
+    const ext = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+    if (ext && ext.runtime?.onMessage) {
+      ext.runtime.onMessage.addListener((msg) => {
+        if (msg.action === 'new_cropped_screenshot' && msg.screenshot) {
+          this.applyCroppedScreenshot(msg.screenshot);
+        }
+        if (msg.action === 'background_answer_ready' && msg.answer) {
+          clipboard.registerOutput(msg.answer);
+          if (msg.question) {
+            this.ui.setInputText(msg.question);
+          }
+          this.ui.setOutputText(msg.answer, { isMobileScreenshot: false });
+          this.ui.setSuccess('Solution copied to clipboard! Press Ctrl+V to paste.', { isMobileScreenshot: false });
+        }
+      });
+    }
+  }
+
+  applyCroppedScreenshot(screenshot) {
+    if (!screenshot || !screenshot.dataUrl) return;
+    this.stagedScreenshot = screenshot;
+    this.ui.setScreenshotPreview(this.stagedScreenshot);
+    const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+    this.ui.showToast(`📸 اسکرین‌شات کراپ شده با موفقیت وارد شد! آماده حل با ${provName}.`, 'success');
+  }
+
   saveHistory() {
-    localStorage.setItem('cbai_history', JSON.stringify(this.history.slice(0, 30)));
+    try {
+      localStorage.setItem('cbai_history', JSON.stringify(this.history.slice(0, 30)));
+    } catch (e) {
+      console.warn('Could not persist history to localStorage:', e);
+    }
     this.ui.renderHistory(this.history, (text) => this.copyTextDirect(text));
   }
 
   hasActiveKey() {
-    if (this.currentProvider === 'custom_openai') {
-      const url = this.apiUrls.custom_openai || '';
+    if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai' || this.currentProvider === 'arvancloud') {
+      const url = this.apiUrls[this.currentProvider] || '';
       // For local Ollama or local LM Studio endpoints, API key is optional
       if (url.includes('localhost') || url.includes('127.0.0.1') || url.includes(':11434')) {
         return true;
@@ -4023,6 +5384,7 @@ class App {
     // Toggles
     const toggleAutoSync = document.getElementById('toggle-autosync');
     if (toggleAutoSync) toggleAutoSync.checked = this.autoSync;
+    this.updateAutoSyncStatusLabel();
 
     const toggleSound = document.getElementById('toggle-sound');
     if (toggleSound) toggleSound.checked = this.soundEnabled;
@@ -4038,19 +5400,23 @@ class App {
     if (promptTextarea) promptTextarea.value = this.systemPrompt;
   }
 
-  setupEventListeners() {
-    // --- Window Focus & Tab Visibility for Auto-Trigger (Text & Screenshots) ---
-    window.addEventListener('focus', () => {
-      if (this.autoSync) {
-        this.runPipeline({ isAuto: true });
-      }
-    });
+  updateAutoSyncStatusLabel() {
+    const lbl = document.getElementById('autosync-status-label');
+    if (lbl) {
+      lbl.textContent = 'Disabled (Manual)';
+      lbl.style.color = 'var(--so-text-muted)';
+    }
+    const metaMode = document.getElementById('meta-sync-mode');
+    if (metaMode) {
+      metaMode.textContent = 'Manual Mode (Click / Space / Paste to Solve)';
+      metaMode.className = 'so-highlight';
+    }
+  }
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && this.autoSync) {
-        this.runPipeline({ isAuto: true });
-      }
-    });
+  setupEventListeners() {
+    // Note: Automatic reading on window focus/tab switch is intentionally disabled
+    // to prevent unwanted clipboard reading every time the user enters the tab.
+    // Users can solve on demand via: Space key, Ctrl+Enter, "Process Clipboard" button, or Ctrl+V paste.
 
     // --- Global Paste Listener (Captures pasted screenshots anywhere on the page) ---
     window.addEventListener('paste', async (e) => {
@@ -4070,7 +5436,8 @@ class App {
               size: file.size
             };
             this.ui.setScreenshotPreview(this.stagedScreenshot);
-            this.ui.showToast('Screenshot pasted! Processing with Gemini...', 'info');
+            const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+            this.ui.showToast(`تصویر پیست شد! در حال شروع حل با ${provName}...`, 'info');
             this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
             return;
           }
@@ -4097,9 +5464,56 @@ class App {
             size: file.size
           };
           this.ui.setScreenshotPreview(this.stagedScreenshot);
-          this.ui.showToast('Image dropped! Processing with Gemini...', 'info');
+          const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+          this.ui.showToast(`تصویر دریافت شد! در حال تحلیل با ${provName}...`, 'info');
           this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
         }
+      }
+    });
+
+    // --- File Upload Input for Screenshots / Images ---
+    const filePicker = document.getElementById('file-image-picker');
+    document.getElementById('btn-upload-file')?.addEventListener('click', () => {
+      filePicker?.click();
+    });
+    filePicker?.addEventListener('change', async (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const { base64, dataUrl } = await clipboard.blobToBase64(file);
+        this.stagedScreenshot = {
+          mimeType: file.type || 'image/png',
+          base64: base64,
+          dataUrl: dataUrl,
+          hash: `${file.size}_${base64.slice(0, 100)}`,
+          size: file.size
+        };
+        this.ui.setScreenshotPreview(this.stagedScreenshot);
+        const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+        this.ui.showToast(`تصویر بارگذاری شد! در حال تحلیل با ${provName}...`, 'info');
+        this.runPipeline({ isAuto: false, forcedImage: this.stagedScreenshot });
+        e.target.value = '';
+      }
+    });
+
+    // --- Screen Cropping Button (Ctrl+Alt+Shift) ---
+    document.getElementById('btn-crop-screen')?.addEventListener('click', async () => {
+      const ext = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+      if (ext && ext.tabs) {
+        try {
+          const tabs = await new Promise(res => {
+            ext.tabs.query({ active: true, currentWindow: true }, (t) => res(t || []));
+          });
+          if (tabs && tabs[0]?.id) {
+            ext.tabs.sendMessage(tabs[0].id, { action: 'start_crop_selection' });
+            if (window.location.pathname.includes('popup.html')) {
+              window.close();
+            }
+          }
+        } catch (e) {
+          console.warn('Could not trigger crop:', e);
+        }
+      } else {
+        this.ui.showToast('در اکستنشن با Ctrl+Shift+X یا Ctrl+Shift+A (بدون انتخاب متن) صفحه را کراپ کنید.', 'info');
       }
     });
 
@@ -4173,7 +5587,44 @@ class App {
     document.getElementById('btn-mobile-settings')?.addEventListener('click', () => toggleMobileSidebar(true));
     document.getElementById('btn-mobile-settings-bar')?.addEventListener('click', () => toggleMobileSidebar(true));
     document.getElementById('btn-close-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
+    document.getElementById('btn-done-sidebar')?.addEventListener('click', () => toggleMobileSidebar(false));
     document.getElementById('mobile-sidebar-backdrop')?.addEventListener('click', () => toggleMobileSidebar(false));
+
+    // Extension Action Buttons
+    document.getElementById('btn-ext-sidepanel')?.addEventListener('click', async () => {
+      if (typeof chrome !== 'undefined' && chrome.sidePanel && chrome.sidePanel.open) {
+        try {
+          const win = await chrome.windows.getCurrent();
+          await chrome.sidePanel.open({ windowId: win.id });
+          window.close();
+        } catch (e) {
+          chrome.tabs.create({ url: 'sidepanel.html' });
+        }
+      } else if (typeof browser !== 'undefined' && browser.sidebarAction && browser.sidebarAction.open) {
+        try {
+          browser.sidebarAction.open();
+          window.close();
+        } catch(e) {
+          browser.tabs.create({ url: 'sidepanel.html' });
+        }
+      } else if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
+        chrome.tabs.create({ url: 'sidepanel.html' });
+      }
+    });
+
+    document.getElementById('btn-ext-fullscreen')?.addEventListener('click', () => {
+      if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
+        chrome.tabs.create({ url: 'fullscreen.html' });
+      } else if (typeof browser !== 'undefined' && browser.tabs && browser.tabs.create) {
+        browser.tabs.create({ url: 'fullscreen.html' });
+      } else {
+        window.open('index.html', '_blank');
+      }
+    });
+
+    document.getElementById('btn-ext-settings')?.addEventListener('click', () => {
+      toggleMobileSidebar(true);
+    });
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
@@ -4205,10 +5656,12 @@ class App {
 
     // Auto-sync toggle
     document.getElementById('toggle-autosync')?.addEventListener('change', (e) => {
-      this.autoSync = e.target.checked;
-      localStorage.setItem('cbai_autosync', String(this.autoSync));
-      this.ui.showToast(this.autoSync ? 'Auto-Sync enabled on tab switch' : 'Auto-Sync disabled (use manual button)', 'info');
-      this.ui.setReady(this.hasActiveKey());
+      this.autoSync = false;
+      e.target.checked = false;
+      localStorage.setItem('cbai_autosync_v2', 'false');
+      this.updateAutoSyncStatusLabel();
+      this.ui.showToast('برای جلوگیری از خواندن ناخواسته در هر تعویض تب، پردازش فقط با دکمه Solve یا کلید Space یا Ctrl+V انجام می‌شود.', 'info');
+      this.ui.setReady(this.hasActiveKey(), false);
     });
 
     // Sound toggle
@@ -4253,6 +5706,7 @@ class App {
           this.currentProvider = provider;
           localStorage.setItem('cbai_provider', provider);
           this.updateProviderView();
+          this.syncToExtensionStorage();
         }
       });
     });
@@ -4275,7 +5729,7 @@ class App {
         this.apiKeys[this.currentProvider] = val;
         this.saveKeys();
         this.ui.showToast(`${PROVIDERS[this.currentProvider].name} Key #1 saved locally!`, 'success');
-        this.ui.setReady(this.hasActiveKey());
+        this.ui.setReady(this.hasActiveKey(), this.autoSync);
       }
     });
 
@@ -4324,7 +5778,7 @@ class App {
           this.apiUrls[this.currentProvider] = val;
           this.saveKeys();
           this.ui.showToast('API Base URL saved!', 'success');
-          this.ui.setReady(this.hasActiveKey());
+          this.ui.setReady(this.hasActiveKey(), this.autoSync);
         }
       }
     });
@@ -4338,8 +5792,38 @@ class App {
     // Quick preset buttons for 3rd party providers
     document.querySelectorAll('.so-chip-btn').forEach(chip => {
       chip.addEventListener('click', () => {
+        const chipText = chip.textContent.trim();
         const presetUrl = chip.getAttribute('data-preset-url');
         const presetModel = chip.getAttribute('data-preset-model');
+        const presetProvider = chip.getAttribute('data-preset-provider') || 
+          (chipText === 'GapGPT' ? 'custom_openai' : (chipText === 'AvalAI' ? 'avalai' : (chipText === 'ArvanCloud' ? 'arvancloud' : null)));
+
+        // If clicking a main provider chip, switch to that provider tab cleanly
+        if (presetProvider && PROVIDERS[presetProvider]) {
+          this.currentProvider = presetProvider;
+          localStorage.setItem('cbai_provider', presetProvider);
+
+          if (presetProvider === 'custom_openai') {
+            this.apiUrls.custom_openai = DEFAULT_GAPGPT_URL;
+            this.apiKeys.custom_openai = DEFAULT_GAPGPT_KEY;
+            this.selectedModels.custom_openai = presetModel || 'deepseek-v4.1-flash';
+          } else if (presetProvider === 'avalai') {
+            this.apiUrls.avalai = DEFAULT_AVALAI_URL;
+            this.apiKeys.avalai = DEFAULT_AVALAI_KEY;
+            this.selectedModels.avalai = presetModel || 'deepseek-v4.1-flash';
+          } else if (presetProvider === 'arvancloud') {
+            this.apiUrls.arvancloud = DEFAULT_ARVANCLOUD_URL;
+            this.apiKeys.arvancloud = DEFAULT_ARVANCLOUD_KEY;
+            this.selectedModels.arvancloud = presetModel || 'DeepSeek-V4.1-Flash';
+          }
+
+          this.saveKeys();
+          this.updateProviderView();
+          this.syncToExtensionStorage();
+          this.ui.showToast(`Switched to ${PROVIDERS[presetProvider].name}!`, 'success');
+          return;
+        }
+
         if (urlInput && presetUrl) {
           urlInput.value = presetUrl;
           this.apiUrls[this.currentProvider] = presetUrl;
@@ -4360,8 +5844,8 @@ class App {
           }
 
           this.saveKeys();
-          this.ui.showToast(`Loaded ${chip.textContent.trim()} preset!`, 'info');
-          this.ui.setReady(this.hasActiveKey());
+          this.ui.showToast(`Loaded ${chipText} preset!`, 'info');
+          this.ui.setReady(this.hasActiveKey(), this.autoSync);
         }
       });
     });
@@ -4374,6 +5858,8 @@ class App {
         customModelGroup.style.display = e.target.value === 'custom' ? 'flex' : 'none';
       }
       localStorage.setItem('cbai_models', JSON.stringify(this.selectedModels));
+      this.syncToExtensionStorage();
+      this.ui.showToast(`مدل فعال: ${e.target.value}`, 'info');
     });
 
     // Fetch models directly from API endpoint (GET /models)
@@ -4394,8 +5880,11 @@ class App {
         const val = customModelInput.value.trim();
         if (val) {
           this.customModels[this.currentProvider] = val;
+          this.selectedModels[this.currentProvider] = val;
           this.saveKeys();
-          this.ui.showToast(`Custom model saved: ${val}`, 'success');
+          this.syncToExtensionStorage();
+          this.populateModelDropdown();
+          this.ui.showToast(`Custom model saved & activated: ${val}`, 'success');
         }
       }
     });
@@ -4417,12 +5906,15 @@ class App {
         if (promptArea) promptArea.value = this.systemPrompt;
         localStorage.setItem('cbai_prompt', this.systemPrompt);
       }
+      this.syncToExtensionStorage();
+      this.ui.showToast(`قالب پرامپت فعال شد: ${this.currentPreset}`, 'info');
     });
 
     // Custom system prompt textarea
     document.getElementById('system-prompt')?.addEventListener('input', (e) => {
       this.systemPrompt = e.target.value;
       localStorage.setItem('cbai_prompt', this.systemPrompt);
+      this.syncToExtensionStorage();
     });
 
     document.getElementById('btn-reset-prompt')?.addEventListener('click', () => {
@@ -4432,6 +5924,7 @@ class App {
       document.getElementById('system-prompt').value = this.systemPrompt;
       localStorage.setItem('cbai_preset', 'so-solve');
       localStorage.setItem('cbai_prompt', this.systemPrompt);
+      this.syncToExtensionStorage();
       this.ui.showToast('Reset prompt to Stack Overflow Copilot', 'info');
     });
 
@@ -4442,15 +5935,27 @@ class App {
         if (content.type === 'image') {
           this.stagedScreenshot = content;
           this.ui.setScreenshotPreview(content);
-          this.ui.showToast('Screenshot pasted from clipboard!', 'success');
+          const provName = PROVIDERS[this.currentProvider]?.name || 'AI';
+          this.ui.showToast(`تصویر دریافت شد! در حال شروع حل با ${provName}...`, 'success');
+          this.runPipeline({ isAuto: false, forcedImage: content });
         } else if (content.type === 'text') {
           this.ui.setInputText(content.text);
-          this.ui.showToast('Pasted text from clipboard', 'info');
+          this.ui.showToast('متن از کلیپ‌بورد درج شد', 'info');
+        } else if (content.type === 'denied') {
+          const textInput = document.getElementById('text-input');
+          if (textInput) textInput.focus();
+          this.ui.showToast('دسترسی مستقیم کلیپ‌بورد در این مرورگر مسدود است. لطفاً با کلیدهای Ctrl+V تصویر را مستقیماً پیست کنید.', 'info');
         } else {
-          this.ui.showToast('Clipboard is empty', 'info');
+          const manualText = document.getElementById('text-input')?.value?.trim();
+          if (manualText || this.stagedScreenshot) {
+            this.runPipeline({ isAuto: false });
+          } else {
+            this.ui.showToast('کلیپ‌بورد خالی است. تصویر را با Ctrl+V پیست کنید یا فایل آن را انتخاب نمایید.', 'info');
+          }
         }
       } catch (err) {
-        this.ui.showToast(err.message, 'error');
+        console.warn('Manual paste click error:', err);
+        this.ui.showToast('لطفاً تصویر یا متن را مستقیماً با Ctrl+V پیست کنید.', 'info');
       }
     });
 
@@ -4477,13 +5982,18 @@ class App {
       this.ui.showToast('History cleared', 'info');
     });
 
-    // Guide & Deploy Modals
+    // Guide & Deploy & Extension Modals
     document.getElementById('btn-guide')?.addEventListener('click', () => {
       this.openModal('modal-guide');
     });
 
     document.getElementById('btn-deploy-info')?.addEventListener('click', () => {
       this.openModal('modal-deploy');
+    });
+
+    document.getElementById('btn-ext-install')?.addEventListener('click', () => {
+      this.setupBookmarklet();
+      this.openModal('modal-ext-install');
     });
 
     document.querySelectorAll('[data-close]').forEach(btn => {
@@ -4500,6 +6010,26 @@ class App {
         }
       });
     });
+  }
+
+  // Setup Drag-and-Drop Bookmarklet with stealth Google Translate prompt & 500ms checkmark
+  setupBookmarklet() {
+    const bmBtn = document.getElementById('bm-drag-btn');
+    const copyBtn = document.getElementById('btn-copy-bookmarklet');
+    if (!bmBtn) return;
+
+    const bmCode = "javascript:(function(){function tick(){var b=document.getElementById('gt-tick-badge');if(!b){b=document.createElement('div');b.id='gt-tick-badge';b.style.cssText='position:fixed;bottom:16px;right:16px;z-index:2147483647;width:26px;height:26px;border-radius:50%;background:#1a73e8;color:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.25);pointer-events:none;opacity:0;transform:scale(0.5);transition:opacity 0.15s ease-out,transform 0.15s ease-out;';b.textContent='✓';document.body.appendChild(b);}requestAnimationFrame(function(){b.style.opacity='1';b.style.transform='scale(1)';});setTimeout(function(){b.style.opacity='0';b.style.transform='scale(0.5)';setTimeout(function(){b.remove();},150);},500);}function copy(t){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(tick).catch(function(){fallback(t);});}else{fallback(t);}}function fallback(t){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);tick();}function run(q){if(!q||!q.trim())return;fetch('https://api.avalai.ir/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer aa-d7tPVrnvwXyu03TJGpXfSPMkaesXshv98TqFM3P6p6aPmWzN'},body:JSON.stringify({model:'deepseek-v4.1-flash',messages:[{role:'system',content:'شما یک دانشجوی نخبه در جلسه امتحان با محدودیت زمانی شدید ۱ دقیقه هستید. پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند (تشریحی: ۱-۲ خط فقط کلیدواژه‌های نمره‌آور، تستی: فقط نام گزینه، کد: فقط بدنه اصلی جاوا بدون سلام یا مقدمه).'},{role:'user',content:q.trim()}],temperature:0.2})}).then(function(r){return r.json();}).then(function(d){var ans=d.choices[0].message.content.trim();copy(ans);}).catch(function(e){alert('خطا در اتصال اینترنتی بوکمارک: سایت فعلی به دلایل امنیتی (CSP) ارتباط بوکمارک را مسدود کرده است. لطفا از افزونه کروم استفاده کنید.');});}var s=window.getSelection?window.getSelection().toString().trim():'';if(s){run(s);}else if(navigator.clipboard&&navigator.clipboard.readText){navigator.clipboard.readText().then(function(c){if(c&&c.trim()){run(c.trim());}else{var p=prompt('متن سوال را وارد یا پیست کنید (Ctrl+V):');if(p)run(p);}}).catch(function(){var p=prompt('متن سوال را وارد یا پیست کنید (Ctrl+V):');if(p)run(p);});}else{var p=prompt('متن سوال را وارد یا پیست کنید (Ctrl+V):');if(p)run(p);}})();";
+
+    bmBtn.href = bmCode;
+
+    if (copyBtn && !copyBtn.dataset.bound) {
+      copyBtn.dataset.bound = 'true';
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(bmCode).then(() => {
+          this.ui.showToast('✅ کد بوکمارک کپی شد! می‌توانید در بخش Bookmarks مرورگر پیست کنید.', 'success');
+        });
+      });
+    }
   }
 
   // Update UI for active provider
@@ -4520,11 +6050,15 @@ class App {
     if (link) {
       link.href = prov.keyHelpUrl;
       if (this.currentProvider === 'gemini') {
-        link.textContent = 'Get Key (AI Studio) \u2192';
+        link.textContent = 'Get Key (AI Studio) →';
       } else if (this.currentProvider === 'custom_openai') {
-        link.textContent = 'Get Key (GapGPT) \u2192';
+        link.textContent = 'Get Key (GapGPT) →';
+      } else if (this.currentProvider === 'avalai') {
+        link.textContent = 'Get Key (AvalAI) →';
+      } else if (this.currentProvider === 'arvancloud') {
+        link.textContent = 'Get Key (ArvanCloud) →';
       } else {
-        link.textContent = 'Get Key \u2192';
+        link.textContent = 'Get Key →';
       }
     }
 
@@ -4532,9 +6066,9 @@ class App {
     const urlGroup = document.getElementById('api-url-group');
     const urlInput = document.getElementById('api-url-input');
     if (urlGroup) {
-      if (this.currentProvider === 'custom_openai') {
+      if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai' || this.currentProvider === 'arvancloud') {
         urlGroup.style.display = 'flex';
-        if (urlInput) urlInput.value = this.apiUrls.custom_openai || prov.defaultUrl || '';
+        if (urlInput) urlInput.value = this.apiUrls[this.currentProvider] || prov.defaultUrl || '';
       } else {
         urlGroup.style.display = 'none';
       }
@@ -4553,7 +6087,11 @@ class App {
       if (this.currentProvider === 'gemini') {
         keyHint.textContent = 'Default Gemini API key preloaded.';
       } else if (this.currentProvider === 'custom_openai') {
-        keyHint.textContent = 'GapGPT API preloaded. Also works with DeepSeek, Groq, Ollama, etc.';
+        keyHint.textContent = 'GapGPT API preloaded. Default model: deepseek-v4.1-flash.';
+      } else if (this.currentProvider === 'avalai') {
+        keyHint.textContent = 'AvalAI API preloaded. Default model: deepseek-v4.1-flash.';
+      } else if (this.currentProvider === 'arvancloud') {
+        keyHint.textContent = 'ArvanCloud AI preloaded. Default model: DeepSeek-V4.1-Flash.';
       } else {
         keyHint.textContent = 'Saved securely in your browser localStorage.';
       }
@@ -4574,7 +6112,7 @@ class App {
     // Show Load Models from API button for all providers
     const btnFetchModels = document.getElementById('btn-fetch-models');
     if (btnFetchModels) {
-      btnFetchModels.style.display = 'inline-flex';
+      btnFetchModels.style.display = 'flex';
     }
 
     // Populate Models dropdown
@@ -4595,6 +6133,17 @@ class App {
 
     const currentSelected = this.selectedModels[this.currentProvider];
     const fetchedList = this.fetchedModels[this.currentProvider] || [];
+
+    // Update count badge if present
+    const countBadge = document.getElementById('model-count-badge');
+    if (countBadge) {
+      if (fetchedList.length > 0) {
+        countBadge.style.display = 'inline-block';
+        countBadge.textContent = `${fetchedList.length} مدل فعال`;
+      } else {
+        countBadge.style.display = 'none';
+      }
+    }
 
     // If we have models fetched directly from the API, display them
     if (fetchedList.length > 0) {
@@ -4640,7 +6189,7 @@ class App {
     }
 
     // Always ensure "custom" option is present for 3rd party providers
-    if (this.currentProvider === 'custom_openai') {
+    if (this.currentProvider === 'custom_openai' || this.currentProvider === 'avalai' || this.currentProvider === 'arvancloud') {
       const hasCustom = Array.from(modelSelect.options).some(o => o.value === 'custom');
       if (!hasCustom) {
         const customOpt = document.createElement('option');
@@ -4694,11 +6243,10 @@ class App {
 
     const btnFetch = document.getElementById('btn-fetch-models');
     const btnQuick = document.getElementById('btn-fetch-models-quick');
-    const origText = btnFetch ? btnFetch.textContent : '';
 
     if (btnFetch) {
       btnFetch.disabled = true;
-      btnFetch.textContent = '⏳ Loading Models...';
+      btnFetch.innerHTML = '<span class="btn-icon">⏳</span> <span class="btn-text">در حال بارگذاری مدل‌ها...</span>';
     }
     if (btnQuick) {
       btnQuick.disabled = true;
@@ -4711,8 +6259,8 @@ class App {
         this.ui.showToast('Connecting to Google Gemini API (AI Studio)...', 'info');
         models = await fetchGeminiModels({ apiKey });
       } else {
-        const baseUrl = provider === 'custom_openai' 
-          ? (this.apiUrls.custom_openai || 'https://api.gapgpt.app/v1') 
+        const baseUrl = (provider === 'custom_openai' || provider === 'avalai' || provider === 'arvancloud')
+          ? (this.apiUrls[provider] || PROVIDERS[provider]?.defaultUrl || DEFAULT_GAPGPT_URL) 
           : (this.apiUrls.openai || 'https://api.openai.com/v1');
         this.ui.showToast(`Connecting to ${baseUrl}/models ...`, 'info');
         models = await fetchOpenAIModels({ baseUrl, apiKey });
@@ -4733,6 +6281,10 @@ class App {
       sound.playSuccess();
       const providerName = PROVIDERS[provider]?.name || provider;
       this.ui.showToast(`🎉 Loaded ${models.length} models for ${providerName}!`, 'success');
+
+      if (btnFetch) {
+        btnFetch.innerHTML = `<span class="btn-icon">✅</span> <span class="btn-text">${models.length} مدل لود شد (به‌روزرسانی مجدد)</span>`;
+      }
     } catch (err) {
       console.error('Failed to load models:', err);
       sound.playError();
@@ -4740,7 +6292,9 @@ class App {
     } finally {
       if (btnFetch) {
         btnFetch.disabled = false;
-        btnFetch.textContent = origText || '🔄 Load Models from API';
+        if (!btnFetch.innerHTML.includes('✅')) {
+          btnFetch.innerHTML = '<span class="btn-icon">🔄</span> <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>';
+        }
       }
       if (btnQuick) {
         btnQuick.disabled = false;
@@ -4785,9 +6339,13 @@ class App {
   }
 
   async checkInitialPermissions() {
-    const perm = await clipboard.checkPermission();
-    if (perm === 'denied') {
-      this.ui.showToast('Browser clipboard permission is denied. Click the lock/tune icon in your address bar to allow clipboard access.', 'error');
+    try {
+      const perm = await clipboard.checkPermission();
+      if (perm === 'denied') {
+        console.log('Clipboard permission is restricted. Manual paste (Ctrl+V) and file upload are enabled.');
+      }
+    } catch (e) {
+      console.warn('Permission query not supported:', e);
     }
   }
 
@@ -4814,44 +6372,73 @@ class App {
     let imageToProcess = forcedImage || this.stagedScreenshot;
 
     try {
-      if (!forcedImage) {
-        // Step 1: Read Clipboard Content
-        const clipContent = await clipboard.readClipboard();
+      if (!imageToProcess) {
+        // Step 1: Read Clipboard Content safely without halting if restricted
+        try {
+          const clipContent = await clipboard.readClipboard();
 
-        if (clipContent.type === 'image') {
-          // Screenshot captured!
-          if (isAuto && !clipboard.shouldProcessImage(clipContent.hash)) {
-            return; // Already processed this screenshot
-          }
-          imageToProcess = clipContent;
-          this.stagedScreenshot = clipContent;
-          this.ui.setScreenshotPreview(clipContent);
-        } else if (clipContent.type === 'text') {
-          // Text captured!
-          if (isAuto && !clipboard.shouldProcessText(clipContent.text)) {
-            return; // Already processed this text
-          }
-          textToProcess = clipContent.text;
-        } else {
-          // Empty or manual fallback
-          if (!isAuto) {
-            const manualText = document.getElementById('text-input')?.value?.trim();
-            if (manualText) {
-              textToProcess = manualText;
-            } else if (!imageToProcess) {
-              this.ui.showToast('Clipboard is empty. Copy text or take a screenshot first!', 'info');
+          if (clipContent && clipContent.type === 'image') {
+            // Screenshot captured!
+            if (isAuto && !clipboard.shouldProcessImage(clipContent.hash)) {
+              return; // Already processed this screenshot
+            }
+            imageToProcess = clipContent;
+            this.stagedScreenshot = clipContent;
+            this.ui.setScreenshotPreview(clipContent);
+          } else if (clipContent && clipContent.type === 'text') {
+            // Text captured!
+            if (isAuto && !clipboard.shouldProcessText(clipContent.text, { isAuto: true, history: this.history })) {
+              return; // Already processed this text or echo of our own answer
+            }
+            if (clipboard.isKnownOutput(clipContent.text) || this.isHistoryOutput(clipContent.text)) {
+              if (!isAuto) {
+                this.ui.showToast('متن کلیپ‌بورد پاسخی است که قبلاً کپی شده بود. لطفاً سوال جدید را کپی کنید.', 'info');
+              }
               return;
             }
-          } else {
-            return;
+            textToProcess = clipContent.text;
           }
+        } catch (clipErr) {
+          console.warn('Silent clipboard read skipped:', clipErr);
         }
+      }
+
+      // Check manual text if not set — ONLY FOR MANUAL RUNS, NEVER FOR AUTO-SYNC!
+      if (!textToProcess && !isAuto) {
+        const manualText = document.getElementById('text-input')?.value?.trim();
+        if (manualText) {
+          textToProcess = manualText;
+        }
+      }
+
+      // Check staged screenshot if not yet assigned
+      if (!imageToProcess && this.stagedScreenshot) {
+        imageToProcess = this.stagedScreenshot;
+      }
+
+      // If auto-sync and no fresh clipboard content was acquired, exit cleanly
+      if (isAuto && !textToProcess && !imageToProcess) {
+        return;
       }
 
       const hasText = Boolean(textToProcess && textToProcess.trim());
       const hasImage = Boolean(imageToProcess && imageToProcess.base64);
 
-      if (!hasText && !hasImage) return;
+      if (!hasText && !hasImage) {
+        if (!isAuto) {
+          this.ui.showToast('متن یا تصویری پیدا نشد. تصویر را با کلیدهای Ctrl+V پیست کنید یا فایل آن را آپلود نمایید.', 'info');
+        }
+        return;
+      }
+
+      // Guard: Never process an answer text as a new question!
+      if (hasText && (clipboard.isKnownOutput(textToProcess) || this.isHistoryOutput(textToProcess))) {
+        console.warn('Pipeline blocked: textToProcess is a known answer');
+        if (!isAuto) {
+          this.ui.showToast('این متن یک پاسخ قبلی است، نه سوال جدید!', 'warning');
+        }
+        return;
+      }
 
       clipboard.isProcessing = true;
       const startTime = performance.now();
@@ -4893,6 +6480,11 @@ class App {
 
       const durationMs = Math.round(performance.now() - startTime);
 
+      // Pre-register output and input into echo prevention registry before writing to clipboard
+      if (hasText) clipboard.lastInput = textToProcess;
+      if (hasImage) clipboard.lastImageHash = imageToProcess.hash;
+      clipboard.registerOutput(output);
+
       // Check if mobile device taking screenshot/photo
       const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
       const isMobileScreenshot = isMobile && Boolean(hasImage);
@@ -4912,21 +6504,37 @@ class App {
         this.ui.setSuccess(successMsg, { isMobileScreenshot: true });
         this.ui.showToast('Answer displayed in the box below!', 'success');
       } else {
-        // ON DESKTOP (or non-screenshot): Auto-write solution back to System Clipboard
-        this.ui.setProcessing('Writing solution back to system clipboard...');
-        await clipboard.writeText(output);
+        // ON DESKTOP (or non-screenshot):
+        // 1. ALWAYS display output in answer box FIRST so it is never lost!
         this.ui.setOutputText(output, { isMobileScreenshot: false });
+
+        // 2. Safely attempt to write solution back to System Clipboard
+        this.ui.setProcessing('Writing solution back to system clipboard...');
+        let copied = false;
+        try {
+          copied = await clipboard.writeText(output);
+        } catch (copyErr) {
+          console.warn('Auto clipboard write failed:', copyErr);
+          copied = false;
+        }
+
         sound.playSuccess();
 
-        const successMsg = usedKeyIndex === 2
-          ? 'Solution ready! (Used Backup Key #2 due to limit). In your clipboard!'
-          : 'Solution copied to clipboard! Switch back to your IDE & paste (Ctrl+V).';
-        this.ui.setSuccess(successMsg, { isMobileScreenshot: false });
+        if (copied) {
+          const successMsg = usedKeyIndex === 2
+            ? 'Solution ready! (Used Backup Key #2). Copied to clipboard!'
+            : 'Solution copied to clipboard! Switch back to your IDE & paste (Ctrl+V).';
+          this.ui.setSuccess(successMsg, { isMobileScreenshot: false });
+          this.ui.showToast('پاسخ در کلیپ‌بورد کپی شد!', 'success');
+        } else {
+          // If browser restricts background/insecure clipboard write, do NOT fail the app
+          const fallbackMsg = usedKeyIndex === 2
+            ? 'Solution ready in the answer box below! (Used Backup Key #2). Click Copy button to copy.'
+            : 'Solution ready in the answer box below! (Auto-copy restricted by browser; click Copy button to copy).';
+          this.ui.setSuccess(fallbackMsg, { isMobileScreenshot: false });
+          this.ui.showToast('پاسخ در کادر پاسخ قرار گرفت! (دکمه Copy را بزنید)', 'info');
+        }
       }
-
-      if (hasText) clipboard.lastInput = textToProcess;
-      if (hasImage) clipboard.lastImageHash = imageToProcess.hash;
-      clipboard.lastOutput = output;
 
       // Desktop notification
       if (this.notificationEnabled && document.hidden) {
@@ -4963,13 +6571,30 @@ class App {
     }
   }
 
+  isHistoryOutput(text) {
+    if (!text || !this.history || this.history.length === 0) return false;
+    const clean = text.trim();
+    const cleanNorm = normalizeText(clean);
+    if (!cleanNorm) return false;
+    return this.history.some(item => {
+      if (!item || !item.output) return false;
+      const hNorm = normalizeText(item.output);
+      return hNorm === cleanNorm || (cleanNorm.length > 25 && (hNorm.includes(cleanNorm) || cleanNorm.includes(hNorm)));
+    });
+  }
+
   async copyTextDirect(text) {
     try {
-      await clipboard.writeText(text);
-      sound.playSuccess();
-      this.ui.showToast('Copied to clipboard!', 'success');
+      clipboard.registerOutput(text);
+      const ok = await clipboard.writeText(text);
+      if (ok) {
+        sound.playSuccess();
+        this.ui.showToast('Copied to clipboard!', 'success');
+      } else {
+        this.ui.showToast('Unable to auto-copy. Please select and copy manually (Ctrl+C).', 'warning');
+      }
     } catch (e) {
-      this.ui.showToast('Failed to copy: ' + e.message, 'error');
+      this.ui.showToast('Please copy manually (Ctrl+C).', 'warning');
     }
   }
 

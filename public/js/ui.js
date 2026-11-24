@@ -52,18 +52,38 @@ export class UIController {
   }
 
   // Set Visual State to Ready / Listening
-  setReady(hasKey = true) {
+  setReady(hasKey = true, autoSync = false) {
     this.resetSteps();
     if (this.statusPill) {
-      this.statusPill.className = hasKey ? 'status-pill status-ready' : 'status-pill status-warn';
-      this.statusPillText.textContent = hasKey ? 'Auto-Sync Active' : 'API Key Required';
+      if (!hasKey) {
+        this.statusPill.className = 'status-pill status-warn';
+        this.statusPillText.textContent = 'API Key Required';
+      } else if (autoSync) {
+        this.statusPill.className = 'status-pill status-ready';
+        this.statusPillText.textContent = 'Auto-Sync Active';
+      } else {
+        this.statusPill.className = 'status-pill status-ready';
+        this.statusPillText.textContent = 'Manual Mode';
+      }
     }
-    if (this.radarIcon) this.radarIcon.textContent = '📋';
-    if (this.liveSubtitle) this.liveSubtitle.textContent = hasKey ? 'Clipboard Monitoring Active' : 'API Key Setup Needed';
+    if (this.radarIcon) this.radarIcon.textContent = autoSync ? '📋' : '⚡';
+    if (this.liveSubtitle) {
+      if (!hasKey) {
+        this.liveSubtitle.textContent = 'API Key Setup Needed';
+      } else if (autoSync) {
+        this.liveSubtitle.textContent = 'Clipboard Monitoring Active';
+      } else {
+        this.liveSubtitle.textContent = 'Manual Mode Ready';
+      }
+    }
     if (this.liveDesc) {
-      this.liveDesc.textContent = hasKey 
-        ? 'Copy any code or error in your IDE/terminal, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back!'
-        : 'Please enter and save your Gemini API key in the right sidebar.';
+      if (!hasKey) {
+        this.liveDesc.textContent = 'Please enter and save your API key in the settings.';
+      } else if (autoSync) {
+        this.liveDesc.textContent = 'Copy any code or error in your IDE/terminal, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back!';
+      } else {
+        this.liveDesc.textContent = 'Auto-read clipboard is disabled. Paste your question/screenshot (Ctrl+V) or click "Process Clipboard" to solve!';
+      }
     }
   }
 
@@ -189,7 +209,11 @@ export class UIController {
           const code = btn.getAttribute('data-code');
           if (code) {
             try {
-              await navigator.clipboard.writeText(code);
+              if (window.clipboardManager) {
+                await window.clipboardManager.writeText(code);
+              } else {
+                await navigator.clipboard.writeText(code);
+              }
               btn.textContent = '✓ Copied';
               this.showToast('Copied Java code snippet to clipboard!', 'success');
               setTimeout(() => { btn.textContent = '📋 Copy Code'; }, 1800);
@@ -276,6 +300,9 @@ export class UIController {
 
       const btnCopy = el.querySelector('.btn-history-copy');
       btnCopy.addEventListener('click', () => {
+        if (window.clipboardManager && item.output) {
+          window.clipboardManager.registerOutput(item.output);
+        }
         onCopyItem(item.output);
         btnCopy.textContent = 'Copied!';
         setTimeout(() => { btnCopy.textContent = 'Copy'; }, 1500);

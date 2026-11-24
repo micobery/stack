@@ -93,4 +93,4 @@ To run on your local computer at any time:
 ```bash
 python3 server.py
 ```
-Open **http://localhost:8080** in your browser.
+Open **http://localhost:2080** in your browser.

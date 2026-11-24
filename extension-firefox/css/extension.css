@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Extension-Specific Styles for Popup, Side Panel, and Fullscreen
+   ========================================================================== */
+
+/* Popup Window (Standard dimensions: 580px width, max 590px height) */
+body.is-popup {
+  width: 580px;
+  min-width: 500px;
+  max-width: 600px;
+  min-height: 540px;
+  max-height: 590px;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Side Panel Window (Docked on right side of screen) */
+body.is-sidepanel {
+  width: 100%;
+  min-width: 0;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Extension Header Topbar Adjustments */
+body.is-popup .so-topbar-container,
+body.is-sidepanel .so-topbar-container {
+  padding: 0 0.75rem;
+  height: 48px;
+}
+
+body.is-popup .so-brand-text,
+body.is-sidepanel .so-brand-text {
+  font-size: 1.05rem;
+}
+
+/* Hide desktop search input, nav links, and install button in popup/sidepanel */
+body.is-popup .so-search-container,
+body.is-sidepanel .so-search-container,
+body.is-popup .so-topbar-nav,
+body.is-sidepanel .so-topbar-nav,
+body.is-popup .so-btn-ext-install,
+body.is-sidepanel .so-btn-ext-install {
+  display: none !important;
+}
+
+/* Hide left sidebar (Home/Questions nav) in popup/sidepanel */
+body.is-popup .so-left-sidebar,
+body.is-sidepanel .so-left-sidebar {
+  display: none !important;
+}
+
+/* Main Content Column takes 100% width */
+body.is-popup .so-page-wrap,
+body.is-sidepanel .so-page-wrap {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+body.is-popup .so-main-column,
+body.is-sidepanel .so-main-column {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-right: none !important;
+  padding: 0.85rem !important;
+}
+
+/* Hide regular desktop right sidebar in popup/sidepanel */
+body.is-popup .so-right-sidebar:not(.mobile-open),
+body.is-sidepanel .so-right-sidebar:not(.mobile-open) {
+  display: none !important;
+}
+
+/* Settings Drawer inside popup/sidepanel overlays nicely */
+body.is-popup .so-right-sidebar.mobile-open,
+body.is-sidepanel .so-right-sidebar.mobile-open {
+  display: flex !important;
+  flex-direction: column !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100vh !important;
+  z-index: 2000 !important;
+  background: #ffffff !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 0 1rem 4rem 1rem !important;
+}
+
+body.is-popup .so-right-sidebar.mobile-open > *,
+body.is-sidepanel .so-right-sidebar.mobile-open > * {
+  flex-shrink: 0 !important;
+}
+
+body.is-popup .so-related-widget,
+body.is-sidepanel .so-related-widget {
+  display: none !important;
+}
+
+body.is-popup .so-widget-box,
+body.is-sidepanel .so-widget-box {
+  flex-shrink: 0 !important;
+  width: 100% !important;
+}
+
+/* 2x2 Clean Layout for Provider Tabs in Popup & Sidepanel */
+body.is-popup .so-provider-tabs,
+body.is-sidepanel .so-provider-tabs {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 0.35rem !important;
+  padding: 0.35rem !important;
+}
+
+body.is-popup .so-tab-btn,
+body.is-sidepanel .so-tab-btn {
+  padding: 0.5rem 0.35rem !important;
+  font-size: 0.82rem !important;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Extension Header Action Buttons */
+.so-ext-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: var(--so-text-main);
+  border: 1px solid var(--so-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.so-ext-top-btn:hover {
+  background-color: var(--so-border-subtle);
+  border-color: var(--so-border-focus);
+  color: var(--so-link);
+}
+
+.so-ext-top-btn.highlight {
+  background-color: var(--so-orange-light);
+  color: var(--so-orange);
+  border-color: rgba(244, 128, 36, 0.4);
+}
+
+.so-ext-top-btn.highlight:hover {
+  background-color: var(--so-orange);
+  color: #ffffff;
+}
+
+.so-ext-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Responsive Question Header in Extension */
+body.is-popup .so-question-header,
+body.is-sidepanel .so-question-header {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.75rem;
+}
+
+body.is-popup .so-title-row,
+body.is-sidepanel .so-title-row {
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+body.is-popup .so-header-btn-group,
+body.is-sidepanel .so-header-btn-group {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+body.is-popup .so-btn-camera,
+body.is-popup .so-btn-primary,
+body.is-sidepanel .so-btn-camera,
+body.is-sidepanel .so-btn-primary {
+  width: 100%;
+  justify-content: center;
+}

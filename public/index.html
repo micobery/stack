@@ -13,6 +13,13 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
+  
+  <script>
+    // If opened directly via file://, redirect to standalone.html where all JS/CSS is self-contained
+    if (window.location.protocol === 'file:') {
+      window.location.replace('standalone.html');
+    }
+  </script>
 </head>
 <body class="so-theme-light">
   <!-- Top Navigation Bar -->
@@ -56,17 +63,32 @@
         <!-- Live Status Pill -->
         <div id="status-pill" class="status-pill status-ready" title="Monitoring clipboard on tab switch">
           <span class="status-dot"></span>
-          <span id="status-pill-text">Auto-Sync Active</span>
+          <span id="status-pill-text">Manual Mode</span>
         </div>
 
         <!-- User Reputation Profile -->
-        <div class="so-user-rep" title="Milad — 1,337 reputation">
+        <div class="so-user-rep" title="Milad — 2,840 reputation">
           <div class="so-avatar">M</div>
-          <span class="so-rep-count">1,337</span>
-          <span class="badge-dot gold">● 1</span>
-          <span class="badge-dot silver">● 4</span>
-          <span class="badge-dot bronze">● 19</span>
+          <span class="so-rep-count">2,840</span>
+          <span class="badge-dot gold">● 2</span>
+          <span class="badge-dot silver">● 14</span>
+          <span class="badge-dot bronze">● 38</span>
         </div>
+
+        <!-- Modern Stack Overflow Inbox -->
+        <button class="so-topbar-icon-btn" title="Recent inbox messages (1 new)">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4zm0 2h12v5.5l-2.5 2.5H6.5L4 10.5V5zm3.5 8h5l1.5-1.5H6l1.5 1.5z"/>
+          </svg>
+          <span class="so-unread-dot">1</span>
+        </button>
+
+        <!-- Modern Stack Overflow Achievements -->
+        <button class="so-topbar-icon-btn" title="Recent achievements (+10 rep)">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M15 3h1a2 2 0 0 1 2 2v2c0 2.2-1.8 4-4 4h-.2a6 6 0 0 1-3.8 3.5V16h2a1 1 0 0 1 1 1v1H7v-1a1 1 0 0 1 1-1h2v-1.5A6 6 0 0 1 6.2 11H6a4 4 0 0 1-4-4V5c0-1.1.9-2 2-2h1V1h10v2zm1 2h-1v4h.2c1 0 1.8-.8 1.8-1.8V5zm-12 0H4v2.2C4 8.2 4.8 9 5.8 9H6V5z"/>
+          </svg>
+        </button>
 
         <button id="btn-mobile-settings" class="so-icon-btn so-mobile-only" title="API Settings & Models">
           ⚙️
@@ -78,6 +100,10 @@
 
         <button id="btn-deploy-info" class="so-icon-btn" title="Free Cloud Deployment Guide">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><polyline points="13 11 12 7 11 11"/><line x1="12" y1="7" x2="12" y2="16"/></svg>
+        </button>
+
+        <button id="btn-ext-install" class="so-btn-ext-install" title="Install">
+          Install
         </button>
       </div>
     </div>
@@ -97,11 +123,14 @@
 
         <div class="so-side-heading">CLIPBOARD ENGINE</div>
         <div class="so-toggle-box">
-          <div class="so-toggle-row">
-            <span>Auto Tab Sync</span>
-            <label class="switch-sm">
-              <input type="checkbox" id="toggle-autosync" checked>
-              <span class="slider-sm"></span>
+          <div class="so-toggle-row so-toggle-featured">
+            <div class="so-toggle-info">
+              <span class="so-toggle-title">Auto Read on Tab Focus</span>
+              <span class="so-toggle-desc" id="autosync-status-label">Disabled (Safe Mode)</span>
+            </div>
+            <label class="switch-sm" title="Auto Read on Tab Focus is disabled">
+              <input type="checkbox" id="toggle-autosync" disabled>
+              <span class="slider-sm" style="opacity: 0.5; cursor: not-allowed;"></span>
             </label>
           </div>
           <div class="so-toggle-row">
@@ -134,8 +163,9 @@
       <!-- Question Title Header -->
       <div class="so-question-header">
         <div class="so-title-row">
-          <h1 class="so-question-title" id="live-state-title">How to solve the copied error / code with Gemini Copilot?</h1>
+          <h1 class="so-question-title" id="live-state-title">Spring Boot / Java: How to solve the copied error / code with Gemini Copilot?</h1>
           <div class="so-header-btn-group">
+            <a href="#text-input" class="so-btn-ask" id="btn-ask-question" title="Ask a new question on Stack Overflow">Ask Question</a>
             <button id="btn-camera" class="so-btn-camera" title="Take a photo with your phone's camera">
               📷 Take Photo
             </button>
@@ -147,21 +177,21 @@
           <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
         </div>
         <div class="so-question-meta">
-          <span>Asked <time id="meta-time">just now</time></span>
+          <span>Asked <time id="meta-time">today</time></span>
           <span>Modified <span class="so-highlight">today</span></span>
-          <span>Viewed <span class="so-highlight">1,420 times</span></span>
-          <span>Mode: <span class="so-highlight-green">Tab Focus Auto-Sync Active</span></span>
+          <span>Viewed <span class="so-highlight">3,420 times</span></span>
+          <span>Mode: <span id="meta-sync-mode" class="so-highlight">Manual Mode (Click / Paste to Solve)</span></span>
         </div>
       </div>
 
       <!-- Live Radar Processing Pipeline Notification -->
       <div class="so-notice-banner status-visualizer-card">
         <div class="so-notice-icon" id="radar-core">
-          <span id="radar-icon">📋</span>
+          <span id="radar-icon">⚡</span>
         </div>
         <div class="so-notice-text">
-          <strong id="live-state-subtitle">Clipboard Monitoring Active</strong>
-          <p id="live-state-desc">Copy any code or error in your editor, then switch to this tab. Stack Overflow Copilot automatically solves it and copies the answer back to your clipboard!</p>
+          <strong id="live-state-subtitle">Manual Mode Ready</strong>
+          <p id="live-state-desc">Auto-read clipboard is disabled by default. Paste your code or screenshot (Ctrl+V) or click "Process Clipboard" to solve!</p>
           <div class="so-pipeline-steps">
             <span class="so-step-badge" id="step-read">1. Read Clipboard (Text / Screenshot)</span>
             <span class="so-step-arrow">&rarr;</span>
@@ -175,11 +205,19 @@
       <!-- Question Post Box (Input) -->
       <article class="so-post-box">
         <div class="so-vote-col">
-          <button class="so-vote-btn" title="Upvote question">▲</button>
+          <button class="so-vote-btn" title="This question shows research effort; it is useful and clear">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
           <span class="so-vote-count">42</span>
-          <button class="so-vote-btn" title="Downvote question">▼</button>
-          <button class="so-vote-action" title="Bookmark question">★</button>
-          <button class="so-vote-action" title="Timeline history">🕒</button>
+          <button class="so-vote-btn" title="This question does not show any research effort; it is unclear or not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this question">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
         </div>
 
         <div class="so-post-body">
@@ -187,10 +225,19 @@
             <span class="so-label">COPIED CODE / SCREENSHOT (INPUT)</span>
             <div class="so-tools-right">
               <span id="input-stats" class="so-stats-tag">0 chars</span>
+              <button id="btn-crop-screen" class="so-btn-subtle" title="کراپ اسکرین‌شات از صفحه (Ctrl+Shift+X / Ctrl+Shift+A)">📸 Crop Screen</button>
               <button id="btn-camera-inline" class="so-btn-subtle" title="Take a photo with camera">📷 Photo</button>
-              <button id="btn-paste-manual" class="so-btn-subtle" title="Paste text or screenshot">Paste</button>
+              <button id="btn-upload-file" class="so-btn-subtle" title="Upload screenshot / image file">🖼️ Upload</button>
+              <button id="btn-paste-manual" class="so-btn-subtle" title="Paste text or screenshot">📋 Paste</button>
               <button id="btn-clear-input" class="so-btn-subtle">Clear</button>
+              <input type="file" id="file-image-picker" accept="image/*" style="display: none;">
             </div>
+          </div>
+
+          <!-- Spring Boot Question Scenario Description -->
+          <div class="so-question-desc">
+            <p>I am building a high-throughput backend service using <strong>Spring Boot 3.3.x</strong> and <strong>Java 21</strong>. In my <code>@Service</code> classes, when handling concurrent requests that fetch entities from Spring Data JPA and convert them into DTOs, I occasionally encounter <code>NullPointerException</code> or <code>LazyInitializationException</code> when navigating relationships.</p>
+            <p>Here is my current code and stack trace snippet from IntelliJ / terminal below:</p>
           </div>
 
           <!-- Screenshot Preview Container -->
@@ -208,35 +255,72 @@
           </div>
 
           <div class="so-editor-container">
-            <textarea id="text-input" class="so-code-editor" wrap="soft" placeholder="// Your copied text, code, or error message appears here... (Or take a screenshot with PrintScreen / Win+Shift+S / Cmd+Shift+4 and switch back!)"></textarea>
+            <textarea id="text-input" class="so-code-editor" wrap="soft" placeholder=""></textarea>
           </div>
 
           <!-- Tags row -->
           <div class="so-tags-row">
             <span class="so-tag">java</span>
-            <span class="so-tag">persian-fa</span>
-            <span class="so-tag">exam-answer</span>
-            <span class="so-tag">gpt-5-nano</span>
-            <span class="so-tag">gapgpt</span>
-            <span class="so-tag">clipboard-ai</span>
+            <span class="so-tag">spring-boot</span>
+            <span class="so-tag">spring-data-jpa</span>
+            <span class="so-tag">nullpointerexception</span>
+            <span class="so-tag">java-21</span>
+            <span class="so-tag">hibernate</span>
           </div>
 
           <!-- Post Signature -->
           <div class="so-post-footer">
             <div class="so-actions-sub">
               <a href="#">Share</a>
-              <a href="#">Edit</a>
+              <a href="#">Improve this question</a>
               <a href="#">Follow</a>
             </div>
             <div class="so-user-card">
-              <span class="so-user-time">asked just now</span>
+              <span class="so-user-time">asked Oct 21, 2026 at 19:42</span>
               <div class="so-user-info">
                 <div class="so-avatar sm">M</div>
                 <div>
                   <a href="#" class="so-user-name">Milad</a>
-                  <div class="so-user-badges"><span class="badge-dot gold">● 1</span> <span class="badge-dot silver">● 4</span></div>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 2</span> <span class="badge-dot silver">● 14</span> <span class="badge-dot bronze">● 38</span></div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Question Comments Thread (Authentic Stack Overflow Community Discussion) -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">3</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Could you check if you have circular dependency or if the Spring context fails during component scan? Also sharing the Java stacktrace would help.
+                – <a href="#" class="so-comment-user">Boris the Spider</a>
+                <span class="so-comment-date">yesterday at 19:42</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">5</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                If you're using Spring Boot 3+ with Java 17+, remember that <code>jakarta.persistence</code> is used instead of <code>javax.persistence</code>.
+                – <a href="#" class="so-comment-user">M. Deinum</a>
+                <span class="so-comment-date">Oct 21 at 12:05</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote"></div>
+              <div class="so-comment-text">
+                Thanks! I've pasted the code and error screenshot above for analysis.
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">just now</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#text-input" class="so-add-comment-link">Add a comment</a>
             </div>
           </div>
         </div>
@@ -244,28 +328,43 @@
 
       <!-- Answer Section Header -->
       <div class="so-answers-header">
-        <h2>1 Accepted Solution (AI Answer)</h2>
-        <div class="so-answers-filter">
-          <button class="so-filter-btn active">Active</button>
-          <button class="so-filter-btn">Fastest</button>
-          <button class="so-filter-btn">Pro Reasoning</button>
+        <h2 class="so-answers-title">3 Answers</h2>
+        <div class="so-answers-sort-row">
+          <span>Sorted by:</span>
+          <select class="so-sort-select" title="Sort answers">
+            <option>Highest score (default)</option>
+            <option>Trending (recent votes count more)</option>
+            <option>Date modified (newest first)</option>
+            <option>Date created (oldest first)</option>
+          </select>
         </div>
       </div>
 
       <!-- Answer Post Box (Output / Solved) -->
       <article class="so-post-box so-accepted-answer" id="accepted-answer-box">
         <div class="so-vote-col">
-          <button class="so-vote-btn" title="Upvote answer">▲</button>
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
           <span class="so-vote-count">158</span>
-          <button class="so-vote-btn" title="Downvote answer">▼</button>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
           
           <!-- Stack Overflow Big Green Accepted Checkmark -->
           <div class="so-accepted-check" title="Accepted Solution">
-            <svg width="34" height="34" viewBox="0 0 36 36" fill="currentColor">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="#2e7d32">
               <path d="M6 14l8 8L30 6v6L14 28l-8-8z"/>
             </svg>
             <span class="so-accepted-text" id="accepted-check-text">ACCEPTED</span>
           </div>
+
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
         </div>
 
         <div class="so-post-body">
@@ -300,7 +399,7 @@
               <a href="#">Follow</a>
             </div>
             <div class="so-user-card so-answered-card">
-              <span class="so-user-time">answered by AI Copilot</span>
+              <span class="so-user-time">answered just now</span>
               <div class="so-user-info">
                 <div class="so-avatar sm bot">🤖</div>
                 <div>
@@ -308,6 +407,208 @@
                   <div class="so-user-badges"><span class="badge-dot gold">● 100k</span> Verified Solution</div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Answer Comments Thread (Authentic Stack Overflow Community Discussion) -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">14</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                This completely resolved the issue, especially handling null safety and boundary checks in Java. Clean and concise. +1
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">5 mins ago</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">6</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Confirmed working flawlessly on JDK 17 &amp; 21. Great job on the time complexity explanation as well.
+                – <a href="#" class="so-comment-user">AlexR</a>
+                <span class="so-comment-date">2 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#text-output" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Community Answer 2: Constructor Injection & Transaction Management -->
+      <article class="so-post-box so-community-answer">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">64</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-answer-text">
+            <h3>Approach 2: Use Constructor Injection with <code>@RequiredArgsConstructor</code> and <code>@Transactional(readOnly = true)</code></h3>
+            <p>Field injection via <code>@Autowired</code> is an anti-pattern in modern Spring Boot apps because it breaks immutability, hides dependencies, and complicates unit testing with Mockito. Switching to constructor injection ensures all dependencies are fully initialized before any service method is executed.</p>
+            <p>Additionally, marking read-only service queries with <code>@Transactional(readOnly = true)</code> keeps the Hibernate persistence session open throughout DTO mapping and enables Hibernate to optimize flush modes:</p>
+            <pre><code>@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+    private final UserMapper userMapper;
+
+    @Override
+    public OrderDTO getOrderDetails(Long orderId) {
+        Order order = orderRepository.findByIdWithItems(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
+
+        return userMapper.toDto(order);
+    }
+}</code></pre>
+            <p>Notice that <code>final</code> fields guarantee non-null bean references, preventing arbitrary <code>NullPointerException</code> at runtime if a dependency fails to autowire.</p>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">answered Oct 21, 2026 at 20:15</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">S</div>
+                <div>
+                  <a href="#" class="so-user-name">Sander Verhagen</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 9</span> <span class="badge-dot silver">● 64</span> <span class="badge-dot bronze">● 98</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments on Answer 2 -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">4</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Constructor injection makes unit testing so much cleaner because we can simply pass mocks into <code>new OrderServiceImpl(repo, mapper)</code> without reflection. +1
+                – <a href="#" class="so-comment-user so-comment-op">Milad</a>
+                <span class="so-comment-date">1 hour ago</span>
+              </div>
+            </div>
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">7</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                Also note that <code>@Transactional(readOnly = true)</code> informs Hibernate not to take dirty-checking snapshots, improving heap memory and latency.
+                – <a href="#" class="so-comment-user">vlad_mihalcea</a>
+                <span class="so-comment-date">45 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#" class="so-add-comment-link">Add a comment</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Community Answer 3: Spring Data JPA EntityGraph & Record Projections -->
+      <article class="so-post-box so-community-answer">
+        <div class="so-vote-col">
+          <button class="so-vote-btn" title="This answer is useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z" fill="currentColor"/></svg>
+          </button>
+          <span class="so-vote-count">28</span>
+          <button class="so-vote-btn" title="This answer is not useful">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Save this answer">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="m3 17 6-4.5 6 4.5V3a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14Z" fill="currentColor"/></svg>
+          </button>
+          <button class="so-vote-action" title="Show activity on this post">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 8 8 8 8 0 0 0-8-8Zm0 14.5a6.5 6.5 0 1 1 6.5-6.5 6.5 6.5 0 0 1-6.5 6.5ZM9.5 4H8v5.5l4.5 2.7.8-1.2-3.8-2.3V4Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="so-post-body">
+          <div class="so-answer-text">
+            <h3>Approach 3: Prevent N+1 issues using Spring Data JPA <code>@EntityGraph</code> or Java 21 Record DTO Projections</h3>
+            <p>If your <code>LazyInitializationException</code> occurs when mapping collection relations (like <code>Order.items</code> or <code>Order.customer</code>), using <code>@EntityGraph</code> instructs Spring Data JPA to perform an immediate SQL <code>LEFT OUTER JOIN</code>, preventing detached proxy errors.</p>
+            <p>In modern Spring Boot 3, using <strong>Java 21 Records</strong> for constructor query projection is even faster because it completely bypasses the Hibernate first-level cache:</p>
+            <pre><code>public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
+
+    // Solution A: Fetch graph for eager loading specific relations in one single query
+    @EntityGraph(attributePaths = {"orderItems", "customer"})
+    Optional&lt;Order&gt; findWithItemsById(Long id);
+
+    // Solution B: Java 21 Record Projection (skips Hibernate persistence context)
+    @Query("""
+        SELECT new com.example.dto.OrderSummaryDTO(o.id, o.status, c.email, COUNT(i.id))
+        FROM Order o
+        JOIN o.customer c
+        LEFT JOIN o.orderItems i
+        WHERE o.id = :id
+        GROUP BY o.id, o.status, c.email
+    """)
+    Optional&lt;OrderSummaryDTO&gt; findSummaryById(@Param("id") Long id);
+}</code></pre>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="so-post-footer">
+            <div class="so-actions-sub">
+              <a href="#">Share</a>
+              <a href="#">Improve this answer</a>
+              <a href="#">Follow</a>
+            </div>
+            <div class="so-user-card">
+              <span class="so-user-time">answered Oct 21, 2026 at 21:04</span>
+              <div class="so-user-info">
+                <div class="so-avatar sm">S</div>
+                <div>
+                  <a href="#" class="so-user-name">Stéphane Nicoll</a>
+                  <div class="so-user-badges"><span class="badge-dot gold">● 28</span> <span class="badge-dot silver">● 194</span> <span class="badge-dot bronze">● 320</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments on Answer 3 -->
+          <div class="so-comments-container">
+            <div class="so-comment">
+              <div class="so-comment-vote">
+                <span class="so-comment-score">5</span>
+                <button class="so-comment-up" title="Upvote comment">▲</button>
+              </div>
+              <div class="so-comment-text">
+                DTO projections via Java Record are blazing fast and save substantial heap allocation during peak traffic. Excellent advice.
+                – <a href="#" class="so-comment-user">john_c</a>
+                <span class="so-comment-date">30 mins ago</span>
+              </div>
+            </div>
+            <div class="so-add-comment-wrap">
+              <a href="#" class="so-add-comment-link">Add a comment</a>
             </div>
           </div>
         </div>
@@ -330,9 +631,12 @@
     <!-- Right Sidebar (The Overflow Blog & AI Settings) -->
     <aside class="so-right-sidebar">
       <!-- Mobile Drawer Close Header -->
-      <div class="so-sidebar-mobile-header so-mobile-only">
-        <span>⚙️ Copilot Config &amp; Keys</span>
-        <button id="btn-close-sidebar" class="modal-close" title="Close settings">&times;</button>
+      <div class="so-sidebar-mobile-header">
+        <div class="so-sidebar-mobile-title">
+          <span class="icon">⚙️</span>
+          <span>تنظیمات و کلیدهای هوش مصنوعی</span>
+        </div>
+        <button id="btn-close-sidebar" class="modal-close" title="Close settings" aria-label="Close">&times;</button>
       </div>
 
       <!-- "The Overflow Config" Box -->
@@ -349,7 +653,9 @@
 
           <!-- Provider Tabs -->
           <div class="so-provider-tabs">
-            <button class="so-tab-btn active" data-provider="custom_openai">3rd Party (GapGPT)</button>
+            <button class="so-tab-btn active" data-provider="custom_openai">GapGPT</button>
+            <button class="so-tab-btn" data-provider="avalai">AvalAI</button>
+            <button class="so-tab-btn" data-provider="arvancloud">ArvanCloud</button>
             <button class="so-tab-btn" data-provider="gemini">Gemini</button>
             <button class="so-tab-btn" data-provider="openai">OpenAI</button>
           </div>
@@ -361,12 +667,14 @@
               <span class="so-pill-failover">OpenAI Compatible</span>
             </div>
             <div class="so-input-wrapper">
-              <input type="text" id="api-url-input" placeholder="https://api.gapgpt.app/v1">
+              <input type="text" id="api-url-input" value="https://api.gapgpt.app/v1" placeholder="https://api.gapgpt.app/v1">
               <button id="btn-save-url" class="so-btn-save-inside">Save</button>
             </div>
             <div class="so-url-presets">
               <span class="so-hint-text">Quick:</span>
-              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="gpt-5-nano">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.gapgpt.app/v1" data-preset-model="deepseek-v4.1-flash">GapGPT</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.avalai.ir/v1" data-preset-model="deepseek-v4.1-flash">AvalAI</button>
+              <button type="button" class="so-chip-btn" data-preset-url="https://api.arvancloudai.ir/v1" data-preset-model="DeepSeek-V4.1-Flash">ArvanCloud</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.deepseek.com/v1" data-preset-model="deepseek-chat">DeepSeek</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://api.groq.com/openai/v1" data-preset-model="llama-3.3-70b-versatile">Groq</button>
               <button type="button" class="so-chip-btn" data-preset-url="https://openrouter.ai/api/v1" data-preset-model="deepseek/deepseek-chat">OpenRouter</button>
@@ -379,24 +687,24 @@
           <div class="so-form-group">
             <div class="so-form-label-row">
               <label for="api-key-input">API Key</label>
-              <a id="get-key-link" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get Key &rarr;</a>
+              <a id="get-key-link" href="https://gapgpt.app" target="_blank" rel="noopener">Get Key &rarr;</a>
             </div>
             <div class="so-input-wrapper">
-              <input type="password" id="api-key-input" placeholder="Primary API key...">
+              <input type="password" id="api-key-input" value="sk-F4T2AxOQw9HcnrUBdfsbTF7Fsu5JZelWBjBRhBkeNxpSLsNX" placeholder="Primary API key...">
               <button id="btn-toggle-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
               <button id="btn-save-key" class="so-btn-save-inside">Save</button>
             </div>
-            <p class="so-hint-text" id="key-hint">Default Gemini API key preloaded.</p>
+            <p class="so-hint-text" id="key-hint">GapGPT API preloaded. Default model: deepseek-v4.1-flash.</p>
           </div>
 
           <!-- Backup API Key (Key 2) for Rate Limit Failover -->
-          <div class="so-form-group" id="backup-key-group">
+          <div class="so-form-group" id="backup-key-group" style="display: none;">
             <div class="so-form-label-row">
               <label for="api-key-backup-input">Key #2 (Backup / Limit Failover)</label>
               <span class="so-pill-failover">Auto-Fallback</span>
             </div>
             <div class="so-input-wrapper">
-              <input type="password" id="api-key-backup-input" placeholder="Paste 2nd Gemini key for quota backup...">
+              <input type="password" id="api-key-backup-input" value="AQ.Ab8RN6Jug5V9Cks3DuZ_xNKI-o-GHsdorIO5zL4Usn3fFo0Geg" placeholder="Paste 2nd Gemini key for quota backup...">
               <button id="btn-toggle-backup-key" class="so-btn-icon-inside" title="Toggle key visibility">👁️</button>
               <button id="btn-save-backup-key" class="so-btn-save-inside">Save</button>
             </div>
@@ -404,16 +712,23 @@
           </div>
 
           <!-- Model Selection -->
-          <div class="so-form-group">
+          <div class="so-form-group" id="model-select-group">
             <div class="so-form-label-row">
               <label for="model-select">AI Model</label>
-              <button type="button" id="btn-fetch-models" class="so-btn-fetch-models" style="display: none;" title="Fetch all available models directly from this API endpoint">
-                🔄 Load Models from API
-              </button>
+              <span id="model-count-badge" class="so-model-count-badge" style="display: none;"></span>
             </div>
             <select id="model-select" class="so-select">
-              <!-- Gemini 3.8 Flash, Gemini 2.5 Flash, Gemini 3.1 Pro Preview, Gemini Pro Latest -->
+              <option value="deepseek-v4.1-flash" selected>⚡ DeepSeek 4.1 Flash (Ultra Fast — Default)</option>
+              <option value="gpt-5-nano">gpt-5-nano</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
+              <option value="deepseek-chat">deepseek-chat</option>
+              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
             </select>
+            <button type="button" id="btn-fetch-models" class="so-btn-fetch-dedicated" title="Fetch and refresh available models directly from this API endpoint">
+              <span class="btn-icon">🔄</span>
+              <span class="btn-text">بارگذاری مدل‌ها از API (Load Models)</span>
+            </button>
           </div>
 
           <!-- Custom Model Name Input -->
@@ -429,8 +744,8 @@
           <div class="so-form-group">
             <label for="preset-select">Prompt Preset</label>
             <select id="preset-select" class="so-select">
-              <option value="so-solve" selected>👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
-              <option value="exam-answer">🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
+              <option value="exam-answer" selected>🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
+              <option value="so-solve">👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
               <option value="so-vision">📸 Screenshot Solver (Persian + Java Code)</option>
               <option value="code-debug">🐞 Debug Code &amp; Fix in Java (فارسی)</option>
               <option value="direct">🚀 پاسخ مستقیم و سریع (فارسی + جاوا)</option>
@@ -447,8 +762,36 @@
               <label for="system-prompt">System Prompt</label>
               <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
             </div>
-            <textarea id="system-prompt" class="so-textarea" rows="3"></textarea>
+            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
+
+قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
+۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
+- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
+- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
+- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
+
+۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
+مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
+
+۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
+- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
+- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+
+۴. تفکیک دقیق تک‌تک سوالات:
+اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
+• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
+• سوال ۳: ...
+هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
+
+۵. زبان و فرمت:
+پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.</textarea>
           </div>
+
+          <!-- Done / Close Button on Mobile -->
+          <button type="button" id="btn-done-sidebar" class="so-btn-done-sidebar so-mobile-only">
+            ✔️ بستن و ذخیره تنظیمات (Done)
+          </button>
         </div>
       </div>
 
@@ -466,6 +809,37 @@
           </div>
           <div class="so-shortcut-item">
             <kbd>Alt+Tab</kbd> <span>Switch to tab (triggers auto-sync)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Questions Widget -->
+      <div class="so-related-widget">
+        <h4 class="so-related-heading">Related</h4>
+        <div class="so-related-list">
+          <div class="so-related-item">
+            <span class="so-related-score answered">1280</span>
+            <a href="#related-1" class="so-related-link">How does Spring @Autowired work under the hood in Spring Boot 3?</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">2150</span>
+            <a href="#related-2" class="so-related-link">LazyInitializationException: could not initialize proxy - no Session in Spring Boot</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">890</span>
+            <a href="#related-3" class="so-related-link">BeanCreationException: Error creating bean with name 'userRepository' defined in @EnableJpaRepositories</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">4320</span>
+            <a href="#related-4" class="so-related-link">What is the difference between @Component, @Repository &amp; @Service in Spring?</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score answered">540</span>
+            <a href="#related-5" class="so-related-link">Spring Boot 3 migration: java.lang.ClassNotFoundException: jakarta.servlet.Filter vs javax</a>
+          </div>
+          <div class="so-related-item">
+            <span class="so-related-score">315</span>
+            <a href="#related-6" class="so-related-link">How to resolve circular dependency between two @Service beans in Spring Boot 3.3?</a>
           </div>
         </div>
       </div>
@@ -531,6 +905,73 @@
       </div>
       <div class="so-modal-footer">
         <button class="so-btn-primary" data-close="modal-deploy">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No-Flash Extension & Bookmarklet Modal -->
+  <div class="modal-backdrop" id="modal-ext-install">
+    <div class="so-modal" style="max-width: 640px;">
+      <div class="so-modal-header">
+        <h2>⚡ نصب و استفاده در هر سیستمی (بدون نیاز به فلش)</h2>
+        <button class="modal-close" data-close="modal-ext-install">&times;</button>
+      </div>
+      <div class="so-modal-body" style="direction: rtl; text-align: right; font-family: inherit;">
+        
+        <!-- Section 1: Magic Bookmarklet (Zero Install) -->
+        <div style="background: rgba(26, 115, 232, 0.08); border: 1.5px solid #1a73e8; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;">
+          <h4 style="color: #1a73e8; margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px; font-size: 15px;">
+            <span>⭐ روش اول (شاهکار بوکمارک - بدون دانلود، بدون نصب فایل و بدون فلش)</span>
+          </h4>
+          <p style="font-size: 13px; line-height: 1.6; margin: 0 0 12px 0; color: var(--so-text-main);">
+            این روش روی تمام سیستم‌های دانشگاهی، آزمون‌ها و لپ‌تاپ‌ها حتی با بسته بودن Developer Mode کار می‌کند! دکمه زیر را با ماوس بکشید و روی نوار بوکمارک بالای مرورگر (Bookmarks Bar - کلید <code>Ctrl+Shift+B</code>) رها کنید:
+          </p>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a id="bm-drag-btn" href="#" class="so-bookmarklet-link" title="این دکمه را با ماوس بکشید توی نوار بالای مرورگر (Bookmarks Bar)">
+              <svg width="16" height="16" viewBox="0 0 48 48" style="vertical-align: middle; margin-left: 4px;"><path fill="#1a73e8" d="M40 4H8C5.79 4 4 5.79 4 8v32c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V8c0-2.21-1.79-4-4-4z"/><path fill="#e8eaed" d="M22 22h18c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2H22c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2z"/></svg>
+              Google Translate me
+            </a>
+            <button id="btn-copy-bookmarklet" class="so-btn-secondary" style="font-size: 12px; padding: 6px 12px;">
+              📋 کپی کد بوکمارک
+            </button>
+          </div>
+          <p style="font-size: 11px; color: var(--so-text-secondary); margin: 8px 0 0 0;">
+            💡 در هر صفحه یا آزمونی: سوال را هایلایت کنید و روی بوکمارک در بالای مرورگر کلیک کنید -> تیک ۵۰۰ms در پایین راست ظاهر شده و پاسخ در کلیپ‌بورد کپی می‌شود.
+          </p>
+        </div>
+
+        <!-- Section 2: Direct Zip Download -->
+        <div style="border: 1px solid var(--so-border); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--so-text-main);">
+            📦 روش دوم: دانلود مستقیم فایل افزونه از همین سایت
+          </h4>
+          <p style="font-size: 13px; line-height: 1.5; margin: 0 0 12px 0; color: var(--so-text-secondary);">
+            نیازی به فلش ندارید! در هر کامپیوتری کافیست این سایت را باز کنید و مستقیماً روی دکمه دانلود زیر بزنید:
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="clipboard-copilot-chrome.zip" download="clipboard-copilot-chrome.zip" class="so-btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+              📥 دانلود مستقیم افزونه کروم / Edge (فقط ۹۱KB)
+            </a>
+            <a href="clipboard-copilot-firefox.zip" download="clipboard-copilot-firefox.zip" class="so-btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+              🦊 دانلود نسخه فایرفاکس
+            </a>
+          </div>
+          <ol style="font-size: 12px; line-height: 1.7; color: var(--so-text-secondary); margin: 12px 0 0 0; padding-right: 18px;">
+            <li><strong>برای کروم / Edge / Brave:</strong> 
+              <br>⚠️ <em>نکته مهم:</em> دکمه Load unpacked فقط <strong>پوشه</strong> قبول می‌کند! ابتدا روی فایل زیپ دانلودشده راست‌کلیک کرده و <strong>Extract Here</strong> بزنید. سپس در <code>chrome://extensions</code> دکمه Load unpacked را زده و <strong>پوشه استخراج‌شده</strong> را انتخاب کنید (پوشه Downloads را مستقیماً انتخاب نکنید).
+            </li>
+            <li><strong>برای فایرفاکس (حل ارور Not Verified):</strong> در فایرفاکس به آدرس <code>about:debugging#/runtime/this-firefox</code> بروید، دکمه <strong>Load Temporary Add-on...</strong> را بزنید و فایل <code>manifest.json</code> را انتخاب کنید.</li>
+          </ol>
+        </div>
+
+        <!-- Section 3: Web Store Explanation -->
+        <div style="font-size: 12px; color: var(--so-text-secondary); line-height: 1.6; border-top: 1px dashed var(--so-border); padding-top: 10px;">
+          ℹ️ <strong>چرا نصب ۱-کلیکه بدون باز کردن صفحه extensions ممکن نیست؟</strong> گوگل کروم برای پیشگیری از نفوذ بدافزارها از سال ۲۰۱۸ نصب مستقیم افزونه از سایت‌ها را غیرفعال کرده است و نصب کامپکت ۱-کلیکه تنها از طریق استور رسمی کروم (Chrome Web Store) مجاز است. اما با <strong>بوکمارک بالا</strong> یا <strong>دانلود مستقیم زیپ</strong>، بدون نیاز به هیچ فلشی در چند ثانیه کارتان راه می‌افتد.
+        </div>
+
+      </div>
+      <div class="so-modal-footer">
+        <button class="so-btn-primary" data-close="modal-ext-install">متوجه شدم</button>
       </div>
     </div>
   </div>

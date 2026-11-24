@@ -1,5 +1,14 @@
 // System Clipboard API Interface with Multimodal Screenshot & Text Support
 
+export function normalizeText(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '') // remove zero-width non-joiners & BOM
+    .trim();
+}
+
 class ClipboardManager {
   constructor() {
     this.lastInput = '';
@@ -7,22 +16,109 @@ class ClipboardManager {
     this.lastImageHash = '';
     this.isProcessing = false;
     this.dedupEnabled = true;
+    this.lastWriteTime = 0;
+    this.isCopying = false;
+    this.knownOutputs = new Set();
+    this.knownOutputsList = [];
+  }
+
+  // Register an answer or copied snippet so it is never re-processed as a question
+  registerOutput(text) {
+    if (!text || typeof text !== 'string') return;
+    const clean = text.trim();
+    if (!clean) return;
+
+    this.lastOutput = clean;
+    this.lastWriteTime = Date.now();
+
+    const normalized = normalizeText(clean);
+    this.knownOutputs.add(clean);
+    this.knownOutputs.add(normalized);
+    this.knownOutputsList.push(normalized);
+
+    // Also extract code blocks inside markdown if present and register them
+    const codeBlockRegex = /```[a-zA-Z0-9_-]*\n?([\s\S]*?)```/g;
+    let match;
+    while ((match = codeBlockRegex.exec(clean)) !== null) {
+      const codeSnippet = match[1]?.trim();
+      if (codeSnippet) {
+        this.knownOutputs.add(codeSnippet);
+        this.knownOutputs.add(normalizeText(codeSnippet));
+      }
+    }
+
+    // Keep memory bounded to last 150 items
+    if (this.knownOutputsList.length > 150) {
+      const removed = this.knownOutputsList.shift();
+      if (!this.knownOutputsList.includes(removed)) {
+        this.knownOutputs.delete(removed);
+      }
+    }
+  }
+
+  // Check if text is a known output or generated solution
+  isKnownOutput(text) {
+    if (!text || typeof text !== 'string') return false;
+    const clean = text.trim();
+    if (!clean) return false;
+
+    const normalized = normalizeText(clean);
+
+    if (this.knownOutputs.has(clean) || this.knownOutputs.has(normalized)) {
+      return true;
+    }
+
+    if (this.lastOutput && (normalized === normalizeText(this.lastOutput) || clean === this.lastOutput.trim())) {
+      return true;
+    }
+
+    // Substring or fuzzy check for long texts (> 25 characters)
+    for (const known of this.knownOutputsList) {
+      if (known === normalized) return true;
+      if (normalized.length > 25 && (known.includes(normalized) || normalized.includes(known))) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   // Check if text is new and not an echo loop
-  shouldProcessText(text) {
+  shouldProcessText(text, { isAuto = false, history = [] } = {}) {
     if (!text || !text.trim()) return false;
     const clean = text.trim();
+    const normalized = normalizeText(clean);
 
-    if (!this.dedupEnabled) return true;
-
-    // Echo protection: Don't process if the clipboard text is what we just copied as output
-    if (clean === this.lastOutput.trim()) {
+    // 1. Time Cooldown: If the app itself wrote to clipboard within the last 3500ms, ignore auto triggers
+    if (isAuto && this.lastWriteTime && (Date.now() - this.lastWriteTime < 3500)) {
+      console.log('Ignored auto-sync trigger: within 3.5s self-write cooldown');
       return false;
     }
 
-    // Deduplication: Don't process if it's identical to the previous input
-    if (clean === this.lastInput.trim()) {
+    // 2. Strict Echo Protection: NEVER process text that matches any registered output
+    if (this.isKnownOutput(text)) {
+      console.log('Ignored clipboard text: matches known output (echo loop prevention)');
+      return false;
+    }
+
+    // 3. History check: check if this text matches any solution in app history
+    if (Array.isArray(history) && history.length > 0) {
+      const isHistoryMatch = history.some(item => {
+        if (!item || !item.output) return false;
+        const normHist = normalizeText(item.output);
+        return normHist === normalized || (normalized.length > 25 && (normHist.includes(normalized) || normalized.includes(normHist)));
+      });
+      if (isHistoryMatch) {
+        console.log('Ignored clipboard text: matches history item output');
+        return false;
+      }
+    }
+
+    if (!this.dedupEnabled) return true;
+
+    // 4. Deduplication: Don't process if it's identical to the previous input
+    if (this.lastInput && (normalized === normalizeText(this.lastInput) || clean === this.lastInput.trim())) {
+      console.log('Ignored clipboard text: identical to previous input');
       return false;
     }
 
@@ -83,9 +179,8 @@ class ClipboardManager {
             console.warn('readText fallback error:', textErr);
           }
         }
-        if (err.name === 'NotAllowedError') {
-          throw new Error('Clipboard permission denied by browser. Please click "Allow" on the permission prompt.');
-        }
+        console.warn('Clipboard read permission not available or denied:', err);
+        return { type: 'denied', reason: 'permission_restricted', error: err.name || 'NotAllowedError' };
       }
     }
 
@@ -97,10 +192,8 @@ class ClipboardManager {
           return { type: 'text', text: text.trim() };
         }
       } catch (err) {
-        if (err.name === 'NotAllowedError') {
-          throw new Error('Clipboard permission denied. Please allow clipboard access in your browser settings.');
-        }
-        throw err;
+        console.warn('Clipboard readText error:', err);
+        return { type: 'denied', reason: 'permission_restricted', error: err.name || 'NotAllowedError' };
       }
     }
 
@@ -122,20 +215,23 @@ class ClipboardManager {
     });
   }
 
-  // Write text back to system clipboard
+  // Write text back to system clipboard safely (returns true on success, false on failure)
   async writeText(text) {
-    if (!navigator.clipboard || !navigator.clipboard.writeText) {
-      return this.fallbackCopy(text);
+    if (!text) return false;
+
+    // Immediately record in known outputs and set cooldown
+    this.registerOutput(text);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        console.warn('navigator.clipboard.writeText failed, trying fallback:', err);
+      }
     }
 
-    try {
-      await navigator.clipboard.writeText(text);
-      this.lastOutput = text.trim();
-      return true;
-    } catch (err) {
-      console.warn('navigator.clipboard.writeText failed, trying fallback:', err);
-      return this.fallbackCopy(text);
-    }
+    return this.fallbackCopy(text);
   }
 
   // Fallback for older browsers or restricted contexts
@@ -146,18 +242,25 @@ class ClipboardManager {
       textarea.style.position = 'fixed';
       textarea.style.left = '-9999px';
       textarea.style.top = '-9999px';
+      textarea.style.opacity = '0';
+      textarea.setAttribute('readonly', '');
       document.body.appendChild(textarea);
-      textarea.focus();
+      
+      this.isCopying = true;
       textarea.select();
       const success = document.execCommand('copy');
       document.body.removeChild(textarea);
+      setTimeout(() => { this.isCopying = false; }, 300);
+
       if (success) {
-        this.lastOutput = text.trim();
+        this.registerOutput(text);
         return true;
       }
-      throw new Error('Fallback clipboard copy failed.');
+      console.warn('document.execCommand(copy) was unsuccessful');
+      return false;
     } catch (err) {
-      throw new Error('Unable to copy text to clipboard: ' + err.message);
+      console.warn('Fallback clipboard copy failed:', err);
+      return false;
     }
   }
 
@@ -176,3 +279,6 @@ class ClipboardManager {
 }
 
 export const clipboard = new ClipboardManager();
+if (typeof window !== 'undefined') {
+  window.clipboardManager = clipboard;
+}

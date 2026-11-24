@@ -36,4 +36,4 @@ cd /home/milad/.gemini/antigravity-ide/scratch/clipboard-ai
 python3 server.py
 ```
 
-Open **[http://localhost:8080](http://localhost:8080)** in your browser.
+Open **[http://localhost:2080](http://localhost:2080)** in your browser.
