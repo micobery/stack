@@ -94,11 +94,7 @@ export async function callAI({ provider, apiKey, backupApiKey = null, baseUrl = 
     throw new Error('Clipboard input is empty (neither text nor screenshot found).');
   }
 
-  const effectivePrompt = systemPrompt || `You are an experienced human senior developer answering a coding question. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
-CRITICAL RULES:
-1. Explanations in Persian: ALL explanations, descriptions, or notes MUST be in natural, fluent Persian (فارسی روان و تخصصی).
-2. Code in Java: ALL code, solutions, and implementations MUST be written in Java.
-3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague in a chat or Stack Overflow.`;
+  const effectivePrompt = systemPrompt || `تو یک کارشناس ارشد جاوا و معماری نرم‌افزار (سطح ۷–۸) هستی. پاسخ را مستقیم، طبیعی و کاملاً شبیه نوشته‌ی یک انسان بنویس تا به هیچ وجه مشخص نشود AI تولید کرده (بدون ایموجی، بدون بولد و خط تیره‌ی بلند، بدون مقدمه و بدون کلیشه‌های ترجمه‌زده) و ریشه‌ی مسئله، گزینه‌ها و بده‌بستان، حالت‌های شکست و روش اندازه‌گیری را پوشش بده.`;
 
   switch (provider) {
     case 'gemini':
@@ -202,9 +198,9 @@ async function callGemini(apiKey, model, systemPrompt, text, image) {
   // 2. Add Prompt and Text Instruction
   let promptText = '';
   if (image && text) {
-    promptText = `${systemPrompt}\n\nHere is the screenshot and additional context/question:\n${text}`;
+    promptText = `${systemPrompt}\n\nتصویر و متن پیوست را دقیق بررسی کن و کاملاً مطابق دستورالعمل سیستم پاسخ بده:\n${text}`;
   } else if (image) {
-    promptText = `${systemPrompt}\n\nAnalyze this screenshot. If there are multiple questions or problems shown in the image, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short, and effective answers.`;
+    promptText = `${systemPrompt}\n\nسؤال، کد یا سناریوی موجود در این تصویر را دقیق تحلیل کن و کاملاً مطابق دستورالعمل سیستم پاسخ بده. اگر چند سؤال در تصویر هست، هر سؤال را به تفکیک و با شماره‌اش پاسخ بده.`;
   } else {
     promptText = text;
   }
@@ -274,7 +270,7 @@ async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text
   if (text) {
     userContent.push({ type: 'text', text: text });
   } else if (image) {
-    userContent.push({ type: 'text', text: 'Analyze all questions, code, or problems shown in this screenshot. If there are multiple questions, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short and effective answers.' });
+    userContent.push({ type: 'text', text: 'سؤال، کد یا سناریوی موجود در این تصویر را دقیق تحلیل کن و کاملاً مطابق دستورالعمل سیستم پاسخ بده. اگر چند سؤال در تصویر هست، هر سؤال را به تفکیک و با شماره‌اش پاسخ بده.' });
   }
 
   if (image && image.base64) {

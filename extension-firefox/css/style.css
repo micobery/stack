@@ -2703,4 +2703,51 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   border-color: var(--so-green) !important;
 }
 
+/* Level 7-8 Quick Prompt Mode Switcher */
+.so-preset-quickbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+  padding: 0.45rem 0.65rem;
+  background: #f8f9f9;
+  border: 1px solid var(--so-border-subtle, #e3e6e8);
+  border-radius: 6px;
+}
+
+.so-preset-quickbar-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--so-text-secondary, #525960);
+  margin-left: 0.25rem;
+}
+
+.so-preset-pill {
+  border: 1px solid var(--so-border, #d6d9dc);
+  background: #ffffff;
+  color: var(--so-text-main, #232629);
+  border-radius: 999px;
+  padding: 0.28rem 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.so-preset-pill:hover {
+  border-color: #0a95ff;
+  color: #0a95ff;
+  background: #f0f8ff;
+}
+
+.so-preset-pill.active {
+  background: #0a95ff;
+  border-color: #0a95ff;
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(10, 149, 255, 0.25);
+}
+
+
 

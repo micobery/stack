@@ -225,6 +225,14 @@
         </div>
 
         <div class="so-post-body">
+          <!-- Level 7-8 Quick Prompt Mode Switcher -->
+          <div class="so-preset-quickbar" dir="rtl" aria-label="انتخاب حالت آزمون سطح ۷–۸">
+            <span class="so-preset-quickbar-label">آزمون سطح ۷–۸:</span>
+            <button type="button" class="so-preset-pill active" data-preset-id="l78-descriptive" title="سؤالات تشریحی سطح ۷–۸ (پیش‌فرض)">📝 تشریحی</button>
+            <button type="button" class="so-preset-pill" data-preset-id="l78-coding" title="مسئله‌ی عملی و کدنویسی جاوا ۲۱ + analysis.md">💻 کدی</button>
+            <button type="button" class="so-preset-pill" data-preset-id="l78-design" title="طراحی سیستم: design.md + نمودارهای C4 + ADR">🏗️ طراحی</button>
+          </div>
+
           <div class="so-post-header-tools">
             <span class="so-label">COPIED CODE / SCREENSHOT (INPUT)</span>
             <div class="so-tools-right">
@@ -746,17 +754,11 @@ public class OrderServiceImpl implements OrderService {
 
           <!-- Preset Selection -->
           <div class="so-form-group">
-            <label for="preset-select">Prompt Preset</label>
+            <label for="preset-select">Prompt Preset (Level 7–8)</label>
             <select id="preset-select" class="so-select">
-              <option value="exam-answer" selected>🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
-              <option value="so-solve">👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
-              <option value="so-vision">📸 Screenshot Solver (Persian + Java Code)</option>
-              <option value="code-debug">🐞 Debug Code &amp; Fix in Java (فارسی)</option>
-              <option value="direct">🚀 پاسخ مستقیم و سریع (فارسی + جاوا)</option>
-              <option value="summarize">📝 خلاصه نکات کلیدی به فارسی</option>
-              <option value="translate-en">🌐 Translate to English</option>
-              <option value="translate-fa">🌐 ترجمه به فارسی روان</option>
-              <option value="custom">⚙️ Custom System Prompt...</option>
+              <option value="l78-descriptive" selected>📝 سطح ۷–۸: سؤالات تشریحی (پیش‌فرض)</option>
+              <option value="l78-coding">💻 سطح ۷–۸: سؤالات عملی و کدی (Java 21 + analysis.md)</option>
+              <option value="l78-design">🏗️ سطح ۷–۸: سؤالات طراحی سیستم (design.md + C4 + ADR)</option>
             </select>
           </div>
 
@@ -766,30 +768,20 @@ public class OrderServiceImpl implements OrderService {
               <label for="system-prompt">System Prompt</label>
               <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
             </div>
-            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
+            <textarea id="system-prompt" class="so-textarea" rows="4">تو یک کارشناس ارشد جاوا و معماری نرم‌افزار (سطح ۷–۸) هستی که خودت مستقیم وسط آزمون تشریحی داری پاسخ را در answers.md تایپ می‌کنی. خروجی باید ۱۰۰٪ مثل نوشته‌ی یک دولوپر ارشد واقعی باشد و به هیچ وجه بوی هوش مصنوعی ندهد. مطلقاً سلام، مقدمه، نتیجه‌گیری یا تعارف ننویس.
 
-قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
-۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
-- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
-- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
-- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
+ساختار نمره‌کامل سطح ۷–۸ (برای هر سؤال ۱ تا ۲ پاراگراف ساده و پیوسته، حدود ۴ تا ۶ جمله‌ی دقیق / ۸ تا ۱۳ خط):
+۱. ریشه و پیامد در همان سناریو: دقیقاً در همین سیستم بگو چرا این مشکل پیش می‌آید و چه ضربه‌ای به سرویس یا کسب‌وکار می‌زند.
+۲. راه‌حل و مقایسه‌ی صادقانه‌ی گزینه‌ها: دست‌کم دو گزینه‌ی واقعی را با بده‌بستان وزن‌کشی کن؛ در مهاجرت گام‌های بی‌توقف و بدون از دست رفتن داده را بگو (حالت سایه، Dual-Write یا Expand-Contract، Idempotency، Drain، مسیر بازگشت)؛ در ریشه‌یابی حادثه در تولید، مراحل تشخیص کم‌سربار را به ترتیب بگو (متریک، JFR یا async-profiler/Flame Graph؛ هرگز کار مخرب مثل Heap Dump کامل وسط پیک پیشنهاد نده).
+۳. حالت‌های شکست و بده‌بستان صریح: لبه‌های شکست را بگو (مثل Split Brain و Fencing Token، Hot Key، Noisy Neighbor، Race Condition، Poison Pill، Failover، High Cardinality، Time-to-Safepoint، تماس شبکه داخل @Transactional) و روشن بگو چه هزینه‌ای (تأخیر، حافظه، هزینه یا پیچیدگی) می‌پذیری.
+۴. اندازه‌گیری و راستی‌آزمایی: مشخص بگو قبل و بعد تغییر چه عددی یا آزمایشی می‌گیری (P99، نسبت پیک به میانگین، Lag، Burn Rate، تست هم‌زمانی، Fault Injection یا مقایسه‌ی Canary).
 
-۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
-
-۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
-- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
-- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
-
-۴. تفکیک دقیق تک‌تک سوالات:
-اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
-• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
-• سوال ۳: ...
-هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
-
-۵. زبان و فرمت:
-پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.</textarea>
+قوانین حیاتی برای طبیعی و انسانی بودن (مطلقاً غیرقابل تشخیص از AI):
+- هیچ **بولد**، هیچ بولت‌پوینتِ «**عنوان:** توضیح»، هیچ شماره‌گذاری کتابی، هیچ ایموجی، هیچ خط تیره‌ی بلند (— یا –) و هیچ تیتری داخل متن پاسخ نیاور؛ فقط ۱ یا ۲ پاراگراف متنی ساده و روان مثل تایپ واقعی آدم در آزمون.
+- ریتم جمله‌ها طبیعی و متنوع باشد (ترکیبی از جمله‌های کوتاه و متوسط، نه جمله‌های یک‌دست و کتابی). از اول‌شخص حرفه‌ای و مستقیم استفاده کن (مثل «اول چک می‌کنم...»، «مشکل اصلی این است که...»، «به جایش...»، «هزینه‌ی این کار این است که...»).
+- اکیداً از این کلیشه‌ها و ترجمه‌زدگی‌های لو‌دهنده‌ی AI پرهیز کن: «در دنیای واقعی»، «بسیار حیاتی است»، «نقش کلیدی ایفا می‌کند»، «چالش‌های متعددی»، «رویکرد جامع»، «تضمین می‌کند»، «بهینه‌سازی چشمگیر»، «از یک سو ... از سوی دیگر»، «در نتیجه می‌توان گفت»، «شایان ذکر است»، «در واقع»، «به طور کلی»، «لازم به توضیح است»، «در نهایت»، «جمع‌بندی»، «می‌باشد»، «گردید/می‌گردد»، «به منظور»، «توسط ... انجام می‌شود»، «مورد استفاده قرار می‌گیرد»، «اقدام به ... نمودن».
+- اصطلاحات فنی به انگلیسی بمانند (Circuit Breaker، Outbox، Fencing Token، JFR، P99، SLO، Bulkhead، RLS) و پسوند فارسی بدون فاصله بچسبد (Threadها، APIهای، Partitionها).
+- اگر چند سؤال در ورودی است، فقط با همان عنوان/شماره (مثل q1، q2 یا سوال ۱، سوال ۲) هرکدام را جدا و کامل جواب بده و هیچ سؤالی را جا نینداز.</textarea>
           </div>
 
           <!-- Done / Close Button on Mobile -->

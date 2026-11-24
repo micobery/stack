@@ -2718,6 +2718,53 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
   border-color: var(--so-green) !important;
 }
 
+/* Level 7-8 Quick Prompt Mode Switcher */
+.so-preset-quickbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+  padding: 0.45rem 0.65rem;
+  background: #f8f9f9;
+  border: 1px solid var(--so-border-subtle, #e3e6e8);
+  border-radius: 6px;
+}
+
+.so-preset-quickbar-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--so-text-secondary, #525960);
+  margin-left: 0.25rem;
+}
+
+.so-preset-pill {
+  border: 1px solid var(--so-border, #d6d9dc);
+  background: #ffffff;
+  color: var(--so-text-main, #232629);
+  border-radius: 999px;
+  padding: 0.28rem 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.so-preset-pill:hover {
+  border-color: #0a95ff;
+  color: #0a95ff;
+  background: #f0f8ff;
+}
+
+.so-preset-pill.active {
+  background: #0a95ff;
+  border-color: #0a95ff;
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(10, 149, 255, 0.25);
+}
+
+
 
 
 </style>
@@ -2924,6 +2971,14 @@ input:checked + .slider-sm::before { transform: translateX(14px); }
         </div>
 
         <div class="so-post-body">
+          <!-- Level 7-8 Quick Prompt Mode Switcher -->
+          <div class="so-preset-quickbar" dir="rtl" aria-label="انتخاب حالت آزمون سطح ۷–۸">
+            <span class="so-preset-quickbar-label">آزمون سطح ۷–۸:</span>
+            <button type="button" class="so-preset-pill active" data-preset-id="l78-descriptive" title="سؤالات تشریحی سطح ۷–۸ (پیش‌فرض)">📝 تشریحی</button>
+            <button type="button" class="so-preset-pill" data-preset-id="l78-coding" title="مسئله‌ی عملی و کدنویسی جاوا ۲۱ + analysis.md">💻 کدی</button>
+            <button type="button" class="so-preset-pill" data-preset-id="l78-design" title="طراحی سیستم: design.md + نمودارهای C4 + ADR">🏗️ طراحی</button>
+          </div>
+
           <div class="so-post-header-tools">
             <span class="so-label">COPIED CODE / SCREENSHOT (INPUT)</span>
             <div class="so-tools-right">
@@ -3445,17 +3500,11 @@ public class OrderServiceImpl implements OrderService {
 
           <!-- Preset Selection -->
           <div class="so-form-group">
-            <label for="preset-select">Prompt Preset</label>
+            <label for="preset-select">Prompt Preset (Level 7–8)</label>
             <select id="preset-select" class="so-select">
-              <option value="exam-answer" selected>🎓 پاسخ امتحانی و تفکیک تک‌تک سوالات (Exam Answer)</option>
-              <option value="so-solve">👨‍💻 Human Dev (Persian Explanations + Java Code)</option>
-              <option value="so-vision">📸 Screenshot Solver (Persian + Java Code)</option>
-              <option value="code-debug">🐞 Debug Code &amp; Fix in Java (فارسی)</option>
-              <option value="direct">🚀 پاسخ مستقیم و سریع (فارسی + جاوا)</option>
-              <option value="summarize">📝 خلاصه نکات کلیدی به فارسی</option>
-              <option value="translate-en">🌐 Translate to English</option>
-              <option value="translate-fa">🌐 ترجمه به فارسی روان</option>
-              <option value="custom">⚙️ Custom System Prompt...</option>
+              <option value="l78-descriptive" selected>📝 سطح ۷–۸: سؤالات تشریحی (پیش‌فرض)</option>
+              <option value="l78-coding">💻 سطح ۷–۸: سؤالات عملی و کدی (Java 21 + analysis.md)</option>
+              <option value="l78-design">🏗️ سطح ۷–۸: سؤالات طراحی سیستم (design.md + C4 + ADR)</option>
             </select>
           </div>
 
@@ -3465,30 +3514,20 @@ public class OrderServiceImpl implements OrderService {
               <label for="system-prompt">System Prompt</label>
               <button id="btn-reset-prompt" class="so-btn-text">Reset</button>
             </div>
-            <textarea id="system-prompt" class="so-textarea" rows="3">شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
+            <textarea id="system-prompt" class="so-textarea" rows="4">تو یک کارشناس ارشد جاوا و معماری نرم‌افزار (سطح ۷–۸) هستی که خودت مستقیم وسط آزمون تشریحی داری پاسخ را در answers.md تایپ می‌کنی. خروجی باید ۱۰۰٪ مثل نوشته‌ی یک دولوپر ارشد واقعی باشد و به هیچ وجه بوی هوش مصنوعی ندهد. مطلقاً سلام، مقدمه، نتیجه‌گیری یا تعارف ننویس.
 
-قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
-۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
-- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
-- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
-- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
+ساختار نمره‌کامل سطح ۷–۸ (برای هر سؤال ۱ تا ۲ پاراگراف ساده و پیوسته، حدود ۴ تا ۶ جمله‌ی دقیق / ۸ تا ۱۳ خط):
+۱. ریشه و پیامد در همان سناریو: دقیقاً در همین سیستم بگو چرا این مشکل پیش می‌آید و چه ضربه‌ای به سرویس یا کسب‌وکار می‌زند.
+۲. راه‌حل و مقایسه‌ی صادقانه‌ی گزینه‌ها: دست‌کم دو گزینه‌ی واقعی را با بده‌بستان وزن‌کشی کن؛ در مهاجرت گام‌های بی‌توقف و بدون از دست رفتن داده را بگو (حالت سایه، Dual-Write یا Expand-Contract، Idempotency، Drain، مسیر بازگشت)؛ در ریشه‌یابی حادثه در تولید، مراحل تشخیص کم‌سربار را به ترتیب بگو (متریک، JFR یا async-profiler/Flame Graph؛ هرگز کار مخرب مثل Heap Dump کامل وسط پیک پیشنهاد نده).
+۳. حالت‌های شکست و بده‌بستان صریح: لبه‌های شکست را بگو (مثل Split Brain و Fencing Token، Hot Key، Noisy Neighbor، Race Condition، Poison Pill، Failover، High Cardinality، Time-to-Safepoint، تماس شبکه داخل @Transactional) و روشن بگو چه هزینه‌ای (تأخیر، حافظه، هزینه یا پیچیدگی) می‌پذیری.
+۴. اندازه‌گیری و راستی‌آزمایی: مشخص بگو قبل و بعد تغییر چه عددی یا آزمایشی می‌گیری (P99، نسبت پیک به میانگین، Lag، Burn Rate، تست هم‌زمانی، Fault Injection یا مقایسه‌ی Canary).
 
-۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
-
-۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
-- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
-- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
-
-۴. تفکیک دقیق تک‌تک سوالات:
-اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
-• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
-• سوال ۳: ...
-هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
-
-۵. زبان و فرمت:
-پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.</textarea>
+قوانین حیاتی برای طبیعی و انسانی بودن (مطلقاً غیرقابل تشخیص از AI):
+- هیچ **بولد**، هیچ بولت‌پوینتِ «**عنوان:** توضیح»، هیچ شماره‌گذاری کتابی، هیچ ایموجی، هیچ خط تیره‌ی بلند (— یا –) و هیچ تیتری داخل متن پاسخ نیاور؛ فقط ۱ یا ۲ پاراگراف متنی ساده و روان مثل تایپ واقعی آدم در آزمون.
+- ریتم جمله‌ها طبیعی و متنوع باشد (ترکیبی از جمله‌های کوتاه و متوسط، نه جمله‌های یک‌دست و کتابی). از اول‌شخص حرفه‌ای و مستقیم استفاده کن (مثل «اول چک می‌کنم...»، «مشکل اصلی این است که...»، «به جایش...»، «هزینه‌ی این کار این است که...»).
+- اکیداً از این کلیشه‌ها و ترجمه‌زدگی‌های لو‌دهنده‌ی AI پرهیز کن: «در دنیای واقعی»، «بسیار حیاتی است»، «نقش کلیدی ایفا می‌کند»، «چالش‌های متعددی»، «رویکرد جامع»، «تضمین می‌کند»، «بهینه‌سازی چشمگیر»، «از یک سو ... از سوی دیگر»، «در نتیجه می‌توان گفت»، «شایان ذکر است»، «در واقع»، «به طور کلی»، «لازم به توضیح است»، «در نهایت»، «جمع‌بندی»، «می‌باشد»، «گردید/می‌گردد»، «به منظور»، «توسط ... انجام می‌شود»، «مورد استفاده قرار می‌گیرد»، «اقدام به ... نمودن».
+- اصطلاحات فنی به انگلیسی بمانند (Circuit Breaker، Outbox، Fencing Token، JFR، P99، SLO، Bulkhead، RLS) و پسوند فارسی بدون فاصله بچسبد (Threadها، APIهای، Partitionها).
+- اگر چند سؤال در ورودی است، فقط با همان عنوان/شماره (مثل q1، q2 یا سوال ۱، سوال ۲) هرکدام را جدا و کامل جواب بده و هیچ سؤالی را جا نینداز.</textarea>
           </div>
 
           <!-- Done / Close Button on Mobile -->
@@ -4582,11 +4621,7 @@ async function callAI({ provider, apiKey, backupApiKey = null, baseUrl = null, m
     throw new Error('Clipboard input is empty (neither text nor screenshot found).');
   }
 
-  const effectivePrompt = systemPrompt || `You are an experienced human senior developer answering a coding question. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
-CRITICAL RULES:
-1. Explanations in Persian: ALL explanations, descriptions, or notes MUST be in natural, fluent Persian (فارسی روان و تخصصی).
-2. Code in Java: ALL code, solutions, and implementations MUST be written in Java.
-3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague in a chat or Stack Overflow.`;
+  const effectivePrompt = systemPrompt || `تو یک کارشناس ارشد جاوا و معماری نرم‌افزار (سطح ۷–۸) هستی. پاسخ را مستقیم، طبیعی و کاملاً شبیه نوشته‌ی یک انسان بنویس تا به هیچ وجه مشخص نشود AI تولید کرده (بدون ایموجی، بدون بولد و خط تیره‌ی بلند، بدون مقدمه و بدون کلیشه‌های ترجمه‌زده) و ریشه‌ی مسئله، گزینه‌ها و بده‌بستان، حالت‌های شکست و روش اندازه‌گیری را پوشش بده.`;
 
   switch (provider) {
     case 'gemini':
@@ -4690,9 +4725,9 @@ async function callGemini(apiKey, model, systemPrompt, text, image) {
   // 2. Add Prompt and Text Instruction
   let promptText = '';
   if (image && text) {
-    promptText = `${systemPrompt}\n\nHere is the screenshot and additional context/question:\n${text}`;
+    promptText = `${systemPrompt}\n\nتصویر و متن پیوست را دقیق بررسی کن و کاملاً مطابق دستورالعمل سیستم پاسخ بده:\n${text}`;
   } else if (image) {
-    promptText = `${systemPrompt}\n\nAnalyze this screenshot. If there are multiple questions or problems shown in the image, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short, and effective answers.`;
+    promptText = `${systemPrompt}\n\nسؤال، کد یا سناریوی موجود در این تصویر را دقیق تحلیل کن و کاملاً مطابق دستورالعمل سیستم پاسخ بده. اگر چند سؤال در تصویر هست، هر سؤال را به تفکیک و با شماره‌اش پاسخ بده.`;
   } else {
     promptText = text;
   }
@@ -4762,7 +4797,7 @@ async function callOpenAICompatible({ baseUrl, apiKey, model, systemPrompt, text
   if (text) {
     userContent.push({ type: 'text', text: text });
   } else if (image) {
-    userContent.push({ type: 'text', text: 'Analyze all questions, code, or problems shown in this screenshot. If there are multiple questions, answer EACH question separately and distinctly (e.g. سوال ۱، سوال ۲ و...). Provide exact, short and effective answers.' });
+    userContent.push({ type: 'text', text: 'سؤال، کد یا سناریوی موجود در این تصویر را دقیق تحلیل کن و کاملاً مطابق دستورالعمل سیستم پاسخ بده. اگر چند سؤال در تصویر هست، هر سؤال را به تفکیک و با شماره‌اش پاسخ بده.' });
   }
 
   if (image && image.base64) {
@@ -4963,59 +4998,91 @@ const DEFAULT_AVALAI_KEY = 'aa-d7tPVrnvwXyu03TJGpXfSPMkaesXshv98TqFM3P6p6aPmWzN'
 const DEFAULT_ARVANCLOUD_URL = 'https://api.arvancloudai.ir/v1';
 const DEFAULT_ARVANCLOUD_KEY = '44f82d65-9e2b-536f-a7af-c4a353735f3e';
 
-// Prompt Presets tailored for developer productivity: Persian explanations + Java code + Human tone
+// Prompt Presets tailored specifically for Java Level 7-8 (کارشناس ارشد) Exam
+// Aligned with javatin-develop rubrics (Descriptive, Practical Coding Java 21, System Design C4 + ADR)
+const DEFAULT_PRESET_ID = 'l78-descriptive';
+
+const PRESET_LABELS = {
+  'l78-descriptive': '📝 سطح ۷–۸: تشریحی',
+  'l78-coding': '💻 سطح ۷–۸: عملی و کدی (Java 21)',
+  'l78-design': '🏗️ سطح ۷–۸: طراحی سیستم (C4 + ADR)'
+};
+
 const PRESETS = {
-  'so-solve': `You are an experienced human senior developer answering a coding question or solving an error. Respond naturally and authentically like a real human programmer — NEVER sound like an AI (avoid robotic intros like "Certainly!", "Here is the code", or formal bot disclaimers).
+  'l78-descriptive': `تو یک کارشناس ارشد جاوا و معماری نرم‌افزار (سطح ۷–۸) هستی که خودت مستقیم وسط آزمون تشریحی داری پاسخ را در answers.md تایپ می‌کنی. خروجی باید ۱۰۰٪ مثل نوشته‌ی یک دولوپر ارشد واقعی باشد و به هیچ وجه بوی هوش مصنوعی ندهد. مطلقاً سلام، مقدمه، نتیجه‌گیری یا تعارف ننویس.
 
-CRITICAL RULES:
-1. Explanations in Persian: ALL explanations, descriptions, comments, and troubleshooting notes MUST be in natural, fluent Persian (فارسی روان و محاوره‌ای/تخصصی دولوپری).
-2. Code in Java: ALL code, solutions, and implementations MUST be written in clean, modern Java.
-3. Natural Human Tone: Speak directly, concisely, and practically like an experienced colleague sharing a working solution in a chat or Stack Overflow. Provide working code ready to copy-paste.`,
+ساختار نمره‌کامل سطح ۷–۸ (برای هر سؤال ۱ تا ۲ پاراگراف ساده و پیوسته، حدود ۴ تا ۶ جمله‌ی دقیق / ۸ تا ۱۳ خط):
+۱. ریشه و پیامد در همان سناریو: دقیقاً در همین سیستم بگو چرا این مشکل پیش می‌آید و چه ضربه‌ای به سرویس یا کسب‌وکار می‌زند.
+۲. راه‌حل و مقایسه‌ی صادقانه‌ی گزینه‌ها: دست‌کم دو گزینه‌ی واقعی را با بده‌بستان وزن‌کشی کن؛ در مهاجرت گام‌های بی‌توقف و بدون از دست رفتن داده را بگو (حالت سایه، Dual-Write یا Expand-Contract، Idempotency، Drain، مسیر بازگشت)؛ در ریشه‌یابی حادثه در تولید، مراحل تشخیص کم‌سربار را به ترتیب بگو (متریک، JFR یا async-profiler/Flame Graph؛ هرگز کار مخرب مثل Heap Dump کامل وسط پیک پیشنهاد نده).
+۳. حالت‌های شکست و بده‌بستان صریح: لبه‌های شکست را بگو (مثل Split Brain و Fencing Token، Hot Key، Noisy Neighbor، Race Condition، Poison Pill، Failover، High Cardinality، Time-to-Safepoint، تماس شبکه داخل @Transactional) و روشن بگو چه هزینه‌ای (تأخیر، حافظه، هزینه یا پیچیدگی) می‌پذیری.
+۴. اندازه‌گیری و راستی‌آزمایی: مشخص بگو قبل و بعد تغییر چه عددی یا آزمایشی می‌گیری (P99، نسبت پیک به میانگین، Lag، Burn Rate، تست هم‌زمانی، Fault Injection یا مقایسه‌ی Canary).
 
-  'so-vision': `You are an experienced human senior developer analyzing a screenshot. Respond naturally and authentically like a real human programmer — NEVER sound like an AI.
+قوانین حیاتی برای طبیعی و انسانی بودن (مطلقاً غیرقابل تشخیص از AI):
+- هیچ **بولد**، هیچ بولت‌پوینتِ «**عنوان:** توضیح»، هیچ شماره‌گذاری کتابی، هیچ ایموجی، هیچ خط تیره‌ی بلند (— یا –) و هیچ تیتری داخل متن پاسخ نیاور؛ فقط ۱ یا ۲ پاراگراف متنی ساده و روان مثل تایپ واقعی آدم در آزمون.
+- ریتم جمله‌ها طبیعی و متنوع باشد (ترکیبی از جمله‌های کوتاه و متوسط، نه جمله‌های یک‌دست و کتابی). از اول‌شخص حرفه‌ای و مستقیم استفاده کن (مثل «اول چک می‌کنم...»، «مشکل اصلی این است که...»، «به جایش...»، «هزینه‌ی این کار این است که...»).
+- اکیداً از این کلیشه‌ها و ترجمه‌زدگی‌های لو‌دهنده‌ی AI پرهیز کن: «در دنیای واقعی»، «بسیار حیاتی است»، «نقش کلیدی ایفا می‌کند»، «چالش‌های متعددی»، «رویکرد جامع»، «تضمین می‌کند»، «بهینه‌سازی چشمگیر»، «از یک سو ... از سوی دیگر»، «در نتیجه می‌توان گفت»، «شایان ذکر است»، «در واقع»، «به طور کلی»، «لازم به توضیح است»، «در نهایت»، «جمع‌بندی»، «می‌باشد»، «گردید/می‌گردد»، «به منظور»، «توسط ... انجام می‌شود»، «مورد استفاده قرار می‌گیرد»، «اقدام به ... نمودن».
+- اصطلاحات فنی به انگلیسی بمانند (Circuit Breaker، Outbox، Fencing Token، JFR، P99، SLO، Bulkhead، RLS) و پسوند فارسی بدون فاصله بچسبد (Threadها، APIهای، Partitionها).
+- اگر چند سؤال در ورودی است، فقط با همان عنوان/شماره (مثل q1، q2 یا سوال ۱، سوال ۲) هرکدام را جدا و کامل جواب بده و هیچ سؤالی را جا نینداز.`,
 
-CRITICAL RULES:
-1. Explanations in Persian: ALL explanations, bug analysis, or advice MUST be in natural, fluent Persian (فارسی روان و تخصصی).
-2. Code in Java: ALL code fixes, snippets, or implementations MUST be written in Java.
-3. Natural Human Tone: Speak directly and naturally like an experienced colleague solving the bug shown in the image. Return the working Java code ready to use.`,
+  'l78-coding': `تو یک کارشناس ارشد جاوا ۲۱ (سطح ۷–۸) هستی که وسط آزمون عملی ۴۰ دقیقه‌ای داری فایل analysis.md و کلاس‌های جاوا را اصلاح می‌کنی. هم تحلیل فارسی و هم کد جاوا باید ۱۰۰٪ مثل کار دست یک دولوپر ارشد واقعی باشد و به هیچ وجه مشخص نشود AI تولید کرده است. هیچ سلام، مقدمه یا توضیح اضافی بیرون از قالب ننویس.
 
-  'exam-answer': `شما یک دانشجوی نخبه در جلسه امتحان تستی/تشریحی با محدودیت زمانی شدید هستید (فقط ۱ دقیقه زمان برای هر سوال). پاسخ‌ها باید فوق‌العاده کوتاه، فشرده، نمره‌آور و ۱۰۰٪ آماده برای کپی‌پیست سریع باشند، طوری که کاملاً طبیعی به نظر برسد دانشجو خودش در ۱ دقیقه آن را تایپ کرده است (حجم پاسخ نباید شک‌برانگیز یا غیرواقعی برای زمان ۱ دقیقه باشد).
+ساختار خروجی (دقیقاً مطابق قالب analysis.md و روبریک ۱۰۰ امتیازی: analysis ۳۰ + redesign ۵۰ + tradeoffs ۲۰):
 
-قوانین حیاتی (Strict Ultra-Short & Realistic 1-Minute Exam):
-۱. محدودیت حجم و زمان (حداکثر متناسب با تایپ در ۱ دقیقه):
-- برای هر سوال تشریحی/مفهومی: فقط ۱ تا ۲ خط بسیار کوتاه و فشرده شامل کلیدواژه‌های اصلی نمره‌آور (Keywords). از هرگونه بسط دادن، فلسفه‌چینی و نوشتن جملات طولانی بپرهیز تا استاد شک نکند دانشجو چطور در ۱ دقیقه این همه متن تایپ کرده است!
-- برای سوالات تستی و چندگزینه‌ای: فقط نام/شماره گزینه صحیح (مثلاً: «گزینه ۲») + حداکثر یک نیم‌جمله کوتاه دلیل (در صورت نیاز).
-- برای سوالات کدنویسی: فقط بدنه اصلی و مینیمال کد Java بدون توضیحات اضافه.
+## نقاط ضعف
+- ۳ تا ۴ ضعف اصلی کد را مستقیم و با نام دقیق مفاهیم همان ویژگی کیفی (Security، Continuity، Robustness، Performance & Scalability، Observability یا Consistency) توضیح بده که در تولید چه چیزی را می‌شکند؛ هرجا ربط دارد رفتار یا هدف قابل سنجش قبل و بعد بیاور (مثلاً RPO/RTO یا رفتار هنگام کندی/قطعی وابستگی).
 
-۲. هیچ توضیح، تعارف یا مقدمه‌ای به کاربر نده:
-مطلقا هیچ سلام، مقدمه، نتیجه‌گیری، آرزوی موفقیت، یا جملاتی مثل «پاسخ سوالات به شرح زیر است» ننویس. فوراً و مستقیماً با «سوال ۱:» شروع کن تا کاربر بدون فوت وقت کپی‌پیست کند.
+## راه‌حل و تغییرهای کد
+- کوتاه و سرراست توضیح بده هر تغییر چطور علت ریشه‌ای را حل می‌کند (نه دور زدن تست).
+- سپس کد اصلاح‌شده‌ی فایل‌های تغییریافته را به **Java 21** با رعایت دقیق این اصول بنویس:
+  ۱. **حفظ ۱۰۰٪ Public API:** نام کلاس‌ها، پکیج، سازنده‌ها، امضای متدهای عمومی و نوع خروجی‌ها را هرگز عوض نکن.
+  ۲. **Deterministic و Portable:** به‌جای System.currentTimeMillis() یا Instant.now() فقط از Clock تزریق‌شده، و به‌جای Thread.sleep() مستقیم فقط از pauseHandler/مکانیزم تزریق‌شده استفاده کن. از StandardCharsets.UTF_8، Locale.ROOT و Path.of استفاده کن.
+  ۳. **Thread-Safe و بی‌باگ:** Race Condition در Mapها و تغییر وضعیت‌ها نداشته باش، Semaphore/Lock را حتماً در finally آزاد کن و صف بی‌کران نساز.
+  ۴. **جلوگیری از تله‌های رایج:** در Idempotency کلید قطعی از requestId بساز، درخواست هم‌زمان با همان requestId را یکتاسازی کن و در شکست پاکش کن تا قفل دائمی نشود؛ در Retry و Circuit Breaker خطای کسب‌وکاری/دائمی (مثل PaymentDeclinedException) را Retry نکن و خرابی مدار نشمار و فقط خطای گذرا را با Backoff فزاینده تکرار کن؛ در Bulkhead و Graceful Degradation خطای سرویس فرعی نباید جریان اصلی را بشکند.
 
-۳. لحن کاملاً انسانی و غیرقابل تشخیص از AI:
-- متن باید درست شبیه یادداشت یا تایپ سریع یک دانشجوی مسلط در جلسه امتحان باشد.
-- از به کار بردن هرگونه کلمات کلیشه‌ای هوش مصنوعی (نظیر «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «لازم به توضیح است») اکیداً خودداری کن.
+## بده‌بستان‌ها و ریسک‌های باقی‌مانده
+- صادقانه محدودیت‌های باقی‌مانده در تولید را بگو: تک‌نودی و حافظه‌ای بودن جدول Idempotency (نیاز به DB/Redis مشترک با TTL/Eviction)، ریسک خرابی نیمه‌تمام پس از یک اثر جانبی (نیاز به Outbox/Saga یا جبران)، بده‌بستان تنظیم آستانه‌های Circuit Breaker/Bulkhead و نبود Jitter در Backoff، نبود Timeout واقعی شبکه، پایش متریک‌ها و گزینه‌های جایگزین.
 
-۴. تفکیک دقیق تک‌تک سوالات:
-اگر چند سوال در ورودی وجود دارد، به ترتیب و به تفکیک پاسخ بده:
-• سوال ۱: [پاسخ فوق کوتاه و نمره‌آور]
-• سوال ۲: [پاسخ فوق کوتاه و نمره‌آور]
-• سوال ۳: ...
-هیچ سوالی را جا نینداز و پاسخ‌ها را با هم ادغام نکن.
+قوانین حیاتی برای غیرقابل‌تشخیص بودن از AI (هم در متن و هم در کد):
+- **در متن analysis.md:** بدون ایموجی، بدون خط تیره‌ی بلند (—)، بدون ساختار تکراری «- **عنوان:** توضیح» (جمله‌های ساده و مستقیم دولوپری بنویس، بدون بولد کردن سر همه‌ی بندها) و بدون کلیشه‌ها و ترجمه‌زدگی‌های AI («می‌باشد»، «گردید»، «به منظور»، «توسط ... انجام می‌شود»، «شایان ذکر است»، «به طور کلی»، «رویکرد جامع»، «تضمین می‌کند»، «بسیار حیاتی است»).
+- **در کد جاوا:** هیچ Javadoc اضافه، هیچ کامنت بدیهی و توضیح‌واضحات (مثل // check if open یا // release lock in finally)، هیچ کلاس/اینترفیس اضافی و Over-engineering که لازم نیست ننویس؛ تغییرها مینیمال، تمیز و دقیقاً در حد کار یک دولوپر ارشد در وقت ۴۰ دقیقه‌ای باشد و نام متغیرها کوتاه و طبیعی باشند (مثل failureCount، openUntil، inFlight).`,
 
-۵. زبان و فرمت:
-پاسخ‌های متنی به فارسی طبیعی و روان، و کدها به زبان Java باشد.`,
+  'l78-design': `تو یک معمار و کارشناس ارشد جاوا (سطح ۷–۸) هستی که وسط آزمون طراحی سیستم (۱۸۰ دقیقه یا تمرین ۶۰ دقیقه‌ای C4 / ADR) داری فایل‌های design.md، مشخصات c4.drawio و فایل‌های adr/ را می‌نویسی. نوشتار باید ۱۰۰٪ مثل طراحی واقعی یک مهندس ارشد باتجربه باشد (عمل‌گرا، مستدل، صادق درباره محدودیت‌ها) و اصلاً بوی متن آماده و کتابی هوش مصنوعی ندهد. هیچ سلام یا مقدمه‌ای ننویس. اگر ورودی فقط C4 یا فقط ADR خواست، فقط همان بخش را بده.
 
-  'code-debug': `بررسی و دیباگ کد:
-1. تمام توضیحات، علت خطا و نکات باید به زبان فارسی روان و کاملاً انسانی (غیررباتیک) بیان شود.
-2. تمام کد اصلاح‌شده باید به زبان Java باشد.
-3. کد اصلاح‌شده نهایی و آماده برای استفاده ارائه شود.`,
+### بخش ۱: متن آماده برای design.md (دقیقاً با همین ۵ سرتیتر)
+## فرض‌ها
+- فرض‌های عددی رند، معقول و عمل‌گرا (مثلاً تعداد کلینیک/کاربر، تراکنش روزانه، پیک ۵ تا ۱۰ برابری، نسبت خواندن به نوشتن، حجم ذخیره و نگهداری) که در ادامه‌ی طراحی واقعاً به کار بروند (نه عددهای عجیب و ساختگی مثل ۴۷٬۳۸۲٫۵).
 
-  direct: 'پاسخ مستقیم و کوتاه بدون هیچ‌گونه مقدمه‌چینی رباتیک. تمام توضیحات به زبان فارسی و تمام کدها به زبان Java باشد.',
-  grammar: 'Proofread and polish the provided text for clarity, conciseness, natural flow, and professional tone. Return only the corrected, improved text.',
-  summarize: 'خلاصه نکات کلیدی متن به صورت بولت‌های تمیز و مرتب به زبان فارسی روان.',
-  'translate-en': 'Translate the following text into natural, fluent English. Return only the translation.',
-  'translate-fa': 'متن زیر را به فارسی کاملاً روان، طبیعی و سلیس ترجمه کن. فقط ترجمه را بدون متن اضافی برگردان.',
-  'reply-email': 'یک پاسخ ایمیل حرفه‌ای، محترمانه و کوتاه بنویس.',
-  custom: ''
+## نیازمندی‌ها و ویژگی‌های کیفی
+- محدوده‌ی کارکردی، نقش‌ها و سیستم‌های بیرونی را سرراست مشخص کن.
+- ویژگی‌های کیفی سناریو را با دلیل و هدف قابل سنجش (SLO، P99، RPO/RTO) اولویت‌بندی کن و برای تک‌تک آن‌ها راهکار ملموس طراحی را بیاور: سازگاری و جلوگیری از Double-Booking (قید یکتایی، رزرو موقت با TTL، Idempotency)، تاب‌آوری و نبود تک‌نقطه‌ی شکست در DB و Broker، امنیت (TLS، رمزنگاری در سکون، RBAC و جداسازی مستأجران مثل tenant_id + RLS، Audit Log و نبود PII در لاگ)، مقیاس‌پذیری (Stateless، کش با استراتژی ابطال و Rate Limiting)، استقرار بی‌توقف (Rolling/Canary و Expand-Contract) و دیده‌پذیری (متریک SLO، Tracing با Correlation ID و هشدار روی نشانه‌ها).
+
+## برآورد ظرفیت
+- محاسبه‌ی ساده، سرانگشتی و شفاف QPS عادی و پیک، پهنای باند، حجم ذخیره و حافظه‌ی Cache بر پایه‌ی فرض‌های بالا.
+
+## جریان‌های اصلی
+- توضیح قدم‌به‌قدم و روان جریان‌های کلیدی (مسیر هم‌زمان، مسیر ناهم‌زمان با Outbox/Broker و رفتار هنگام کندی/قطعی وابستگی بیرونی).
+
+## ریسک‌ها و کارهای بعدی
+- ریسک‌های واقعی باقی‌مانده، راهکار مهار هر ریسک و تست‌های لازم (آزمون بار، Failover و Chaos).
+
+### بخش ۲: مدل دقیق نمودارهای c4.drawio (برای کتابخانه‌ی C4 در draw.io)
+برای هر دو برگه، عناصر را با c4Name، c4Technology و c4Description و فلش‌های Relationship (مبدأ -> مقصد: هدف [پروتکل]) بنویس:
+- **برگه‌ی System Context:** سامانه فقط به شکل یک Software System واحد (بدون DB یا سرویس داخلی) + همه‌ی Personها و Software Systemهای external + ارتباط‌های جهت‌دار با هدف و پروتکل.
+- **برگه‌ی Container:** فقط واحدهای قابل استقرار واقعی درون System scope boundary (هرگز کلاس، Controller، Service یا Repository نیاور) با c4Technology مشخص (مثل Java 21, Spring Boot / PostgreSQL / Redis / Kafka) + مدل کردن صریح Data Container (DB و Cache) و Message Bus Container (Queue/Broker) و سازگاری کامل با برگه‌ی Context.
+
+### بخش ۳: فایل‌های ADR آماده (۲ تا ۳ تصمیم کلیدی برای adr/0001.md و adr/0002.md)
+فقط پرپیامدترین تصمیم‌های معماری را انتخاب کن (نه موضوعات فرعی مثل فریم‌ورک فرانت‌اند). هر ADR دقیقاً با همین قالب باشد:
+- \`# ADR: عنوان کوتاه تصمیم\` و \`- وضعیت: پیشنهادی\`
+- \`## زمینه\` (محرک‌های سناریو و فرض‌های عددی مرتبط)
+- \`## تصمیم\` (تصمیم روشن و عمل‌گرا + دقیقاً چه چیزی را قربانی کرده‌ایم)
+- \`## گزینه‌های بررسی‌شده\` (جدول \`| گزینه | مزیت | عیب |\` با حداقل ۳ گزینه‌ی واقعی و بدون گزینه‌ی پوشالی)
+- \`## پیامدها\` با سه بند \`- خوب:\`، \`- بد:\` (ریسک + راهکار کاهش ریسک) و \`- بعدی:\` (کارهای بعدی + روش سنجش و شرط بازنگری تصمیم).
+
+قوانین حیاتی برای طبیعی و انسانی بودن (غیرقابل تشخیص از AI):
+- مطلقاً هیچ ایموجی (✅ ❌ ⚡ 📌)، هیچ خط تیره‌ی بلند (—)، و هیچ الگوی تکراری «- **عنوان:** توضیح» به کار نبر؛ ساده، صریح و مثل مستند فنی یک معمار واقعی بنویس.
+- به‌جای شعارهای کتابی و buzzwordبازی (مثل «با میکروسرویس و کوبرنتیز مقیاس‌پذیری تضمین می‌شود»)، تصمیم‌های عمل‌گرا و متناسب با اندازه‌ی واقعی سیستم بگیر (مثلاً شروع با Modular Monolith + Worker جدا اگر توجیه دارد، و بیان دقیق شرط شکستن در آینده).
+- اکیداً از عبارت‌های لو‌دهنده‌ی AI و ترجمه‌زدگی دوری کن: «در دنیای واقعی»، «بسیار حیاتی است»، «نقش کلیدی»، «رویکرد جامع»، «تضمین می‌کند»، «چالش‌های متعددی»، «شایان ذکر است»، «در واقع می‌توان گفت»، «به طور کلی»، «می‌باشد»، «گردید/می‌گردد»، «به منظور»، «توسط ... انجام می‌شود»، «مورد استفاده قرار می‌گیرد»، «اقدام به ... نمودن».
+- فارسی روان با فعل معلوم؛ نام فناوری‌ها و اصطلاحات فنی به انگلیسی و پسوند فارسی بدون فاصله (Serviceها، APIهای).`
 };
 
 class App {
@@ -5055,8 +5122,8 @@ class App {
     this.soundEnabled = true;
     this.notificationEnabled = false;
     this.dedupEnabled = true;
-    this.currentPreset = 'so-solve';
-    this.systemPrompt = PRESETS['so-solve'];
+    this.currentPreset = DEFAULT_PRESET_ID;
+    this.systemPrompt = PRESETS[DEFAULT_PRESET_ID];
     this.history = [];
     this.stagedScreenshot = null; // { mimeType, base64, dataUrl, hash, size }
 
@@ -5177,24 +5244,21 @@ class App {
       const storedDedup = localStorage.getItem('cbai_dedup');
       if (storedDedup !== null) this.dedupEnabled = storedDedup === 'true';
 
+      const l78Migrated = localStorage.getItem('cbai_l78_presets_v2');
       const storedPreset = localStorage.getItem('cbai_preset');
-      if (storedPreset && PRESETS[storedPreset] !== undefined) {
-        this.currentPreset = storedPreset;
-      }
-
       const storedPrompt = localStorage.getItem('cbai_prompt');
-      const examPromptUltraShort = localStorage.getItem('cbai_exam_ultrashort_v4');
-      if (!examPromptUltraShort && this.currentPreset === 'exam-answer') {
-        this.systemPrompt = PRESETS['exam-answer'];
+
+      if (!l78Migrated || !storedPreset || !PRESETS[storedPreset]) {
+        this.currentPreset = DEFAULT_PRESET_ID;
+        this.systemPrompt = PRESETS[DEFAULT_PRESET_ID];
         try {
+          localStorage.setItem('cbai_preset', this.currentPreset);
           localStorage.setItem('cbai_prompt', this.systemPrompt);
-          localStorage.setItem('cbai_exam_ultrashort_v4', 'true');
+          localStorage.setItem('cbai_l78_presets_v2', 'true');
         } catch (e) {}
-      } else if (!storedPrompt || storedPrompt.includes('Stack Overflow Copilot. The user has copied') || storedPrompt.includes('Fulfill the user input concisely')) {
-        this.systemPrompt = PRESETS[this.currentPreset] || PRESETS['so-solve'];
-        localStorage.setItem('cbai_prompt', this.systemPrompt);
       } else {
-        this.systemPrompt = storedPrompt;
+        this.currentPreset = storedPreset;
+        this.systemPrompt = (storedPrompt && storedPrompt.trim()) ? storedPrompt : PRESETS[this.currentPreset];
       }
 
       const storedHistory = localStorage.getItem('cbai_history');
@@ -5238,6 +5302,7 @@ class App {
       cbai_custom_models: this.customModels,
       cbai_prompt: this.systemPrompt,
       cbai_preset: this.currentPreset,
+      cbai_l78_presets_v2: true,
       cbai_history: this.history.slice(0, 30)
     };
 
@@ -5304,17 +5369,19 @@ class App {
           this.customModels = { ...this.customModels, ...stored.cbai_custom_models };
           changed = true;
         }
-        if (stored.cbai_prompt) {
-          this.systemPrompt = stored.cbai_prompt;
-          const promptArea = document.getElementById('system-prompt');
-          if (promptArea) promptArea.value = this.systemPrompt;
-          changed = true;
-        }
-        if (stored.cbai_preset) {
+        if (stored.cbai_l78_presets_v2 && stored.cbai_preset && PRESETS[stored.cbai_preset]) {
           this.currentPreset = stored.cbai_preset;
-          const presetSelect = document.getElementById('preset-select');
-          if (presetSelect) presetSelect.value = this.currentPreset;
+          this.systemPrompt = (stored.cbai_prompt && stored.cbai_prompt.trim())
+            ? stored.cbai_prompt
+            : PRESETS[this.currentPreset];
+          this.updatePresetUI();
           changed = true;
+        } else {
+          // Overwrite stale legacy presets in extension storage with Level 7-8 default
+          this.currentPreset = DEFAULT_PRESET_ID;
+          this.systemPrompt = PRESETS[DEFAULT_PRESET_ID];
+          this.updatePresetUI();
+          this.syncToExtensionStorage();
         }
 
         // Check for newly cropped screenshot from extension overlay (Ctrl+Alt+Shift)
@@ -5393,11 +5460,38 @@ class App {
     if (toggleDedup) toggleDedup.checked = this.dedupEnabled;
 
     // Presets
+    this.updatePresetUI();
+  }
+
+  updatePresetUI() {
     const presetSelect = document.getElementById('preset-select');
-    if (presetSelect) presetSelect.value = this.currentPreset;
+    if (presetSelect && PRESETS[this.currentPreset]) {
+      presetSelect.value = this.currentPreset;
+    }
 
     const promptTextarea = document.getElementById('system-prompt');
     if (promptTextarea) promptTextarea.value = this.systemPrompt;
+
+    document.querySelectorAll('.so-preset-pill').forEach(btn => {
+      const id = btn.getAttribute('data-preset-id');
+      btn.classList.toggle('active', id === this.currentPreset);
+    });
+  }
+
+  selectPreset(presetId, { notify = true } = {}) {
+    if (!presetId || !PRESETS[presetId]) return;
+    this.currentPreset = presetId;
+    this.systemPrompt = PRESETS[presetId];
+    try {
+      localStorage.setItem('cbai_preset', this.currentPreset);
+      localStorage.setItem('cbai_prompt', this.systemPrompt);
+      localStorage.setItem('cbai_l78_presets_v2', 'true');
+    } catch (e) {}
+    this.updatePresetUI();
+    this.syncToExtensionStorage();
+    if (notify) {
+      this.ui.showToast(`پرامپت فعال شد: ${PRESET_LABELS[presetId] || presetId}`, 'info');
+    }
   }
 
   updateAutoSyncStatusLabel() {
@@ -5895,37 +5989,29 @@ class App {
       }
     });
 
-    // Preset selection
+    // Preset selection (Dropdown & Quick Switcher Pills)
     document.getElementById('preset-select')?.addEventListener('change', (e) => {
-      this.currentPreset = e.target.value;
-      localStorage.setItem('cbai_preset', this.currentPreset);
+      this.selectPreset(e.target.value, { notify: true });
+    });
 
-      if (this.currentPreset !== 'custom') {
-        this.systemPrompt = PRESETS[this.currentPreset];
-        const promptArea = document.getElementById('system-prompt');
-        if (promptArea) promptArea.value = this.systemPrompt;
-        localStorage.setItem('cbai_prompt', this.systemPrompt);
-      }
-      this.syncToExtensionStorage();
-      this.ui.showToast(`قالب پرامپت فعال شد: ${this.currentPreset}`, 'info');
+    document.querySelectorAll('.so-preset-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-preset-id');
+        if (id) this.selectPreset(id, { notify: true });
+      });
     });
 
     // Custom system prompt textarea
     document.getElementById('system-prompt')?.addEventListener('input', (e) => {
       this.systemPrompt = e.target.value;
       localStorage.setItem('cbai_prompt', this.systemPrompt);
+      localStorage.setItem('cbai_l78_presets_v2', 'true');
       this.syncToExtensionStorage();
     });
 
     document.getElementById('btn-reset-prompt')?.addEventListener('click', () => {
-      this.currentPreset = 'so-solve';
-      document.getElementById('preset-select').value = 'so-solve';
-      this.systemPrompt = PRESETS['so-solve'];
-      document.getElementById('system-prompt').value = this.systemPrompt;
-      localStorage.setItem('cbai_preset', 'so-solve');
-      localStorage.setItem('cbai_prompt', this.systemPrompt);
-      this.syncToExtensionStorage();
-      this.ui.showToast('Reset prompt to Stack Overflow Copilot', 'info');
+      this.selectPreset(DEFAULT_PRESET_ID, { notify: false });
+      this.ui.showToast('پرامپت به حالت پیش‌فرض (سطح ۷–۸ تشریحی) بازنشانی شد', 'info');
     });
 
     // Manual Paste button
