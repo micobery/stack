@@ -3687,17 +3687,23 @@ public class OrderServiceImpl implements OrderService {
         <!-- Section 2: Direct Zip Download -->
         <div style="border: 1px solid var(--so-border); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;">
           <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--so-text-main);">
-            📦 روش دوم: دانلود مستقیم فایل افزونه از همین سایت
+            📦 روش دوم: دانلود مستقیم افزونه یا اپلیکیشن ویندوز از همین سایت
           </h4>
           <p style="font-size: 13px; line-height: 1.5; margin: 0 0 12px 0; color: var(--so-text-secondary);">
-            نیازی به فلش ندارید! در هر کامپیوتری کافیست این سایت را باز کنید و مستقیماً روی دکمه دانلود زیر بزنید:
+            نیازی به فلش ندارید! در هر کامپیوتری کافیست این سایت را باز کنید و مستقیماً نسخه مورد نیازتان را دانلود کنید:
           </p>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <a href="clipboard-copilot-chrome.zip" download="clipboard-copilot-chrome.zip" class="so-btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
-              📥 دانلود مستقیم افزونه کروم / Edge (فقط ۹۱KB)
+              📥 دانلود افزونه کروم / Edge
             </a>
             <a href="clipboard-copilot-firefox.zip" download="clipboard-copilot-firefox.zip" class="so-btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
-              🦊 دانلود نسخه فایرفاکس
+              🦊 دانلود افزونه فایرفاکس
+            </a>
+            <a href="windows-app.zip" download="windows-app.zip" class="so-btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; background: #059669; border-color: #059669;">
+              🪟 دانلود Windows App (ZIP — بدون نیاز به اکستنشن)
+            </a>
+            <a href="WindowsApp.exe" download="WindowsApp.exe" class="so-btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; border-color: #059669; color: #047857;">
+              ⚙️ دانلود مستقیم WindowsApp.exe
             </a>
           </div>
           <ol style="font-size: 12px; line-height: 1.7; color: var(--so-text-secondary); margin: 12px 0 0 0; padding-right: 18px;">
@@ -3705,6 +3711,9 @@ public class OrderServiceImpl implements OrderService {
               <br>⚠️ <em>نکته مهم:</em> دکمه Load unpacked فقط <strong>پوشه</strong> قبول می‌کند! ابتدا روی فایل زیپ دانلودشده راست‌کلیک کرده و <strong>Extract Here</strong> بزنید. سپس در <code>chrome://extensions</code> دکمه Load unpacked را زده و <strong>پوشه استخراج‌شده</strong> را انتخاب کنید (پوشه Downloads را مستقیماً انتخاب نکنید).
             </li>
             <li><strong>برای فایرفاکس (حل ارور Not Verified):</strong> در فایرفاکس به آدرس <code>about:debugging#/runtime/this-firefox</code> بروید، دکمه <strong>Load Temporary Add-on...</strong> را بزنید و فایل <code>manifest.json</code> را انتخاب کنید.</li>
+            <li><strong>برای اپلیکیشن مستقل ویندوز (وقتی اکستنشن مرورگر بسته است):</strong>
+              <br>بدون نیاز به نصب پایتون یا اکستنشن، فایل <code>WindowsApp.exe</code> را اجرا کنید تا کنار ساعت ویندوز (System Tray) فعال شود. روی کل ویندوز (Google Docs، کروم، Word، PDF و ...) کار می‌کند: <code>Ctrl+Shift+X / A / راست‌کلیک</code> (حل متن انتخاب‌شده یا کراپ اسکرین‌شات)، <code>Alt+Shift+S</code> (حل کلیپ‌بورد)، <code>Ctrl+Alt+Shift+S</code> (کراپ مستقیم) و <code>Alt+Shift+C</code> (پنل تنظیمات و تاریخچه).
+            </li>
           </ol>
         </div>
 

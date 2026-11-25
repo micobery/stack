@@ -159,55 +159,523 @@ async function ensureContentScriptAndSend(tabId, message) {
   return null;
 }
 
-// Read selected text across all frames of a tab (works even before page reload & inside iframes)
-async function getSelectionFromTab(tabId) {
+// Normalize selected text while preserving Persian ZWNJ (\u200C) and rejecting invisible-only placeholders
+function cleanSelectionText(raw) {
+  if (!raw || typeof raw !== 'string') return '';
+  const cleaned = raw.replace(/^[\s\u200B\uFEFF]+|[\s\u200B\uFEFF]+$/g, '');
+  const visible = cleaned.replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF]+/g, '');
+  return visible.length > 0 ? cleaned : '';
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// --- Extension-Origin Clipboard Helpers (NEVER steals focus from Google Docs / Canvas editors) ---
+const OFFSCREEN_PATH = 'offscreen.html';
+
+async function ensureOffscreenDocument() {
+  if (isFirefoxBrowser || typeof chrome === 'undefined' || !chrome.offscreen || !chrome.offscreen.createDocument) {
+    return false;
+  }
+  try {
+    const offscreenUrl = chrome.runtime.getURL(OFFSCREEN_PATH);
+    if (chrome.runtime.getContexts) {
+      const contexts = await chrome.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+        documentUrls: [offscreenUrl]
+      });
+      if (contexts && contexts.length > 0) return true;
+    }
+    await chrome.offscreen.createDocument({
+      url: OFFSCREEN_PATH,
+      reasons: ['CLIPBOARD'],
+      justification: 'Read and write clipboard without disturbing webpage focus or canvas text selection'
+    });
+    return true;
+  } catch (e) {
+    if (String(e?.message || e).includes('Only a single offscreen')) return true;
+    return false;
+  }
+}
+
+async function sendOffscreenMessage(payload) {
+  const ready = await ensureOffscreenDocument();
+  if (!ready) return null;
+  return new Promise((resolve) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (!settled) {
+        settled = true;
+        resolve(null);
+      }
+    }, 1500);
+    try {
+      chrome.runtime.sendMessage({ target: 'offscreen', ...payload }, (res) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        if (chrome.runtime?.lastError) resolve(null);
+        else resolve(res || null);
+      });
+    } catch (e) {
+      if (!settled) {
+        settled = true;
+        clearTimeout(timer);
+        resolve(null);
+      }
+    }
+  });
+}
+
+async function readExtensionClipboard() {
+  // Firefox background page has direct DOM & navigator.clipboard access
+  if (typeof document !== 'undefined') {
+    try {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const text = await navigator.clipboard.readText();
+        return { ok: true, text: String(text ?? '') };
+      }
+    } catch (e) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      ta.style.opacity = '0';
+      (document.body || document.documentElement).appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('paste');
+      const text = ta.value || '';
+      ta.remove();
+      return { ok: true, text };
+    } catch (e) {
+      return { ok: false, text: '' };
+    }
+  }
+
+  // Chrome MV3 service worker uses offscreen document
+  const res = await sendOffscreenMessage({ action: 'clipboard_read' });
+  if (res && res.ok) {
+    return { ok: true, text: String(res.text ?? '') };
+  }
+  return { ok: false, text: '' };
+}
+
+async function writeExtensionClipboard(text) {
+  const value = String(text ?? '');
+  // Firefox background page has direct DOM & navigator.clipboard access
+  if (typeof document !== 'undefined') {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(value);
+        return true;
+      }
+    } catch (e) {}
+    try {
+      const onCopy = (e) => {
+        e.preventDefault();
+        e.clipboardData.setData('text/plain', value);
+      };
+      document.addEventListener('copy', onCopy, true);
+      const ta = document.createElement('textarea');
+      ta.value = value || ' ';
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      ta.style.opacity = '0';
+      (document.body || document.documentElement).appendChild(ta);
+      ta.focus();
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.removeEventListener('copy', onCopy, true);
+      ta.remove();
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Chrome MV3 service worker uses offscreen document
+  const res = await sendOffscreenMessage({ action: 'clipboard_write', text: value });
+  return Boolean(res && res.ok);
+}
+
+// Read selected text across all frames, Shadow DOM, iframes, and canvas/custom editors (Google Docs, Sheets, Slides, Figma, Notion, Monaco, etc.)
+async function getSelectionFromTab(tabId, options = {}) {
+  const { allowClipboardProbe = false } = options;
   const scriptingApi = ext.scripting || (typeof chrome !== 'undefined' ? chrome.scripting : null);
+  let isCustomEditor = false;
+
+  // Layer 1: Native DOM selection across all frames + Shadow DOM + inputs + accessible iframes (.docs-texteventtarget-iframe)
   if (scriptingApi && scriptingApi.executeScript) {
     try {
       const results = await scriptingApi.executeScript({
         target: { tabId, allFrames: true },
         func: () => {
-          try {
-            const sel = window.getSelection ? window.getSelection().toString().trim() : '';
-            if (sel) return sel;
-            const active = document.activeElement;
-            if (active && (active.tagName === 'TEXTAREA' || (active.tagName === 'INPUT' && /^(text|search|url|tel|password|email|number)?$/i.test(active.type || 'text')))) {
-              const start = active.selectionStart;
-              const end = active.selectionEnd;
-              if (typeof start === 'number' && typeof end === 'number' && end > start) {
-                return active.value.substring(start, end).trim();
+          const clean = (raw) => {
+            if (!raw || typeof raw !== 'string') return '';
+            const c = raw.replace(/^[\s\u200B\uFEFF]+|[\s\u200B\uFEFF]+$/g, '');
+            return c.replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF]+/g, '').length > 0 ? c : '';
+          };
+          const readInput = (el) => {
+            if (!el) return '';
+            if (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && /^(text|search|url|tel|password|email|number)?$/i.test(el.type || 'text'))) {
+              const s = el.selectionStart;
+              const e = el.selectionEnd;
+              if (typeof s === 'number' && typeof e === 'number' && e > s) {
+                return clean(el.value.substring(s, e));
               }
             }
-          } catch (e) {}
-          return '';
+            return '';
+          };
+          const readDoc = (doc, depth = 0) => {
+            if (!doc || depth > 4) return '';
+            try {
+              const win = doc.defaultView;
+              const wSel = win && win.getSelection ? clean(win.getSelection().toString()) : '';
+              if (wSel) return wSel;
+              const dSel = doc.getSelection ? clean(doc.getSelection().toString()) : '';
+              if (dSel) return dSel;
+
+              let active = doc.activeElement;
+              let guard = 0;
+              while (active && guard < 8) {
+                guard++;
+                const iSel = readInput(active);
+                if (iSel) return iSel;
+                if (active.shadowRoot) {
+                  try {
+                    if (typeof active.shadowRoot.getSelection === 'function') {
+                      const sSel = clean(active.shadowRoot.getSelection().toString());
+                      if (sSel) return sSel;
+                    }
+                  } catch (e) {}
+                  const next = active.shadowRoot.activeElement;
+                  if (!next || next === active) break;
+                  active = next;
+                } else {
+                  break;
+                }
+              }
+
+              const docsIframe = doc.querySelector ? doc.querySelector('iframe.docs-texteventtarget-iframe') : null;
+              if (docsIframe) {
+                try {
+                  const docsSel = readDoc(docsIframe.contentDocument, depth + 1);
+                  if (docsSel) return docsSel;
+                } catch (e) {}
+              }
+
+              const iframes = doc.querySelectorAll ? doc.querySelectorAll('iframe') : [];
+              for (let i = 0; i < iframes.length && i < 20; i++) {
+                const f = iframes[i];
+                if (f === docsIframe) continue;
+                try {
+                  if (f.contentDocument) {
+                    const fSel = readDoc(f.contentDocument, depth + 1);
+                    if (fSel) return fSel;
+                  }
+                } catch (e) {}
+              }
+            } catch (e) {}
+            return '';
+          };
+
+          const detectCustom = () => {
+            try {
+              const host = (location.hostname || '').toLowerCase();
+              if (/(^|\.)(docs\.google\.com|figma\.com|canva\.com|miro\.com|notion\.so|notion\.site|overleaf\.com|officeapps\.live\.com|onedrive\.live\.com|sharepoint\.com|lucid\.app|coda\.io|airtable\.com|excalidraw\.com|vscode\.dev|github\.dev|colab\.research\.google\.com|codesandbox\.io|stackblitz\.com)$/.test(host)) {
+                return true;
+              }
+              if (document.querySelector('iframe.docs-texteventtarget-iframe, .kix-appview-editor, .kix-canvas-tile-content, .punch-viewer-content, .grid-container, .monaco-editor, .CodeMirror, .cm-editor, .ace_editor, .ProseMirror, .ql-editor, .notion-page-content, .pdfViewer, embed[type="application/pdf"]')) {
+                return true;
+              }
+              const active = document.activeElement;
+              if (active && (active.isContentEditable || active.tagName === 'IFRAME' || active.tagName === 'EMBED' || active.tagName === 'OBJECT')) {
+                return true;
+              }
+              const canvases = document.querySelectorAll('canvas');
+              for (let i = 0; i < canvases.length && i < 15; i++) {
+                const rect = canvases[i].getBoundingClientRect();
+                if (rect.width >= 200 && rect.height >= 150) return true;
+              }
+            } catch (e) {}
+            return false;
+          };
+
+          return {
+            text: readDoc(document, 0),
+            isCustom: detectCustom()
+          };
         }
       });
+
       if (Array.isArray(results)) {
         for (const r of results) {
-          if (r?.result && String(r.result).trim()) {
-            return String(r.result).trim();
-          }
+          if (r?.result?.isCustom) isCustomEditor = true;
+          const t = cleanSelectionText(r?.result?.text || '');
+          if (t) return t;
         }
       }
     } catch (e) {}
   }
 
+  // Fallback message to content script for Layer 1
   const res = await sendTabMessage(tabId, { action: 'get_selection_only' }, { frameId: 0 });
-  return res?.text ? String(res.text).trim() : '';
+  const directText = cleanSelectionText(res?.text || '');
+  if (directText) return directText;
+
+  if (!scriptingApi || !scriptingApi.executeScript) return '';
+  if (!allowClipboardProbe && !isCustomEditor) return '';
+
+  // Layer 2: Non-destructive MAIN-world synthetic copy event probe (zero OS clipboard modification)
+  try {
+    const synthResults = await scriptingApi.executeScript({
+      target: { tabId, allFrames: true },
+      world: 'MAIN',
+      func: () => {
+        const clean = (raw) => {
+          if (!raw || typeof raw !== 'string') return '';
+          const c = raw.replace(/^[\s\u200B\uFEFF]+|[\s\u200B\uFEFF]+$/g, '');
+          return c.replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF]+/g, '').length > 0 ? c : '';
+        };
+        const htmlToText = (html) => {
+          if (!html) return '';
+          try {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            return clean(div.innerText || div.textContent || '');
+          } catch (e) {
+            return '';
+          }
+        };
+
+        const targets = [];
+        const addTarget = (el) => {
+          if (el && !targets.includes(el)) targets.push(el);
+        };
+
+        // Prioritize Google Docs text event target iframe
+        const docsIframe = document.querySelector('iframe.docs-texteventtarget-iframe');
+        if (docsIframe && docsIframe.contentDocument) {
+          const iDoc = docsIframe.contentDocument;
+          addTarget(iDoc.querySelector('[contenteditable="true"]'));
+          addTarget(iDoc.activeElement);
+          addTarget(iDoc.body);
+        }
+
+        // Deep active element (Shadow DOM & same-origin iframes)
+        let active = document.activeElement;
+        let guard = 0;
+        while (active && guard < 6) {
+          guard++;
+          addTarget(active);
+          if (active.shadowRoot && active.shadowRoot.activeElement && active.shadowRoot.activeElement !== active) {
+            active = active.shadowRoot.activeElement;
+          } else if (active.tagName === 'IFRAME') {
+            try {
+              const iDoc = active.contentDocument;
+              if (iDoc) {
+                addTarget(iDoc.querySelector('[contenteditable="true"]'));
+                addTarget(iDoc.activeElement);
+                addTarget(iDoc.body);
+              }
+            } catch (e) {}
+            break;
+          } else {
+            break;
+          }
+        }
+
+        const editorInputs = document.querySelectorAll('.monaco-editor textarea.inputarea, .CodeMirror textarea, .cm-content, .ace_text-input');
+        for (let i = 0; i < editorInputs.length && i < 4; i++) addTarget(editorInputs[i]);
+        addTarget(document.body);
+
+        for (const target of targets) {
+          try {
+            if (typeof DataTransfer === 'undefined' || typeof ClipboardEvent === 'undefined') break;
+            const dt = new DataTransfer();
+            let capturedPlain = '';
+            let capturedHtml = '';
+            try {
+              const origSetData = dt.setData.bind(dt);
+              dt.setData = function(type, val) {
+                const t = String(type || '').toLowerCase();
+                if ((t === 'text/plain' || t === 'text') && val) capturedPlain = String(val);
+                else if (t === 'text/html' && val) capturedHtml = String(val);
+                return origSetData(type, val);
+              };
+            } catch (e) {}
+
+            const beforeText = target.isContentEditable ? (target.innerText || '') : null;
+            const ev = new ClipboardEvent('copy', {
+              bubbles: true,
+              cancelable: true,
+              clipboardData: dt
+            });
+            target.dispatchEvent(ev);
+
+            const plain = clean(capturedPlain || dt.getData('text/plain') || '');
+            if (plain) return plain;
+
+            const fromHtml = htmlToText(capturedHtml || dt.getData('text/html') || '');
+            if (fromHtml) return fromHtml;
+
+            const ownerDoc = target.ownerDocument || document;
+            const postSel = ownerDoc.getSelection ? clean(ownerDoc.getSelection().toString()) : '';
+            if (postSel) return postSel;
+
+            if (beforeText !== null) {
+              const afterText = target.innerText || '';
+              if (afterText !== beforeText) {
+                const diffText = clean(afterText);
+                if (diffText) return diffText;
+              }
+            }
+          } catch (e) {}
+        }
+        return '';
+      }
+    });
+
+    if (Array.isArray(synthResults)) {
+      for (const r of synthResults) {
+        const t = cleanSelectionText(r?.result || '');
+        if (t) return t;
+      }
+    }
+  } catch (e) {}
+
+  // Layer 3: Extension-origin clipboard sentinel + trusted ISOLATED-world execCommand('copy')
+  // Works reliably in Google Docs / Sheets / Slides / Figma / Canva / Notion / Office Online / PDF viewers
+  // without stealing focus prior to copy and without leaking stale clipboard contents.
+  const prevClipState = await readExtensionClipboard();
+  if (!prevClipState.ok) return '';
+
+  const sentinel = `__GT_SEL_PROBE_${Date.now()}_${Math.random().toString(36).slice(2)}__`;
+  const sentinelWritten = await writeExtensionClipboard(sentinel);
+  if (!sentinelWritten) return '';
+
+  let extracted = '';
+  try {
+    let anyTriggered = false;
+    try {
+      const copyResults = await scriptingApi.executeScript({
+        target: { tabId, allFrames: true },
+        func: () => {
+          const clean = (raw) => {
+            if (!raw || typeof raw !== 'string') return '';
+            const c = raw.replace(/^[\s\u200B\uFEFF]+|[\s\u200B\uFEFF]+$/g, '');
+            return c.replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF]+/g, '').length > 0 ? c : '';
+          };
+          try {
+            // 1. Google Docs / Slides / Sheets hidden text event target iframe
+            const docsIframe = document.querySelector('iframe.docs-texteventtarget-iframe');
+            if (docsIframe && docsIframe.contentDocument) {
+              const iDoc = docsIframe.contentDocument;
+              const editable = iDoc.querySelector('[contenteditable="true"]') || iDoc.activeElement || iDoc.body;
+              try { docsIframe.contentWindow?.focus(); } catch (e) {}
+              try { editable?.focus?.({ preventScroll: true }); } catch (e) {}
+              const ok = iDoc.execCommand('copy');
+              const direct = iDoc.getSelection ? clean(iDoc.getSelection().toString()) : '';
+              if (direct) return { triggered: true, directText: direct };
+              if (ok) return { triggered: true, directText: '' };
+              // Fallback to main document copy if iframe returned false
+              const topOk = document.execCommand('copy');
+              return { triggered: Boolean(topOk || true), directText: '' };
+            }
+
+            // 2. Active frame or focused same-origin iframe (Figma, Canva, Monaco, CodeMirror, Notion, Office Online, PDF.js)
+            if (document.hasFocus()) {
+              const active = document.activeElement;
+              if (active && active.tagName === 'IFRAME') {
+                try {
+                  if (active.contentDocument) {
+                    const ok = active.contentDocument.execCommand('copy');
+                    if (ok) return { triggered: true, directText: '' };
+                  }
+                } catch (e) {}
+              }
+              const ok = document.execCommand('copy');
+              return { triggered: Boolean(ok || true), directText: '' };
+            }
+          } catch (e) {}
+          return { triggered: false, directText: '' };
+        }
+      });
+
+      if (Array.isArray(copyResults)) {
+        for (const r of copyResults) {
+          if (r?.result?.triggered) anyTriggered = true;
+          const direct = cleanSelectionText(r?.result?.directText || '');
+          if (direct) {
+            extracted = direct;
+            break;
+          }
+        }
+      }
+    } catch (e) {}
+
+    // If focus briefly left the tab (e.g. closing browser context menu), trigger copy on frame 0
+    if (!extracted && !anyTriggered) {
+      try {
+        await scriptingApi.executeScript({
+          target: { tabId, frameIds: [0] },
+          func: () => {
+            try {
+              const docsIframe = document.querySelector('iframe.docs-texteventtarget-iframe');
+              if (docsIframe && docsIframe.contentDocument) {
+                const iDoc = docsIframe.contentDocument;
+                const editable = iDoc.querySelector('[contenteditable="true"]') || iDoc.activeElement || iDoc.body;
+                try { docsIframe.contentWindow?.focus(); } catch (e) {}
+                try { editable?.focus?.({ preventScroll: true }); } catch (e) {}
+                if (iDoc.execCommand('copy')) return true;
+              }
+              return document.execCommand('copy');
+            } catch (e) {
+              return false;
+            }
+          }
+        });
+      } catch (e) {}
+    }
+
+    // Poll briefly to support both synchronous copy handlers and async navigator.clipboard.write handlers
+    if (!extracted) {
+      const delays = [25, 45, 70];
+      for (const waitMs of delays) {
+        await sleep(waitMs);
+        const afterClip = await readExtensionClipboard();
+        if (afterClip.ok && afterClip.text !== sentinel) {
+          extracted = cleanSelectionText(afterClip.text);
+          break;
+        }
+      }
+    }
+  } finally {
+    // Always restore previous clipboard if no real selection was extracted so nothing is lost or polluted
+    if (!extracted) {
+      await writeExtensionClipboard(prevClipState.text);
+    }
+  }
+
+  return extracted;
 }
 
 let lastBackgroundSmartAt = 0;
 
 // Unified Smart Trigger: selected text -> solve & copy; no selection -> open screen crop
-async function handleSmartActionForTab(tab) {
+async function handleSmartActionForTab(tab, options = {}) {
   const now = Date.now();
-  if (now - lastBackgroundSmartAt < 500) return;
+  if (!options.bypassDebounce && now - lastBackgroundSmartAt < 500) return;
   lastBackgroundSmartAt = now;
 
   const activeTab = tab?.id ? tab : await getActiveTab();
   if (!activeTab?.id) return;
 
-  const selectedText = await getSelectionFromTab(activeTab.id);
+  const selectedText = await getSelectionFromTab(activeTab.id, {
+    allowClipboardProbe: Boolean(options.allowClipboardProbe)
+  });
   if (selectedText) {
     try {
       setActionBadge('...', '#f59e0b');
@@ -290,6 +758,12 @@ async function showTabCheckmark(tabId) {
 
 // Helper: Safely write solution text into the user's clipboard
 async function writeTextToClipboard(tabId, text) {
+  // 0. Prefer extension-origin clipboard (Chrome Offscreen / Firefox Background Page)
+  //    so copying never steals focus or disrupts caret/selection in Google Docs or rich editors
+  if (await writeExtensionClipboard(text)) {
+    return true;
+  }
+
   let targetId = tabId;
   if (!targetId) {
     const tab = await getActiveTab();
@@ -440,6 +914,8 @@ const runtimeApi = ext.runtime || (typeof chrome !== 'undefined' ? chrome.runtim
 if (runtimeApi && runtimeApi.onInstalled) {
   runtimeApi.onInstalled.addListener(async () => {
     // Create Context Menus
+    // Include page/editable/frame/link on google_translate_me so Shift+Right-Click in canvas/custom-selection
+    // environments (Google Docs, Sheets, Slides, Figma, Notion, etc.) shows "Google Translate me" instead of only screenshot crop.
     try {
       const menusApi = ext.contextMenus || ext.menus || (typeof chrome !== 'undefined' ? chrome.contextMenus : null);
       if (menusApi) {
@@ -447,12 +923,12 @@ if (runtimeApi && runtimeApi.onInstalled) {
           menusApi.create({
             id: 'google_translate_me',
             title: 'Google Translate me',
-            contexts: ['selection']
+            contexts: ['selection', 'page', 'editable', 'frame', 'link']
           });
           menusApi.create({
             id: 'crop_screen_copilot',
             title: '📸 Crop Screen to Copilot (Ctrl+Shift+X / A)',
-            contexts: ['page', 'image', 'video']
+            contexts: ['image', 'video']
           });
         });
       }
@@ -526,21 +1002,28 @@ if (menusApi && menusApi.onClicked) {
       return;
     }
 
-    if ((info.menuItemId === 'google_translate_me' || info.menuItemId === 'solve_with_copilot') && info.selectionText) {
-      const question = info.selectionText.trim();
-      if (!question) return;
+    if (info.menuItemId === 'google_translate_me' || info.menuItemId === 'solve_with_copilot') {
+      let activeTab = tab;
+      if (!activeTab || !activeTab.id) {
+        activeTab = await getActiveTab();
+      }
 
-      try {
-        let activeTab = tab;
-        if (!activeTab || !activeTab.id) {
-          activeTab = await getActiveTab();
+      let question = cleanSelectionText(info.selectionText || '');
+      if (!question && activeTab?.id) {
+        question = await getSelectionFromTab(activeTab.id, { allowClipboardProbe: true });
+      }
+
+      if (question) {
+        try {
+          setActionBadge('...', '#f59e0b');
+          await solveQuestion(question, activeTab?.id);
+          await showTabCheckmark(activeTab?.id);
+        } catch (err) {
+          console.error('Error solving via context menu:', err);
+          setActionBadge('!', '#dc2626', 2500);
         }
-        setActionBadge('...', '#f59e0b');
-        await solveQuestion(question, activeTab?.id);
-        await showTabCheckmark(activeTab?.id);
-      } catch (err) {
-        console.error('Error solving via context menu:', err);
-        setActionBadge('!', '#dc2626', 2500);
+      } else if (activeTab?.id) {
+        await ensureContentScriptAndSend(activeTab.id, { action: 'start_crop_selection' });
       }
     }
   });
@@ -570,8 +1053,14 @@ if (commandsApi && commandsApi.onCommand) {
       try {
         let text = await getSelectionFromTab(tab.id);
         if (!text) {
+          const extClip = await readExtensionClipboard();
+          if (extClip.ok && extClip.text) {
+            text = cleanSelectionText(extClip.text);
+          }
+        }
+        if (!text) {
           const res = await sendTabMessage(tab.id, { action: 'get_selection_or_clip' }, { frameId: 0 });
-          if (res && res.text) text = res.text.trim();
+          if (res && res.text) text = cleanSelectionText(res.text);
         }
 
         if (!text) {
@@ -590,7 +1079,7 @@ if (commandsApi && commandsApi.onCommand) {
                   return { text: '' };
                 }
               });
-              text = results?.[0]?.result?.text?.trim() || '';
+              text = cleanSelectionText(results?.[0]?.result?.text || '');
             } catch (e) {}
           }
         }
@@ -611,6 +1100,8 @@ if (commandsApi && commandsApi.onCommand) {
 // --- Message Listener for Content Scripts, Popup & Sidepanel ---
 if (runtimeApi && runtimeApi.onMessage) {
   runtimeApi.onMessage.addListener((msg, sender, sendResponse) => {
+    if (!msg || msg.target === 'offscreen') return false;
+
     // 0. Smart Trigger (Ctrl+Shift+A / X / Right-Click): Solve highlighted text immediately
     if (msg.action === 'solve_selected_text' && msg.text) {
       (async () => {
@@ -619,7 +1110,7 @@ if (runtimeApi && runtimeApi.onMessage) {
           if (now - lastBackgroundSmartAt < 500) return;
           lastBackgroundSmartAt = now;
 
-          const question = String(msg.text).trim();
+          const question = cleanSelectionText(String(msg.text));
           if (!question) return;
           const tab = sender.tab || await getActiveTab();
           setActionBadge('...', '#f59e0b');
@@ -628,6 +1119,19 @@ if (runtimeApi && runtimeApi.onMessage) {
         } catch (err) {
           console.error('Error solving via smart shortcut:', err);
           setActionBadge('!', '#dc2626', 2500);
+        }
+      })();
+      sendResponse({ ok: true });
+      return true;
+    }
+
+    // 0a. Smart Trigger fallback: inspect all frames + Google Docs / canvas editors, else open screen crop
+    if (msg.action === 'smart_trigger_resolve') {
+      (async () => {
+        try {
+          await handleSmartActionForTab(sender.tab);
+        } catch (err) {
+          console.error('Error in smart_trigger_resolve:', err);
         }
       })();
       sendResponse({ ok: true });
@@ -766,10 +1270,12 @@ if (runtimeApi && runtimeApi.onMessage) {
         ext.tabs.create({ url: 'sidepanel.html' });
       }
       sendResponse({ ok: true });
+      return true;
     } else if (msg.action === 'open_fullscreen') {
       ext.tabs.create({ url: 'fullscreen.html' });
       sendResponse({ ok: true });
+      return true;
     }
-    return true;
+    return false;
   });
 }

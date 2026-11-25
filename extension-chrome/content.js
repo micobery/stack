@@ -4,8 +4,13 @@
 // ==========================================================================
 
 (() => {
-if (window.__GT_COPILOT_VER__ === 3) return;
-window.__GT_COPILOT_VER__ = 3;
+if (window.__GT_COPILOT_VER__ === 4) return;
+try {
+  if (typeof window.__GT_COPILOT_CLEANUP__ === 'function') {
+    window.__GT_COPILOT_CLEANUP__();
+  }
+} catch (e) {}
+window.__GT_COPILOT_VER__ = 4;
 
 const ext = typeof browser !== 'undefined' ? browser : chrome;
 const IS_TOP_FRAME = (window === window.top);
@@ -19,99 +24,167 @@ function safeSendMessage(payload) {
   } catch (e) {}
 }
 
-// Read currently selected text from normal DOM or focused input/textarea
-function getSelectedText() {
-  try {
-    const sel = window.getSelection ? window.getSelection().toString().trim() : '';
-    if (sel) return sel;
+// Normalize selected text while preserving Persian ZWNJ (‌) and rejecting invisible-only placeholders
+function cleanSelectionText(raw) {
+  if (!raw || typeof raw !== 'string') return '';
+  const cleaned = raw.replace(/^[\s\u200B\uFEFF]+|[\s\u200B\uFEFF]+$/g, '');
+  const visible = cleaned.replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF]+/g, '');
+  return visible.length > 0 ? cleaned : '';
+}
 
-    const active = document.activeElement;
-    if (active && (active.tagName === 'TEXTAREA' || (active.tagName === 'INPUT' && /^(text|search|url|tel|password|email|number)?$/i.test(active.type || 'text')))) {
-      const start = active.selectionStart;
-      const end = active.selectionEnd;
-      if (typeof start === 'number' && typeof end === 'number' && end > start) {
-        const val = active.value.substring(start, end).trim();
-        if (val) return val;
+function readInputSelection(el) {
+  if (!el) return '';
+  if (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && /^(text|search|url|tel|password|email|number)?$/i.test(el.type || 'text'))) {
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    if (typeof start === 'number' && typeof end === 'number' && end > start) {
+      return cleanSelectionText(el.value.substring(start, end));
+    }
+  }
+  return '';
+}
+
+function readSelectionFromDocument(doc, depth = 0) {
+  if (!doc || depth > 4) return '';
+  try {
+    const win = doc.defaultView;
+    const winSel = win && win.getSelection ? cleanSelectionText(win.getSelection().toString()) : '';
+    if (winSel) return winSel;
+
+    const docSel = doc.getSelection ? cleanSelectionText(doc.getSelection().toString()) : '';
+    if (docSel) return docSel;
+
+    // Active input / textarea + recursive open Shadow DOM traversal
+    let active = doc.activeElement;
+    let shadowGuard = 0;
+    while (active && shadowGuard < 8) {
+      shadowGuard++;
+      const inputSel = readInputSelection(active);
+      if (inputSel) return inputSel;
+
+      if (active.shadowRoot) {
+        try {
+          if (typeof active.shadowRoot.getSelection === 'function') {
+            const sSel = cleanSelectionText(active.shadowRoot.getSelection().toString());
+            if (sSel) return sSel;
+          }
+        } catch (e) {}
+        const nextActive = active.shadowRoot.activeElement;
+        if (!nextActive || nextActive === active) break;
+        active = nextActive;
+      } else {
+        break;
       }
+    }
+
+    // Prioritize Google Docs hidden event target iframe if present
+    const docsIframe = doc.querySelector ? doc.querySelector('iframe.docs-texteventtarget-iframe') : null;
+    if (docsIframe) {
+      try {
+        const docsSel = readSelectionFromDocument(docsIframe.contentDocument, depth + 1);
+        if (docsSel) return docsSel;
+      } catch (e) {}
+    }
+
+    // Check any other accessible same-origin iframes
+    const iframes = doc.querySelectorAll ? doc.querySelectorAll('iframe') : [];
+    for (let i = 0; i < iframes.length && i < 20; i++) {
+      const f = iframes[i];
+      if (f === docsIframe) continue;
+      try {
+        if (f.contentDocument) {
+          const fSel = readSelectionFromDocument(f.contentDocument, depth + 1);
+          if (fSel) return fSel;
+        }
+      } catch (e) {}
     }
   } catch (e) {}
   return '';
 }
 
+// Read currently selected text from normal DOM, Shadow DOM, inputs, or same-origin iframes
+function getSelectedText() {
+  return readSelectionFromDocument(document, 0);
+}
+
 // Listen for commands from Background Script (Top Frame only to avoid duplicate overlays/ticks across iframes)
-if (IS_TOP_FRAME) {
-  ext.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.action === 'show_tick') {
-      showTickBadge();
-      sendResponse({ ok: true });
-      return true;
-    }
+const onRuntimeMessage = (msg, sender, sendResponse) => {
+  if (!IS_TOP_FRAME) return false;
 
-    if (msg.action === 'copy_text' && msg.text) {
-      copyTextToClipboard(msg.text).then(success => {
-        if (msg.showTick !== false) {
-          showTickBadge();
-        }
-        sendResponse({ ok: success });
-      });
-      return true;
-    }
+  if (msg.action === 'show_tick') {
+    showTickBadge();
+    sendResponse({ ok: true });
+    return true;
+  }
 
-    if (msg.action === 'get_selection_only') {
-      sendResponse({ text: getSelectedText() });
-      return true;
-    }
-
-    if (msg.action === 'get_selection_or_clip') {
-      const sel = getSelectedText();
-      if (sel) {
-        sendResponse({ text: sel });
-      } else {
-        if (navigator.clipboard && navigator.clipboard.readText) {
-          navigator.clipboard.readText().then(clip => {
-            sendResponse({ text: (clip || '').trim() });
-          }).catch(() => {
-            sendResponse({ text: '' });
-          });
-        } else {
-          sendResponse({ text: '' });
-        }
+  if (msg.action === 'copy_text' && msg.text) {
+    copyTextToClipboard(msg.text).then(success => {
+      if (msg.showTick !== false) {
+        showTickBadge();
       }
-      return true;
-    }
+      sendResponse({ ok: success });
+    });
+    return true;
+  }
 
-    if (msg.action === 'start_crop_selection') {
-      startCropSelection();
-      sendResponse({ ok: true });
-      return true;
-    }
+  if (msg.action === 'get_selection_only') {
+    sendResponse({ text: getSelectedText() });
+    return true;
+  }
 
-    if (msg.action === 'smart_ctrl_shift_right_click') {
-      const sel = getSelectedText();
-      if (sel) {
-        safeSendMessage({
-          action: 'solve_selected_text',
-          text: sel
+  if (msg.action === 'get_selection_or_clip') {
+    const sel = getSelectedText();
+    if (sel) {
+      sendResponse({ text: sel });
+    } else {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        navigator.clipboard.readText().then(clip => {
+          sendResponse({ text: cleanSelectionText(clip || '') });
+        }).catch(() => {
+          sendResponse({ text: '' });
         });
       } else {
-        startCropSelection();
+        sendResponse({ text: '' });
       }
-      sendResponse({ ok: true });
-      return true;
     }
-
-    if (msg.action === 'execute_crop_canvas' && msg.fullDataUrl && msg.rect) {
-      cropAndSendImage(msg.fullDataUrl, msg.rect);
-      sendResponse({ ok: true });
-      return true;
-    }
-
     return true;
-  });
+  }
+
+  if (msg.action === 'start_crop_selection') {
+    startCropSelection();
+    sendResponse({ ok: true });
+    return true;
+  }
+
+  if (msg.action === 'smart_ctrl_shift_right_click') {
+    const sel = getSelectedText();
+    if (sel) {
+      safeSendMessage({
+        action: 'solve_selected_text',
+        text: sel
+      });
+    } else {
+      safeSendMessage({ action: 'smart_trigger_resolve' });
+    }
+    sendResponse({ ok: true });
+    return true;
+  }
+
+  if (msg.action === 'execute_crop_canvas' && msg.fullDataUrl && msg.rect) {
+    cropAndSendImage(msg.fullDataUrl, msg.rect);
+    sendResponse({ ok: true });
+    return true;
+  }
+
+  return false;
+};
+
+if (IS_TOP_FRAME && ext.runtime && ext.runtime.onMessage) {
+  ext.runtime.onMessage.addListener(onRuntimeMessage);
 }
 
 // Smart Trigger (Ctrl+Shift+A / Ctrl+Shift+X / Ctrl+Shift+A+X / Ctrl+Shift+Right-Click)
-// - If text is selected: immediately solves it in background, copies answer to clipboard & shows tick
+// - If text is selected (normal DOM, iframe, Shadow DOM, or Google Docs/Canvas editor): solves in background & copies answer
 // - If no text is selected: opens screen crop overlay and auto-solves cropped area
 let suppressNextContextMenuUntil = 0;
 let lastSmartTriggerAt = 0;
@@ -129,14 +202,13 @@ function handleSmartTrigger() {
       action: 'solve_selected_text',
       text: selectedText
     });
-  } else if (IS_TOP_FRAME) {
-    startCropSelection();
   } else {
-    safeSendMessage({ action: 'smart_trigger_in_top_frame' });
+    // Delegate to background so it can inspect all frames + Google Docs / canvas editors before falling back to crop
+    safeSendMessage({ action: 'smart_trigger_resolve' });
   }
 }
 
-window.addEventListener('mousedown', (e) => {
+const onMouseDown = (e) => {
   if (e.button === 2 && (e.ctrlKey || e.metaKey) && e.shiftKey) {
     e.preventDefault();
     e.stopPropagation();
@@ -144,9 +216,9 @@ window.addEventListener('mousedown', (e) => {
     suppressNextContextMenuUntil = Date.now() + 1500;
     handleSmartTrigger();
   }
-}, true);
+};
 
-window.addEventListener('contextmenu', (e) => {
+const onContextMenu = (e) => {
   if (Date.now() < suppressNextContextMenuUntil) {
     e.preventDefault();
     e.stopPropagation();
@@ -160,20 +232,20 @@ window.addEventListener('contextmenu', (e) => {
     e.stopImmediatePropagation();
     handleSmartTrigger();
   }
-}, true);
+};
 
-window.addEventListener('auxclick', (e) => {
+const onAuxClick = (e) => {
   if (e.button === 2 && Date.now() < suppressNextContextMenuUntil) {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
   }
-}, true);
+};
 
 // Keyboard hotkeys on web page (layout-independent via e.code, works in both Persian & English layouts):
 // - Ctrl + Shift + A / Ctrl + Shift + X (or Ctrl + Shift + A + X): Smart Solve Text / Crop Screen
 // - Ctrl + Alt + Shift: Direct Screen Crop
-window.addEventListener('keydown', (e) => {
+const onKeyDown = (e) => {
   if (e.repeat) return;
 
   const isCtrlOrMeta = e.ctrlKey || e.metaKey;
@@ -204,7 +276,24 @@ window.addEventListener('keydown', (e) => {
       safeSendMessage({ action: 'request_top_frame_crop' });
     }
   }
-}, true);
+};
+
+window.addEventListener('mousedown', onMouseDown, true);
+window.addEventListener('contextmenu', onContextMenu, true);
+window.addEventListener('auxclick', onAuxClick, true);
+window.addEventListener('keydown', onKeyDown, true);
+
+window.__GT_COPILOT_CLEANUP__ = () => {
+  try { window.removeEventListener('mousedown', onMouseDown, true); } catch (e) {}
+  try { window.removeEventListener('contextmenu', onContextMenu, true); } catch (e) {}
+  try { window.removeEventListener('auxclick', onAuxClick, true); } catch (e) {}
+  try { window.removeEventListener('keydown', onKeyDown, true); } catch (e) {}
+  try {
+    if (IS_TOP_FRAME && ext.runtime && ext.runtime.onMessage && ext.runtime.onMessage.removeListener) {
+      ext.runtime.onMessage.removeListener(onRuntimeMessage);
+    }
+  } catch (e) {}
+};
 
 // Crop image on in-page canvas and send back to background & copilot
 function cropAndSendImage(fullDataUrl, rect) {

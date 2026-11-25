@@ -1,4 +1,6 @@
 .vercel
 __pycache__/
 *.pyc
+config.json
+
 
